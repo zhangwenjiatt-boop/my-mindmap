@@ -28,10 +28,11 @@ const initApp = () => {
   }).$mount('#app')
 }
 
+window.$bus = bus
+
 // 是否处于接管应用模式
 if (window.takeOverApp) {
   window.initApp = initApp
-  window.$bus = bus
 } else {
   initApp()
 }

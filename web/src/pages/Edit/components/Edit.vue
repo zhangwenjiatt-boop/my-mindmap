@@ -462,6 +462,7 @@ export default {
           })
         }
       })
+      window.mindMap = this.mindMap
       this.loadPlugins()
       this.mindMap.keyCommand.addShortcut('Control+s', () => {
         this.manualSave()
