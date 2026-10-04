@@ -1,11 +1,17 @@
 <template>
   <div
     class="editContainer"
+    :class="{ hasSplitEditor: showSplitEditor }"
     @dragenter.stop.prevent="onDragenter"
     @dragleave.stop.prevent
     @dragover.stop.prevent
     @drop.stop.prevent
   >
+    <MarkdownSplitEditor
+      v-if="mindMap && !isZenMode"
+      :mindMap="mindMap"
+      @change="onSplitEditorChange"
+    ></MarkdownSplitEditor>
     <div
       class="mindMapContainer"
       id="mindMapContainer"
@@ -49,6 +55,10 @@
       v-if="mindMap"
       :mindMap="mindMap"
     ></NodeImgPlacementToolbar>
+    <NodeFloatingToolbar
+      v-if="mindMap && !isZenMode"
+      :mindMap="mindMap"
+    ></NodeFloatingToolbar>
     <NodeNoteSidebar v-if="mindMap" :mindMap="mindMap"></NodeNoteSidebar>
     <AiCreate v-if="mindMap && enableAi" :mindMap="mindMap"></AiCreate>
     <AiChat v-if="enableAi"></AiChat>
@@ -88,6 +98,7 @@ import OuterFrame from 'simple-mind-map/src/plugins/OuterFrame.js'
 import MindMapLayoutPro from 'simple-mind-map/src/plugins/MindMapLayoutPro.js'
 import NodeBase64ImageStorage from 'simple-mind-map/src/plugins/NodeBase64ImageStorage.js'
 import Themes from 'simple-mind-map-plugin-themes'
+import { registerCustomThemes } from '@/customThemes'
 // 协同编辑插件
 // import Cooperate from 'simple-mind-map/src/plugins/Cooperate.js'
 import OutlineSidebar from './OutlineSidebar.vue'
@@ -123,6 +134,8 @@ import NodeTagStyle from './NodeTagStyle.vue'
 import Setting from './Setting.vue'
 import AssociativeLineStyle from './AssociativeLineStyle.vue'
 import NodeImgPlacementToolbar from './NodeImgPlacementToolbar.vue'
+import NodeFloatingToolbar from './NodeFloatingToolbar.vue'
+import MarkdownSplitEditor from './MarkdownSplitEditor.vue'
 import NodeNoteSidebar from './NodeNoteSidebar.vue'
 import AiCreate from './AiCreate.vue'
 import AiChat from './AiChat.vue'
@@ -151,6 +164,7 @@ MindMap.usePlugin(MiniMap)
 
 // 注册主题
 Themes.init(MindMap)
+registerCustomThemes(MindMap)
 // 扩展主题列表
 if (typeof MoreThemes !== 'undefined') {
   MoreThemes.init(MindMap)
@@ -183,6 +197,8 @@ export default {
     Setting,
     AssociativeLineStyle,
     NodeImgPlacementToolbar,
+    NodeFloatingToolbar,
+    MarkdownSplitEditor,
     NodeNoteSidebar,
     AiCreate,
     AiChat
@@ -195,7 +211,8 @@ export default {
       mindMapConfig: {},
       prevImg: '',
       storeConfigTimer: null,
-      showDragMask: false
+      showDragMask: false,
+      showSplitEditor: false
     }
   },
   computed: {
@@ -657,6 +674,15 @@ export default {
 
     showDownloadTip(title = '免费服务', desc = '免费服务') {
       this.$message.info(desc)
+    },
+
+    onSplitEditorChange(show) {
+      this.showSplitEditor = show
+      this.$nextTick(() => {
+        if (this.mindMap) {
+          this.mindMap.resize()
+        }
+      })
     }
   }
 }
@@ -669,6 +695,14 @@ export default {
   right: 0;
   top: 0;
   bottom: 0;
+  display: flex;
+
+  &.hasSplitEditor {
+    .mindMapContainer {
+      left: 440px;
+      width: calc(100% - 440px);
+    }
+  }
 
   .dragMask {
     position: absolute;
@@ -694,6 +728,8 @@ export default {
     top: 0px;
     width: 100%;
     height: 100%;
+    transition: left 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 </style>

@@ -1,56 +1,64 @@
 // 字体列表
 export const fontFamilyList = [
   {
-    name: 'Song Ti',
-    value: '宋体, SimSun, Songti SC'
+    name: 'System Default',
+    value: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
   },
   {
-    name: 'Microsoft Yahei',
-    value: '微软雅黑, Microsoft YaHei'
+    name: 'Inter',
+    value: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif'
   },
   {
-    name: 'Italics',
-    value: '楷体, 楷体_GB2312, SimKai, STKaiti'
+    name: 'JetBrains Mono',
+    value: 'JetBrains Mono, Fira Code, Menlo, Monaco, Consolas, monospace'
   },
   {
-    name: 'Boldface',
-    value: '黑体, SimHei, Heiti SC'
-  },
-  {
-    name: 'Official script',
-    value: '隶书, SimLi'
-  },
-  {
-    name: 'Andale Mono',
-    value: 'andale mono'
+    name: 'Georgia',
+    value: 'Georgia, serif'
   },
   {
     name: 'Arial',
     value: 'arial, helvetica, sans-serif'
   },
   {
-    name: 'arialBlack',
-    value: 'arial black, avant garde'
-  },
-  {
-    name: 'Comic Sans Ms',
-    value: 'comic sans ms'
-  },
-  {
-    name: 'Impact',
-    value: 'impact, chicago'
-  },
-  {
     name: 'Times New Roman',
-    value: 'times new roman'
+    value: 'times new roman, serif'
   },
   {
-    name: 'Sans-Serif',
-    value: 'sans-serif'
+    name: 'Comic Sans MS',
+    value: 'comic sans ms, cursive'
   },
   {
-    name: 'serif',
-    value: 'serif'
+    name: 'Microsoft Yahei',
+    value: '微软雅黑, Microsoft YaHei, sans-serif'
+  },
+  {
+    name: 'PingFang SC',
+    value: 'PingFang SC, -apple-system, BlinkMacSystemFont, "Hiragino Sans GB", "Microsoft YaHei", sans-serif'
+  },
+  {
+    name: 'Source Han Sans',
+    value: 'Source Han Sans SC, Noto Sans SC, sans-serif'
+  },
+  {
+    name: 'Source Han Serif',
+    value: 'Source Han Serif SC, Noto Serif SC, SimSun, serif'
+  },
+  {
+    name: 'HarmonyOS Sans',
+    value: 'HarmonyOS Sans SC, HarmonyOS Sans, sans-serif'
+  },
+  {
+    name: 'Song Ti',
+    value: '宋体, SimSun, Songti SC, serif'
+  },
+  {
+    name: 'Kaiti',
+    value: '楷体, 楷体_GB2312, SimKai, STKaiti, serif'
+  },
+  {
+    name: 'Boldface (SimHei)',
+    value: '黑体, SimHei, Heiti SC, sans-serif'
   }
 ]
 

@@ -146,7 +146,7 @@ export default {
     marginY: 0,
     fillColor: 'transparent',
     fontFamily: '微软雅黑, Microsoft YaHei',
-    color: '#6a6d6c',
+    color: '#1E293B',
     fontSize: 14,
     fontWeight: 'normal',
     fontStyle: 'normal',

@@ -1,61 +1,81 @@
 // 字体列表
 export const fontFamilyList = [
   {
-    name: '宋体',
-    value: '宋体, SimSun, Songti SC'
+    name: '系统默认',
+    value: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
   },
   {
     name: '微软雅黑',
-    value: '微软雅黑, Microsoft YaHei'
+    value: '微软雅黑, Microsoft YaHei, sans-serif'
   },
   {
-    name: '楷体',
-    value: '楷体, 楷体_GB2312, SimKai, STKaiti'
+    name: '苹方 / 极细黑体',
+    value: 'PingFang SC, -apple-system, BlinkMacSystemFont, "Hiragino Sans GB", "Microsoft YaHei", sans-serif'
+  },
+  {
+    name: '思源黑体',
+    value: 'Source Han Sans SC, Noto Sans SC, sans-serif'
+  },
+  {
+    name: '思源宋体',
+    value: 'Source Han Serif SC, Noto Serif SC, SimSun, serif'
+  },
+  {
+    name: '鸿蒙字体',
+    value: 'HarmonyOS Sans SC, HarmonyOS Sans, sans-serif'
+  },
+  {
+    name: '霞鹜文楷',
+    value: 'LXGW WenKai, Kaiti SC, 楷体, STKaiti, serif'
+  },
+  {
+    name: '宋体',
+    value: '宋体, SimSun, Songti SC, serif'
   },
   {
     name: '黑体',
-    value: '黑体, SimHei, Heiti SC'
+    value: '黑体, SimHei, Heiti SC, sans-serif'
+  },
+  {
+    name: '楷体',
+    value: '楷体, 楷体_GB2312, SimKai, STKaiti, serif'
+  },
+  {
+    name: '仿宋',
+    value: '仿宋, FangSong, STFangsong, serif'
   },
   {
     name: '隶书',
-    value: '隶书, SimLi'
+    value: '隶书, SimLi, serif'
   },
   {
-    name: 'Andale Mono',
-    value: 'andale mono'
+    name: 'Inter',
+    value: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif'
+  },
+  {
+    name: 'JetBrains 等宽代码体',
+    value: 'JetBrains Mono, Fira Code, Menlo, Monaco, Consolas, monospace'
+  },
+  {
+    name: 'Georgia',
+    value: 'Georgia, serif'
+  },
+  {
+    name: 'Times New Roman',
+    value: 'times new roman, serif'
   },
   {
     name: 'Arial',
     value: 'arial, helvetica, sans-serif'
   },
   {
-    name: 'arialBlack',
-    value: 'arial black, avant garde'
-  },
-  {
-    name: 'Comic Sans Ms',
-    value: 'comic sans ms'
-  },
-  {
-    name: 'Impact',
-    value: 'impact, chicago'
-  },
-  {
-    name: 'Times New Roman',
-    value: 'times new roman'
-  },
-  {
-    name: 'Sans-Serif',
-    value: 'sans-serif'
-  },
-  {
-    name: 'serif',
-    value: 'serif'
+    name: 'Comic Sans MS',
+    value: 'comic sans ms, cursive'
   }
 ]
 
 // 字号
-export const fontSizeList = [10, 12, 14, 16, 18, 24, 32, 48]
+export const fontSizeList = [10, 11, 12, 13, 14, 15, 16, 18, 20, 22, 24, 28, 32, 36, 40, 48, 56, 64]
 
 // 颜色
 export const colorList = [

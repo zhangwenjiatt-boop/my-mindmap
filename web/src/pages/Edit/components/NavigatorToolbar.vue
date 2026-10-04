@@ -68,6 +68,19 @@
       </el-tooltip>
     </div>
     <div class="item">
+      <el-tooltip
+        effect="dark"
+        content="开启/关闭 Markdown 双栏笔记联动"
+        placement="top"
+      >
+        <div
+          class="btn el-icon-document"
+          style="font-size: 16px; line-height: 24px;"
+          @click="$bus.$emit('toggleMarkdownSplit')"
+        ></div>
+      </el-tooltip>
+    </div>
+    <div class="item">
       <Fullscreen :isDark="isDark" :mindMap="mindMap"></Fullscreen>
     </div>
     <div class="item">

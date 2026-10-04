@@ -1,5 +1,5 @@
 <template>
-  <div class="toolbarContainer" :class="{ isDark: isDark }">
+  <div class="toolbarContainer" :class="{ isDark: isDark, hasSplitEditor: hasSplitEditor }">
     <div class="toolbar" ref="toolbarRef">
       <!-- 节点操作 -->
       <div class="toolbarBlock">
@@ -63,10 +63,26 @@
         <div
           class="toolbarBtn"
           @click="$bus.$emit('showExport')"
-          style="margin-right: 0;"
         >
           <span class="icon iconfont iconexport"></span>
           <span class="text">{{ $t('toolbar.export') }}</span>
+        </div>
+        <div
+          class="toolbarBtn"
+          @click="$bus.$emit('toggleMarkdownSplit')"
+          title="开启/关闭 Markdown 双栏笔记联动"
+        >
+          <span class="icon el-icon-document" style="font-size: 16px;"></span>
+          <span class="text">双栏笔记</span>
+        </div>
+        <div
+          class="toolbarBtn"
+          @click="enterZenMode"
+          title="全屏沉浸，专注笔记与思考 (按 Esc 退出)"
+          style="margin-right: 0;"
+        >
+          <span class="icon iconfont iconquanping"></span>
+          <span class="text">专注模式</span>
         </div>
         <!-- 本地文件树 -->
         <div
@@ -150,7 +166,7 @@ import NodeNote from './NodeNote.vue'
 import NodeTag from './NodeTag.vue'
 import Export from './Export.vue'
 import Import from './Import.vue'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import { Notification } from 'element-ui'
 import exampleData from 'simple-mind-map/example/exampleData'
 import { getData } from '../../../api'
@@ -206,7 +222,8 @@ export default {
       fileTreeVisible: false,
       rootDirName: '',
       fileTreeExpand: true,
-      waitingWriteToLocalFile: false
+      waitingWriteToLocalFile: false,
+      hasSplitEditor: false
     }
   },
   computed: {
@@ -247,6 +264,7 @@ export default {
   },
   created() {
     this.$bus.$on('write_local_file', this.onWriteLocalFile)
+    this.$bus.$on('split_editor_change', this.onSplitEditorChange)
   },
   mounted() {
     this.computeToolbarShow()
@@ -258,12 +276,23 @@ export default {
   },
   beforeDestroy() {
     this.$bus.$off('write_local_file', this.onWriteLocalFile)
+    this.$bus.$off('split_editor_change', this.onSplitEditorChange)
     window.removeEventListener('resize', this.computeToolbarShowThrottle)
     this.$bus.$off('lang_change', this.computeToolbarShowThrottle)
     window.removeEventListener('beforeunload', this.onUnload)
     this.$bus.$off('node_note_dblclick', this.onNodeNoteDblclick)
   },
   methods: {
+    ...mapMutations(['setLocalConfig']),
+
+    onSplitEditorChange(show) {
+      this.hasSplitEditor = show
+    },
+
+    enterZenMode() {
+      this.setLocalConfig({ isZenMode: true })
+    },
+
     // 计算工具按钮如何显示
     computeToolbarShow() {
       if (!this.$refs.toolbarRef) return
@@ -600,10 +629,18 @@ export default {
       }
     }
   }
+
+  &.hasSplitEditor {
+    .toolbar {
+      left: calc(50% + 220px);
+    }
+  }
+
   .toolbar {
     position: fixed;
     left: 50%;
     transform: translateX(-50%);
+    transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     top: 20px;
     width: max-content;
     display: flex;

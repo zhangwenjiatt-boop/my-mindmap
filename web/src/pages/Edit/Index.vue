@@ -6,6 +6,18 @@
     <template v-if="show">
       <Toolbar v-if="!isZenMode"></Toolbar>
       <Edit></Edit>
+      <!-- 专注模式退出悬浮胶囊 -->
+      <transition name="el-fade-in">
+        <div
+          class="zenExitBadge"
+          v-if="isZenMode"
+          @click="exitZenMode"
+          title="点击或按 Esc 退出专注模式"
+        >
+          <span class="icon iconfont iconquanping1"></span>
+          <span class="text">退出专注模式 (Esc)</span>
+        </div>
+      </transition>
     </template>
   </div>
 </template>
@@ -47,9 +59,25 @@ export default {
     this.show = true
     loading.close()
     this.setBodyDark()
+    window.addEventListener('keydown', this.handleKeyDown)
+  },
+  beforeDestroy() {
+    window.removeEventListener('keydown', this.handleKeyDown)
   },
   methods: {
     ...mapMutations(['setLocalConfig']),
+
+    handleKeyDown(e) {
+      if (e.key === 'Escape' && this.isZenMode) {
+        this.exitZenMode()
+      }
+    },
+
+    exitZenMode() {
+      this.setLocalConfig({
+        isZenMode: false
+      })
+    },
 
     // 初始化本地配置
     initLocalConfig() {
@@ -73,6 +101,39 @@ export default {
 
 <style lang="less">
 .container {
+}
+
+.zenExitBadge {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: rgba(15, 23, 42, 0.88);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3),
+    0 8px 10px -6px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+
+  &:hover {
+    background: rgba(37, 99, 235, 0.95);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(37, 99, 235, 0.4);
+  }
+
+  .icon {
+    font-size: 14px;
+  }
 }
 
 body {
