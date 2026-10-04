@@ -358,7 +358,7 @@ export default {
     deleteNodeImgTip: '是否确认删除该节点图片？',
     autoOpenNodeRichTextTip: '检测到导入了富文本内容，已自动开启富文本模式',
     localStorageExceededTip:
-      '你创建的思维导图体积已经超过浏览器允许存储的上限，请立即导出，否则数据将丢失！建议下载客户端进行使用，客户端无大小限制。',
+      '你创建的思维导图体积已经超过浏览器允许存储的上限，请立即导出或另存为本地文件，否则数据将丢失！',
     withBg: '带背景',
     tryTipTitle: '功能试用提示',
     tryTipDesc: '该功能在网页版中为试用功能，请下载客户端使用：',

@@ -372,6 +372,22 @@ export default {
         demonstrateConfig: {
           openBlankMode: false
         },
+        // 【定制默认值】彩虹分支：每个一级分支一种颜色，层级更易辨认
+        rainbowLinesConfig: {
+          open: true,
+          colorsList: [
+            '#5b8ff9',
+            '#f6903d',
+            '#5ad8a6',
+            '#e8684a',
+            '#9270ca',
+            '#269a99',
+            '#f6bd16',
+            '#ff99c3'
+          ]
+        },
+        // 【定制默认值】长文本自动换行宽度（原默认 500，AI 生成的长句节点过宽）
+        textAutoWrapWidth: 320,
         ...(config || {}),
         iconList: [...icon],
         useLeftKeySelectionRightKeyDrag: this.useLeftKeySelectionRightKeyDrag,
@@ -627,55 +643,19 @@ export default {
       this.$bus.$emit('importFile', file)
     },
 
-    // 网页版试用提示
+    // 免费服务提示
     webTip() {
       const storageKey = 'webUseTip'
       const data = localStorage.getItem(storageKey)
       if (data) {
         return
       }
-      this.showDownloadTip(
-        '重要提示',
-        '网页版仅供试用，请下载客户端获得完整体验~'
-      )
+      this.$message.success('免费服务，数据仅保存在你的浏览器中')
       localStorage.setItem(storageKey, 1)
     },
 
-    showDownloadTip(title, desc) {
-      const h = this.$createElement
-      this.$msgbox({
-        title,
-        message: h('div', null, [
-          h(
-            'p',
-            {
-              style: {
-                marginBottom: '12px'
-              }
-            },
-            desc
-          ),
-          h('div', null, [
-            h(
-              'a',
-              {
-                attrs: {
-                  href:
-                    'https://sxmind.cn/',
-                  target: '_blank'
-                },
-                style: {
-                  color: '#409eff',
-                  marginRight: '12px'
-                }
-              },
-              '详细了解：https://sxmind.cn/'
-            )
-          ])
-        ]),
-        showCancelButton: false,
-        showConfirmButton: false
-      })
+    showDownloadTip(title = '免费服务', desc = '免费服务') {
+      this.$message.info(desc)
     }
   }
 }

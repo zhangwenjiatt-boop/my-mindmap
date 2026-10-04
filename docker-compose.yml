@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  mind-map:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mind-map-app
+    restart: always
+    ports:
+      - "8080:80"

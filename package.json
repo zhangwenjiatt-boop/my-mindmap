@@ -1,0 +1,22 @@
+{
+  "name": "mind-map-deployment",
+  "version": "1.0.0",
+  "description": "Simple Mind Map - Local & Internet Deployment",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build:web": "cd web && npm run build"
+  },
+  "keywords": [
+    "mind-map",
+    "thoughts",
+    "vue",
+    "html"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "mdast-util-from-markdown": "^2.1.0"
+  }
+}

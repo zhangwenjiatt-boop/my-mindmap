@@ -240,6 +240,7 @@ export default {
       fileReader.onload = async evt => {
         try {
           let data = markdown.transformMarkdownTo(evt.target.result)
+          this.collapseDeepLevels(data, 2)
           this.$bus.$emit('setData', data)
           this.$message.success(this.$t('import.importSuccess'))
         } catch (error) {
@@ -247,6 +248,18 @@ export default {
           this.$message.error(this.$t('import.fileParsingFailed'))
         }
       }
+    },
+
+    // 【定制】大纲层级较深时，只展开到第 maxLevel 层（根节点为第 0 层）
+    collapseDeepLevels(node, maxLevel, level = 0) {
+      if (!node || !node.data) return
+      const children = node.children || []
+      if (children.length > 0 && level >= maxLevel) {
+        node.data.expand = false
+      }
+      children.forEach(child => {
+        this.collapseDeepLevels(child, maxLevel, level + 1)
+      })
     },
 
     // 导入指定文件

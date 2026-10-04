@@ -109,5 +109,20 @@ export const transformMarkdownTo = md => {
       currentChildren.push(...handleList(cur))
     }
   }
+  if (root.children.length > 1) {
+    if (root.children[0].children.length === 0) {
+      for (let k = 1; k < root.children.length; k++) {
+        if (root.children[k].children.length > 0) {
+          root.children[0].children.push(...root.children[k].children)
+        } else {
+          root.children[0].children.push(root.children[k])
+        }
+      }
+    } else {
+      for (let k = 1; k < root.children.length; k++) {
+        root.children[0].children.push(root.children[k])
+      }
+    }
+  }
   return root.children[0]
 }

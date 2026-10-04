@@ -1,0 +1,206 @@
+# 明智使用城市空间——维持可持续的城市环境 (Using Urban Space Wisely — Maintaining a Sustainable Urban Environment)
+> 7年级地理科 课本核心考点与知识结构 5级深度中英对照思维导图大纲 (5-Level Bilingual Mind Map Outline)
+
+
+
+## Chapter 1: Where are the large cities in the world? (第1章：世界上的大城市在哪里？)
+
+### 1.1 Where are the major continents and oceans of the world? (1.1 世界主要大洲与大洋分布在何处？)
+- **Global Geographical Framework (全球地理参照框架)**
+  - **Seven Continents (七大洲)**: Asia (亚洲), Europe (欧洲), Africa (非洲), Oceania (大洋洲), North America (北美洲), South America (南美洲), Antarctica (南极洲).
+  - **Three Major Oceans (三大洋)**: Pacific Ocean (太平洋), Atlantic Ocean (大西洋), Indian Ocean (印度洋).
+  - **Relative Location of Cities (城市的相对位置)**: Describing city locations on a global scale (e.g., London is in Europe; Pacific Ocean is to the east of Hong Kong).
+
+### 1.2 What are lines of latitude and longitude? (1.2 什么是经线与纬线？)
+- **Grid System of Latitude and Longitude (经纬网系统)**
+  - **Lines of Latitude (纬线)**: Run in an east-west direction around the Earth.
+    - *Equator (赤道, 0°)*: Divides the Earth into Northern Hemisphere (北半球) and Southern Hemisphere (南半球).
+    - *Key Latitudes (重要纬线)*: Tropic of Cancer (北回归线, 23½°N), Tropic of Capricorn (南回归线, 23½°S), Arctic Circle (北极圈, 66½°N), Antarctic Circle (南极圈, 66½°S), North Pole (北极点, 90°N), South Pole (南极点, 90°S).
+  - **Lines of Longitude (经线)**: Connect the North Pole and South Pole in a north-south direction.
+    - *Prime Meridian (本初子午线, 0°)*: Passes through the Royal Observatory Greenwich in London, dividing the Earth into Eastern Hemisphere (东半球) and Western Hemisphere (西半球).
+- **Skills Box: Locating Cities by Latitude and Longitude (读图技能：利用经纬度定位城市)**
+  - **Reading Rule (读法规则)**: Always read latitude first, then longitude (先读纬度，后读经度).
+  - **Example (示例)**: Hong Kong is located at approximately 22°N, 114°E (香港地理坐标约为北纬22度，东经114度).
+
+---
+
+## Chapter 2: What are urban areas and rural areas? (第2章：什么是城市区域与乡村区域？)
+
+### 2.1 What do urban areas and rural areas look like? (2.1 城市区域与乡村区域的外观特征)
+- **Urban Areas (城市区域特征)**
+  - **Landscape & Settlement (景观与聚落)**: Built-up areas with densely packed tall buildings, large population, and high settlement density.
+  - **Economic Activities (经济活动)**: Dominated by commercial, service, and industrial activities.
+  - **Transport (交通)**: Highly developed and convenient transport network.
+- **Rural Areas (乡村区域特征)**
+  - **Landscape & Settlement (景观与聚落)**: Open landscape with farmland, fish ponds, woodland, and country parks; smaller and scattered settlements.
+  - **Economic Activities (经济活动)**: Primary activities such as farming and fishing.
+  - **Transport (交通)**: Less developed and less convenient transport facilities.
+
+### 2.2 Where are urban and rural areas in Hong Kong? (2.2 香港的城市与乡村区域分布在哪里？)
+- **Spatial Distribution in Hong Kong (香港城乡空间分布)**
+  - **Urban Areas (城市区域)**: Mainly concentrated on Hong Kong Island (香港岛), Kowloon Peninsula (九龙半岛), and New Towns (新市镇, e.g., Sha Tin, Tuen Mun).
+  - **Rural Areas (乡村区域)**: Mainly located in the New Territories (新界) and Outlying Islands (离岛, e.g., Lantau Island 大屿山).
+
+### 2.3 How can we identify urban and rural areas on a map? (2.3 如何在地图上辨识城市与乡村区域？)
+- **Skills Box A: Conventional Signs (读图技能A：地图惯用符号)**
+  - **Map Key Symbols (图例符号)**: Identifying built-up areas, ponds, footpaths, main roads, railways, stations, and hospitals using standard symbols.
+- **Skills Box B: Grid References (读图技能B：网格坐标定位法)**
+  - **Grid Lines (网格线)**:
+    - *Eastings (东行线)*: Vertical lines with numbers increasing towards the east.
+    - *Northings (北行线)*: Horizontal lines with numbers increasing towards the north.
+  - **Four-Figure Grid Reference (四位网格坐标)**: Read Easting on the left first, then Northing at the bottom (先读左侧东行线，再读下方北行线, e.g., 9586).
+  - **Six-Figure Grid Reference (六位网格坐标)**: Subdivide each grid square into 10 equal parts for higher precision (将方格再等分10份以提高准确度, e.g., 952865).
+
+---
+
+## Chapter 3: What are the major types of urban land use in Hong Kong? (第3章：香港主要的城市土地利用类型有哪些？)
+
+### 3.1 How is land used in the urban areas of Hong Kong? (3.1 香港城市区域的土地如何利用？)
+- **Six Major Types of Urban Land Use (六大城市土地利用类型)**
+  - **1. Commercial Land Use (商业土地利用)**: Shops, shopping malls, offices, banks, and hotels.
+  - **2. Residential Land Use (住宅土地利用)**: Public housing estates and private housing estates (most widespread land use).
+  - **3. Industrial Land Use (工业土地利用)**: Flatted factories, power plants, and warehouses.
+  - **4. Institutional Land Use (机构/社区土地利用)**: Government offices, schools, hospitals, police stations, and fire stations.
+  - **5. Transport Land Use (交通土地利用)**: Airport, railway stations, roads, bus termini, and piers.
+  - **6. Recreational Land Use (康乐土地利用)**: Parks, playgrounds, sports grounds, and swimming pools.
+- **Mixed Land Use (混合土地利用)**
+  - **Definition (定义)**: More than one land use type located in the same building or area (同一大厦或区域内包含多种土地利用).
+  - **Common Form (常见形式)**: Ground floor used for commercial/industrial purposes, upper floors used for residential living.
+
+### 3.2 Where can we find the major types of urban land use in Hong Kong? (3.2 香港主要土地利用分布于何处？)
+- **Spatial Pattern in Hong Kong (空间分布格局)**
+  - **Commercial (商业区)**: Concentrated along both sides of Victoria Harbour (维多利亚港两岸, e.g., Central, Tsim Sha Tsui).
+  - **Residential (住宅区)**: Widely distributed across Hong Kong Island, Kowloon, and New Towns.
+  - **Industrial (工业区)**: Located in old urban areas (e.g., San Po Kong, To Kwa Wan, Chai Wan) and New Town Industrial Estates (e.g., Yuen Long, Tai Po, Tseung Kwan O).
+  - **Mixed Land Use (混合土地利用区)**: Widespread in old urban districts (e.g., Sham Shui Po, Mong Kok, Sheung Wan, Wan Chai).
+- **Skills Box & Fieldwork (地理技能与实地考察)**
+  - **Directions on Maps (地图方向表达)**:
+    - *16-Point Compass (16方位罗盘)*: N, E, S, W, NE, ENE, etc.
+    - *Whole-Circle Bearing (圆周方位角)*: Measured clockwise from North from 000° to 360°.
+    - *Reduced Bearing (象限角)*: Measured from North or South towards East or West (e.g., S20°E).
+  - **Fieldwork Protocol (实地考察步骤)**: Planning -> Recording land use using standard abbreviations (C, Res, Ind, Ins, T, Rec, Mix) -> Drawing colour-coded land use maps with map key.
+
+---
+
+## Chapter 4: Where is our Central Business District? (第4章：我们的中心商业区在哪里？)
+
+### 4.1 What are the characteristics of our CBD? (4.1 我们的中心商业区有哪些特征？)
+- **Concept of Central Business District (CBD / 中心商业区概念)**
+  - **Definition (定义)**: The main commercial and financial hub of a city with an intensive concentration of business activities, selling high-order goods and providing high-order services.
+- **Key Characteristics of Hong Kong CBD — Central District (香港CBD——中环的核心特征)**
+  - **High-Order Commercial Activities (高阶商业活动)**: Global bank headquarters, 5-star luxury hotels, professional firms (law, accounting, consulting), and high-end flagship stores.
+  - **High Accessibility (极高的交通可达性)**: Well-connected by MTR, buses, trams, ferries, and pedestrian footbridge systems.
+  - **High Land Rents & Competition for Land (高地租与土地竞争)**: Intense competition for central space drives up land rent, leading to high-density tall skyscrapers.
+- **Explore Further: CBD of Kuala Lumpur (扩展案例：吉隆坡CBD)**
+  - **Features (特征)**: Commercial heart containing iconic skyscrapers (Petronas Twin Towers) and LRT/Monorail networks.
+  - **Kampung Baru (甘榜峇鲁)**: Traditional Malay village adjacent to the CBD undergoing planned urban renewal.
+
+---
+
+## Chapter 5: Are residential and industrial areas located near each other in Hong Kong? (第5章：香港的住宅区与工业区是否彼此邻近？)
+
+### 5.1 What are the types of residential areas? (5.1 住宅区有哪些类型？)
+- **Three Income-Based Residential Types (三种不同收入住宅区)**
+  - **High-Income Residential Areas (高收入住宅区)**: High property prices, large flats, quiet environment, good views; located on high ground (The Peak, Mid-Levels), suburbs (Tai Po, Sai Kung), or waterfronts (West Kowloon).
+  - **Middle-Income Residential Areas (中收入住宅区)**: Private housing estates (e.g., Tai Koo Shing, Whampoa Garden) with private facilities (gardens, clubhouses).
+  - **Low-Income Residential Areas (低收入住宅区)**: Public housing estates (e.g., Choi Hung Estate) and old private tenements with subdivided flats (劏房, e.g., Yau Ma Tei, Sham Shui Po); small, overcrowded living units.
+
+### 5.2 Where are the industrial areas in Hong Kong? (5.2 香港的工业区分布在哪里？)
+- **Evolution of Industrial Locations (工业区地理演变)**
+  - **Before Mid-1970s (1970年代中期前)**: Flatted factories located in old urban areas (e.g., To Kwa Wan, San Po Kong, Kwun Tong).
+  - **Mid-1970s to 1990s (1970年代中期至1990年代)**: Industrial estates and parks established in New Towns (e.g., Yuen Long, Tuen Mun, Fanling, Tai Po, Fo Tan, Tseung Kwan O).
+
+### 5.3 Why are some residential areas close to industrial areas? (5.3 为什么部分住宅区与工业区相毗邻？)
+- **Reasons for Proximity (邻近的历史原因)**
+  - **Labor Supply (方便招募劳工)**: Factories needed a large workforce, so housing was built close to industrial sites.
+  - **Transport Costs (节省通勤成本)**: Reduced travel time and transportation expenses for workers.
+  - **Historical Planning Flaws (早期缺乏良好城市规划)**: Inadequate zoning regulations in early urban development.
+
+### 5.4 What is wrong with residential areas located near industrial areas? (5.4 住宅区与工业区邻近会引发什么问题？)
+- **Land Use Conflict (土地利用冲突)**
+  - **Negative Impacts (负面影响)**: Traffic congestion caused by heavy lorries, noise pollution, air pollution from exhaust fumes, and heightened fire risks.
+  - **Other Examples of Conflict (其他冲突例子)**: Funeral parlours/landfills near residential estates; busy highways adjacent to bedrooms; car-repair workshops polluting nearby farmland.
+- **Explore Further: Rio de Janeiro Favelas (扩展案例：里约热内卢贫民窟)**
+  - **Squatter Settlements (贫民窟)**: Built on steep hillsides by poor rural migrants due to severe housing shortages; suffering from overcrowding, lack of clean water/sanitation, and safety hazards.
+
+---
+
+## Chapter 6: What urban problems is our city facing? (第6章：我们的城市面临哪些城市问题？)
+
+### 6.1 What are the major urban problems in Hong Kong? (6.1 香港面临哪些主要城市问题？)
+- **Four Major Urban Problems (四大城市问题)**
+  - **1. Housing Problems (住房问题)**: Inadequate housing supply, long public housing waiting times (~5.6 years), world's highest housing prices, and cramped subdivided flats.
+  - **2. Urban Decay (城市衰落)**: Dilapidated old buildings, overcrowding, lack of open space, and inadequate community facilities in old urban districts.
+  - **3. Traffic Congestion (交通挤塞)**: Peak-hour gridlock in Central and bottlenecks at harbour crossings (Lion Rock Tunnel, Cross Harbour Tunnel); wastes travel time and worsens air pollution.
+  - **4. Pollution (环境污染)**: Air pollution (vehicles & power plants), sewage discharge, construction & traffic noise, municipal solid waste, and light pollution from outdoor neon signboards.
+
+### 6.2 What are the causes of these urban problems? (6.2 这些城市问题的成因是什么？)
+- **Four Primary Causes (四大深层成因)**
+  - **1. Small Land Area & Lack of Flat Land (面积狭小且平地匮乏)**: Hilly relief (40% protected as country parks) leads to high population density and uneven spatial distribution.
+  - **2. Rapid Population Growth (人口快速增长)**: Population reached 7.5 million in 2020, creating huge demand for land, housing, and infrastructure.
+  - **3. Poor Urban Planning in the Past (早期规划不善)**: Unplanned mixed land use and narrow road layout in old districts.
+  - **4. Rapid Economic Growth (经济快速发展)**: Surging demand for commercial space, resources, and private vehicle ownership.
+- **Skills Box: Map Scale and Direct Distance (读图技能：地图比例尺与实际距离)**
+  - **Scale Types (比例尺类型)**: Representative Fraction (R.F. 如 1:20,000), Statement Scale (如 1 cm to 200 m), Linear Scale (直线比例尺).
+  - **Calculation Method (计算方法)**: Measure map distance with a ruler, then multiply by the scale factor to get real-world straight-line distance.
+- **Explore Further: Urban Problems in Guangzhou (扩展案例：广州的城市问题)**
+  - **Issues (问题)**: Soaring property prices, urban decay in Liwan & Yuexiu districts, heavy traffic congestion, and air quality degradation.
+
+---
+
+## Chapter 7: How can we solve the urban problems in Hong Kong? (第7章：如何解决香港的城市问题？)
+
+### 7.1 What has been done to solve the housing problems? (7.1 如何解决住房问题？)
+- **Housing Strategies (住房解决方案)**
+  - **Develop New Towns & New Development Areas (开发新市镇与新发展区)**: 9 existing new towns plus NDAs (Kwu Tung North, Fanling North, Hung Shui Kiu, Tung Chung extension) to provide new land at lower density.
+  - **Land Reclamation (填海造陆)**: Creating flat coastal land (77.6 km² total, e.g., Tuen Mun, Sha Tin, Tseung Kwan O).
+  - **Public Housing Subsidies (建造公营房屋)**: Subsidised rental and sale flats (housing 45% of population) and long-term land supply initiatives (Lantau Tomorrow Vision 明日大屿).
+
+### 7.2 What has been done to tackle urban decay? (7.2 如何解决市区衰落？)
+- **Urban Renewal Strategies (市区更新策略)**
+  - **Redevelopment (市区重建)**: Urban Renewal Authority (URA) demolishes dilapidated old buildings, builds modern high-rises, and adds open space and community facilities (e.g., Wan Chai, Tsuen Wan).
+  - **Building Rehabilitation & Repair (旧楼复修与保养)**: Repairing structural defects, maintaining safety, and retrofitting facilities (e.g., installing lifts).
+- **Explore Further: Industrial Area Redevelopment (扩展案例：旧工业区重建与转用)**
+  - **Canary Wharf, London (伦敦金丝雀码头)**: Transformed derelict docklands into a world-class international financial district.
+  - **Kowloon East, Hong Kong (香港九龙东)**: Transforming Kwun Tong, Ngau Tau Kok, and Kai Tak airport site into HK's 2nd CBD (CBD2).
+
+### 7.3 What has been done to solve transport problems? (7.3 如何解决交通问题？)
+- **Transport Solutions (交通解决方案)**
+  - **Build New Roads & Highways (兴建道路)**: Highway widening (Tuen Mun Road), Central–Wan Chai Bypass, and Route 6.
+  - **Develop Efficient Public Transport (发展高效率公共交通)**: Expansion of Mass Transit Railway (MTR network to NDAs), dedicated bus lanes, and bus-bus interchange hubs.
+  - **Control Private Vehicle Growth (抑制私家车增长)**: High first registration tax, annual license fees, and petrol duties.
+
+### 7.4 What has been done to solve pollution problems? (7.4 如何解决环境污染？)
+- **Environmental Management Measures (环境治理措施)**
+  - **Air Pollution (空气污染)**: Promoting electric vehicles (EVs), mandatory energy efficiency labeling, and shifting commuters to MTR.
+  - **Water Pollution (水污染)**: Sewage treatment works (Sha Tin Sewage Treatment Works) and charging sewage treatment fees.
+  - **Noise Pollution (噪音污染)**: Highway noise barriers, low-noise road resurfacing, and noise control legislation.
+  - **Solid Waste (固体废料)**: Promoting waste separation and recycling, and introducing municipal waste charging.
+  - **Light Pollution (光污染)**: Charter on External Lighting encouraging switching off outdoor signboards from 11 pm to 7 am.
+- **Skills Box: Irregular Area & Curved Road Measurement (读图技能：不规则面积与弯曲路线测量)**
+  - **Irregular Area Calculation (不规则面积计算)**: Grid method — count complete squares + (incomplete squares / 2) x area per grid square.
+  - **Curved Road Length (弯曲路线长度测量)**: Use a paper strip or thread along the road curve, then measure against the linear scale.
+
+---
+
+## Chapter 8: Can our city be even better? (第8章：我们的城市能变得更好吗？)
+
+### 8.1 What is a sustainable city? (8.1 什么是可持续城市？)
+- **Concept & Three Core Principles (可持续城市的概念与三大原则)**
+  - **Definition (定义)**: A city that can persist long into the future by balancing economic, social, and environmental needs for both present and future generations.
+  - **1. Economic Growth (经济增长)**: A stable, diverse economy providing sufficient job opportunities.
+  - **2. Social Progress (社会进步)**: Addressing the needs of diverse social groups and improving public quality of life.
+  - **3. Environmental Conservation (环境保护)**: Conserving natural resources and minimizing waste and pollutant discharge.
+
+### 8.2 Are there any good examples of sustainable cities in the world? (8.2 全球有哪些可持续城市的成功典范？)
+- **Global Sustainable Case Studies (全球可持续发展城市案例)**
+  - **Seoul Cheonggyecheon Restoration, South Korea (韩国首尔清溪川复育)**: Restored a covered polluted river, built nearby roads/bus lanes, planted riverside greenery, and relocated hawkers to a new market — boosting economy while restoring nature.
+  - **Tianjin Eco-City, China (中国天津中新生态城)**: Transformed saltpans and wastewater ponds into wetlands/lakes, built green industrial parks, used wind/solar energy, light rail, and set a 90% green travel goal.
+  - **Helsinki, Finland (芬兰赫尔辛基)**: Implemented Local Agenda 21 and Helsinki City Strategy 2017–2021, focusing on business growth, environmental protection, greenhouse gas reduction, and public bike sharing.
+
+### 8.3 How can we develop Hong Kong into a sustainable city? (8.3 如何将香港建设为可持续城市？)
+- **Four Key Approaches for Hong Kong (香港可持续发展的四大途径)**
+  - **1. Better Urban Planning (良好城市规划)**: Using green buffer zones to separate conflicting land uses (e.g., separating residential areas from highways/factories).
+  - **2. Consider Interests of All Social Groups (照顾各阶层利益)**: Providing new spaces, markets, or compensation for small businesses and hawkers affected by urban renewal (e.g., Kwun Tong redevelopment).
+  - **3. Encourage Green Habits (鼓励绿色生活习惯)**: Prioritizing public transit, conserving energy, and practicing waste recycling.
+  - **4. Apply Advanced Eco-Technology (应用先进环保科技)**: Expanding the use of renewable energy sources such as wind and solar power.

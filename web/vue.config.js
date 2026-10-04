@@ -35,8 +35,12 @@ module.exports = {
   configureWebpack: {
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, './src/')
-      }
+        '@': path.resolve(__dirname, './src/'),
+        // 使用本地核心库源码，便于定制
+        'simple-mind-map': path.resolve(__dirname, '../simple-mind-map')
+      },
+      // 本地核心库的第三方依赖从 web/node_modules 解析
+      modules: [path.resolve(__dirname, 'node_modules'), 'node_modules']
     }
   },
   devServer: {

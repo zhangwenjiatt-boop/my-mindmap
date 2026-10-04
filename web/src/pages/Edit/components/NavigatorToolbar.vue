@@ -104,17 +104,9 @@
             <span class="iconfont iconAIshengcheng"></span>
             {{ $t('navigatorToolbar.ai') }}
           </el-dropdown-item>
-          <el-dropdown-item command="client">
-            <span class="iconfont iconxiazai"></span>
-            {{ $t('navigatorToolbar.downloadClient') }}
-          </el-dropdown-item>
           <el-dropdown-item command="github">
             <span class="iconfont icongithub"></span>
             Github
-          </el-dropdown-item>
-          <el-dropdown-item command="site">
-            <span class="iconfont iconwangzhan"></span>
-            {{ $t('navigatorToolbar.site') }}
           </el-dropdown-item>
           <el-dropdown-item disabled
             >{{ $t('navigatorToolbar.current') }}v{{
