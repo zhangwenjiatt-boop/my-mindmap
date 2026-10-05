@@ -38,11 +38,17 @@ const store = new Vuex.Store({
     extraTextOnExport: '', // 导出时底部添加的文字
     isDragOutlineTreeNode: false, // 当前是否正在拖拽大纲树的节点
     aiConfig: {
-      api: 'http://ark.cn-beijing.volces.com/api/v3/chat/completions',
+      provider: 'deepseek',
+      api: 'https://api.deepseek.com/v1/chat/completions',
       key: '',
-      model: '',
-      port: 3456,
+      model: 'deepseek-chat',
       method: 'POST'
+    },
+    aiStatus: {
+      status: 'unconfigured',
+      message: '',
+      latency: 0,
+      lastTested: ''
     },
     // 扩展主题列表
     extendThemeGroupList: [],
@@ -69,6 +75,14 @@ const store = new Vuex.Store({
         ...state.localConfig,
         ...state.aiConfig
       })
+    },
+
+    // 设置 AI 模型接入状态
+    setAiStatus(state, data) {
+      state.aiStatus = {
+        ...state.aiStatus,
+        ...data
+      }
     },
 
     // 设置当前显示的侧边栏

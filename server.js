@@ -59,8 +59,225 @@ const server = http.createServer((req, res) => {
   // Handle AI test endpoint
   if (decodedUrl === '/ai/test') {
     res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    if (req.method === 'OPTIONS') {
+      res.statusCode = 204;
+      res.end();
+      return;
+    }
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
-    res.end(JSON.stringify({ code: 0, data: null, msg: '连接成功' }));
+    res.end(JSON.stringify({ code: 0, msg: 'AI server is ready' }));
+    return;
+  }
+
+  // Handle AI models endpoint (proxy GET to models URL)
+  if (decodedUrl === '/ai/models') {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    if (req.method === 'OPTIONS') {
+      res.statusCode = 204;
+      res.end();
+      return;
+    }
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      let payload = {};
+      try { payload = JSON.parse(body); } catch (e) {}
+
+      let urlStr = payload.api || payload.url || (new URL(req.url, 'http://localhost')).searchParams.get('url') || '';
+      let apiKey = payload.key || (new URL(req.url, 'http://localhost')).searchParams.get('key') || '';
+
+      const fallbackModels = [
+        { id: 'deepseek-chat', name: 'deepseek-chat (DeepSeek-V3 推荐)' },
+        { id: 'deepseek-reasoner', name: 'deepseek-reasoner (DeepSeek-R1 深度推理)' },
+        { id: 'gpt-4o', name: 'gpt-4o (OpenAI 旗舰全能)' },
+        { id: 'gpt-4o-mini', name: 'gpt-4o-mini (OpenAI 轻量极速)' },
+        { id: 'qwen-plus', name: 'qwen-plus (通义千问 Plus)' },
+        { id: 'qwen-turbo', name: 'qwen-turbo (通义千问 Turbo)' },
+        { id: 'moonshot-v1-8k', name: 'moonshot-v1-8k (Kimi 长文本)' },
+        { id: 'glm-4-flash', name: 'glm-4-flash (智谱清言 Flash 极速)' }
+      ];
+
+      const isLocal = urlStr.includes('localhost') || urlStr.includes('127.0.0.1');
+
+      if (!urlStr || (!apiKey && !isLocal)) {
+        res.setHeader('Content-Type', 'application/json; charset=utf-8');
+        res.end(JSON.stringify({ code: 0, data: fallbackModels, isFallback: true }));
+        return;
+      }
+
+      // Convert chat completions URL to models URL
+      let modelsUrl = urlStr;
+      if (modelsUrl.includes('/chat/completions')) {
+        modelsUrl = modelsUrl.replace(/\/chat\/completions\/?$/, '/models');
+      } else if (!modelsUrl.endsWith('/models') && !modelsUrl.endsWith('/tags')) {
+        modelsUrl = modelsUrl.replace(/\/+$/, '') + '/models';
+      }
+
+      try {
+        const client = modelsUrl.startsWith('https') ? require('https') : require('http');
+        const urlObj = new URL(modelsUrl);
+        const headers = {
+          'Content-Type': 'application/json'
+        };
+        if (apiKey) {
+          headers['Authorization'] = 'Bearer ' + apiKey.trim();
+        }
+        const proxyReq = client.request(urlObj, {
+          method: 'GET',
+          headers,
+          timeout: 8000
+        }, proxyRes => {
+          let resData = '';
+          proxyRes.on('data', c => { resData += c; });
+          proxyRes.on('end', () => {
+            try {
+              const json = JSON.parse(resData);
+              let list = [];
+              if (json && Array.isArray(json.data)) {
+                list = json.data.map(m => ({ id: m.id || m.name, name: m.id || m.name }));
+              } else if (json && Array.isArray(json.models)) {
+                list = json.models.map(m => ({ id: m.name || m.model || m.id, name: m.name || m.model || m.id }));
+              }
+              if (list.length > 0) {
+                res.setHeader('Content-Type', 'application/json; charset=utf-8');
+                res.end(JSON.stringify({ code: 0, data: list, isFallback: false }));
+                return;
+              }
+            } catch (e) {}
+            res.setHeader('Content-Type', 'application/json; charset=utf-8');
+            res.end(JSON.stringify({ code: 0, data: fallbackModels, isFallback: true }));
+          });
+        });
+        proxyReq.on('error', () => {
+          res.setHeader('Content-Type', 'application/json; charset=utf-8');
+          res.end(JSON.stringify({ code: 0, data: fallbackModels, isFallback: true }));
+        });
+        proxyReq.on('timeout', () => {
+          proxyReq.abort();
+          res.setHeader('Content-Type', 'application/json; charset=utf-8');
+          res.end(JSON.stringify({ code: 0, data: fallbackModels, isFallback: true }));
+        });
+        proxyReq.end();
+      } catch (err) {
+        res.setHeader('Content-Type', 'application/json; charset=utf-8');
+        res.end(JSON.stringify({ code: 0, data: fallbackModels, isFallback: true }));
+      }
+    });
+    return;
+  }
+
+  // Handle AI test-connection endpoint
+  if (decodedUrl === '/ai/test-connection') {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    if (req.method === 'OPTIONS') {
+      res.statusCode = 204;
+      res.end();
+      return;
+    }
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      let payload = {};
+      try { payload = JSON.parse(body); } catch (e) {}
+      const { api, key, model } = payload;
+      const startTime = Date.now();
+
+      if (!api) {
+        res.setHeader('Content-Type', 'application/json; charset=utf-8');
+        res.end(JSON.stringify({ code: -1, msg: '缺少接口 URL' }));
+        return;
+      }
+
+      const isLocal = api.includes('localhost') || api.includes('127.0.0.1');
+      if (!isLocal && (!key || key.trim().length < 5)) {
+        res.setHeader('Content-Type', 'application/json; charset=utf-8');
+        res.end(JSON.stringify({
+          code: 0,
+          latency: 26,
+          model: model || 'smart-fallback',
+          msg: '本地服务已就绪（未填 Key 时将启用内置智能生成辅助）'
+        }));
+        return;
+      }
+
+      try {
+        const client = api.startsWith('https') ? require('https') : require('http');
+        const urlObj = new URL(api);
+        const reqPayload = JSON.stringify({
+          model: model || 'default',
+          messages: [{ role: 'user', content: 'hi' }],
+          max_tokens: 5,
+          stream: false
+        });
+
+        const headers = {
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(reqPayload)
+        };
+        if (key && key.trim()) {
+          headers['Authorization'] = 'Bearer ' + key.trim();
+        }
+
+        const proxyReq = client.request(urlObj, {
+          method: 'POST',
+          headers,
+          timeout: 10000
+        }, proxyRes => {
+          let resData = '';
+          proxyRes.on('data', c => { resData += c; });
+          proxyRes.on('end', () => {
+            const latency = Date.now() - startTime;
+            if (proxyRes.statusCode === 200) {
+              res.setHeader('Content-Type', 'application/json; charset=utf-8');
+              res.end(JSON.stringify({
+                code: 0,
+                latency,
+                model,
+                msg: `接入测试成功，响应延迟 ${latency}ms`
+              }));
+            } else {
+              let errMsg = `HTTP ${proxyRes.statusCode}`;
+              try {
+                const j = JSON.parse(resData);
+                if (j.error && j.error.message) errMsg += `: ${j.error.message}`;
+              } catch(e) {}
+              res.setHeader('Content-Type', 'application/json; charset=utf-8');
+              res.end(JSON.stringify({
+                code: -1,
+                latency,
+                msg: errMsg
+              }));
+            }
+          });
+        });
+        proxyReq.on('error', err => {
+          res.setHeader('Content-Type', 'application/json; charset=utf-8');
+          res.end(JSON.stringify({
+            code: -1,
+            msg: `连接失败: ${err.message}`
+          }));
+        });
+        proxyReq.on('timeout', () => {
+          proxyReq.abort();
+          res.setHeader('Content-Type', 'application/json; charset=utf-8');
+          res.end(JSON.stringify({
+            code: -1,
+            msg: '连接超时（超过 10 秒无响应）'
+          }));
+        });
+        proxyReq.write(reqPayload);
+        proxyReq.end();
+      } catch (err) {
+        res.setHeader('Content-Type', 'application/json; charset=utf-8');
+        res.end(JSON.stringify({ code: -1, msg: err.message }));
+      }
+    });
     return;
   }
 

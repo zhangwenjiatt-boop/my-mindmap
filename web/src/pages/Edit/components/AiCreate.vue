@@ -202,7 +202,7 @@ export default {
     // 客户端连接检测
     async testConnect() {
       try {
-        await fetch(`http://localhost:${this.aiConfig.port}/ai/test`, {
+        await fetch(`/ai/test`, {
           method: 'GET'
         })
         this.$message.success(this.$t('ai.connectSuccessful'))
@@ -217,21 +217,14 @@ export default {
     // 检测ai是否可用
     async aiTest() {
       // 检查配置
-      if (
-        !(
-          this.aiConfig.api &&
-          this.aiConfig.key &&
-          this.aiConfig.model &&
-          this.aiConfig.port
-        )
-      ) {
+      if (!this.aiConfig.api || !this.aiConfig.model) {
         this.showAiConfigDialog()
         throw new Error(this.$t('ai.configurationMissing'))
       }
       // 检查连接
       let isConnect = false
       try {
-        await fetch(`http://localhost:${this.aiConfig.port}/ai/test`, {
+        await fetch(`/ai/test`, {
           method: 'GET'
         })
         isConnect = true
@@ -271,9 +264,7 @@ export default {
       this.aiCreatingMaskVisible = true
       // 发起请求
       this.isAiCreating = true
-      this.aiInstance = new Ai({
-        port: this.aiConfig.port
-      })
+      this.aiInstance = new Ai()
       this.aiInstance.init('huoshan', this.aiConfig)
       this.mindMap.renderer.setRootNodeCenter()
       this.mindMap.setData(null)
@@ -493,9 +484,7 @@ export default {
         this.aiCreatingMaskVisible = true
         // 发起请求
         this.isAiCreating = true
-        this.aiInstance = new Ai({
-          port: this.aiConfig.port
-        })
+        this.aiInstance = new Ai()
         this.aiInstance.init('huoshan', this.aiConfig)
         this.aiInstance.request(
           {
@@ -611,9 +600,7 @@ export default {
         await this.aiTest()
         // 发起请求
         this.isAiCreating = true
-        this.aiInstance = new Ai({
-          port: this.aiConfig.port
-        })
+        this.aiInstance = new Ai()
         this.aiInstance.init('huoshan', this.aiConfig)
         this.aiInstance.request(
           {

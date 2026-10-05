@@ -8,19 +8,16 @@ class Ai {
     this.content = ''
   }
 
-  init(type = 'huoshan', options = {}) {
-    // 火山引擎接口
-    if (type === 'huoshan') {
-      this.baseData = {
-        api: options.api,
-        method: options.method,
-        headers: {
-          Authorization: 'Bearer ' + options.key
-        },
-        data: {
-          model: options.model,
-          stream: true
-        }
+  init(type = 'default', options = {}) {
+    this.baseData = {
+      api: options.api,
+      method: options.method || 'POST',
+      headers: {
+        Authorization: 'Bearer ' + (options.key || '')
+      },
+      data: {
+        model: options.model,
+        stream: true
       }
     }
   }
@@ -53,7 +50,7 @@ class Ai {
         list.forEach(item => {
           this.content += item.choices
             .map(item2 => {
-              return item2.delta.content
+              return (item2.delta && item2.delta.content) || ''
             })
             .join('')
         })
@@ -73,46 +70,20 @@ class Ai {
 
   async postMsg(data) {
     this.controller = new AbortController()
-    let url = `/ai/chat`
-    if (this.options.port && this.options.port != window.location.port) {
-      url = `http://localhost:${this.options.port}/ai/chat`
-    }
-    let res
-    try {
-      res = await fetch(url, {
-        signal: this.controller.signal,
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          ...this.baseData,
-          data: {
-            ...this.baseData.data,
-            ...data
-          }
-        })
+    const res = await fetch('/ai/chat', {
+      signal: this.controller.signal,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        ...this.baseData,
+        data: {
+          ...this.baseData.data,
+          ...data
+        }
       })
-    } catch (e) {
-      if (url !== '/ai/chat') {
-        res = await fetch('/ai/chat', {
-          signal: this.controller.signal,
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            ...this.baseData,
-            data: {
-              ...this.baseData.data,
-              ...data
-            }
-          })
-        })
-      } else {
-        throw e
-      }
-    }
+    })
     if (res.status && res.status !== 200) {
       throw new Error('请求失败')
     }

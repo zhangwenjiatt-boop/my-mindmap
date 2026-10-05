@@ -530,9 +530,7 @@ export default {
 
       const prompt = this.buildPrompt()
 
-      this.aiInstance = new Ai({
-        port: this.aiConfig.port
-      })
+      this.aiInstance = new Ai()
       this.aiInstance.init('huoshan', this.aiConfig)
 
       try {
