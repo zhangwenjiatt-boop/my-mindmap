@@ -599,6 +599,146 @@
           </el-select>
         </div>
       </div>
+      <!-- 各级节点外框与形状 -->
+      <div class="title">各级节点外框与形状</div>
+      <div class="row column noBottom">
+        <el-tabs
+          class="tab"
+          v-model="nodeActiveTab"
+        >
+          <el-tab-pane label="三级及以下节点" name="node"></el-tab-pane>
+          <el-tab-pane label="二级节点" name="second"></el-tab-pane>
+          <el-tab-pane label="根节点" name="root"></el-tab-pane>
+        </el-tabs>
+      </div>
+
+      <!-- 1. 外框显示开关与粗细 -->
+      <div class="row">
+        <div class="rowItem">
+          <span class="name">显示外框</span>
+          <el-switch
+            v-model="currentNodeHasBorder"
+          ></el-switch>
+        </div>
+        <div class="rowItem" v-if="currentNodeHasBorder">
+          <span class="name">边框粗细</span>
+          <el-select
+            size="mini"
+            style="width: 80px"
+            v-model="currentNodeStyle.borderWidth"
+            placeholder=""
+            @change="val => updateNodeStyle('borderWidth', val)"
+          >
+            <el-option
+              v-for="item in [1, 2, 3, 4, 5, 6]"
+              :key="item"
+              :label="item + 'px'"
+              :value="item"
+            ></el-option>
+          </el-select>
+        </div>
+      </div>
+
+      <!-- 2. 外框颜色与虚实（当开启外框时） -->
+      <div class="row" v-if="currentNodeHasBorder">
+        <div class="rowItem">
+          <span class="name">边框颜色</span>
+          <span
+            class="block"
+            v-popover:popoverNodeBorderColor
+            :style="{ width: '80px', backgroundColor: currentNodeStyle.borderColor || '#cbd5e1' }"
+          ></span>
+          <el-popover ref="popoverNodeBorderColor" placement="bottom" trigger="click">
+            <Color
+              :color="currentNodeStyle.borderColor"
+              @change="color => updateNodeStyle('borderColor', color)"
+            ></Color>
+          </el-popover>
+        </div>
+        <div class="rowItem">
+          <span class="name">边框线条</span>
+          <el-select
+            size="mini"
+            style="width: 80px"
+            v-model="currentNodeStyle.borderDasharray"
+            placeholder=""
+            @change="val => updateNodeStyle('borderDasharray', val)"
+          >
+            <el-option
+              v-for="item in borderDasharrayList"
+              :key="item.value"
+              :label="item.name"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </div>
+      </div>
+
+      <!-- 3. 形状与方框弧度 (圆角大小) -->
+      <div class="row">
+        <div class="rowItem">
+          <span class="name">节点形状</span>
+          <el-select
+            size="mini"
+            style="width: 100px"
+            v-model="currentNodeStyle.shape"
+            placeholder=""
+            @change="val => updateNodeStyle('shape', val)"
+          >
+            <el-option
+              v-for="item in nodeShapeList"
+              :key="item.value"
+              :label="item.name"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </div>
+        <div
+          class="rowItem"
+          v-if="['rectangle', 'roundedRectangle'].includes(currentNodeStyle.shape)"
+        >
+          <span class="name">方框弧度</span>
+          <el-select
+            size="mini"
+            style="width: 85px"
+            v-model="currentNodeStyle.borderRadius"
+            placeholder=""
+            @change="val => updateNodeStyle('borderRadius', val)"
+          >
+            <el-option
+              v-for="item in [0, 2, 4, 6, 8, 10, 12, 14, 16, 20]"
+              :key="item"
+              :label="item === 0 ? '0 (直角)' : (item >= 16 ? item + ' (胶囊)' : item + 'px')"
+              :value="item"
+            ></el-option>
+          </el-select>
+        </div>
+      </div>
+
+      <!-- 4. 背景填充颜色与透明开关 -->
+      <div class="row">
+        <div class="rowItem">
+          <span class="name">背景颜色</span>
+          <span
+            class="block"
+            v-popover:popoverNodeFillColor
+            :style="{ width: '80px', backgroundColor: currentNodeStyle.fillColor === 'transparent' ? 'transparent' : currentNodeStyle.fillColor }"
+          ></span>
+          <el-popover ref="popoverNodeFillColor" placement="bottom" trigger="click">
+            <Color
+              :color="currentNodeStyle.fillColor"
+              @change="color => updateNodeStyle('fillColor', color)"
+            ></Color>
+          </el-popover>
+        </div>
+        <div class="rowItem">
+          <el-checkbox
+            :value="currentNodeStyle.fillColor === 'transparent'"
+            @change="val => updateNodeStyle('fillColor', val ? 'transparent' : '#ffffff')"
+          >透明背景</el-checkbox>
+        </div>
+      </div>
+
       <!-- 节点边框风格 -->
       <template v-if="showNodeUseLineStyle">
         <div class="title">{{ $t('baseStyle.nodeBorderType') }}</div>
@@ -863,6 +1003,40 @@ export default {
         marginY: 0,
         nodeUseLineStyle: false
       },
+      nodeActiveTab: 'node',
+      nodeLevelStyle: {
+        root: {
+          shape: 'roundedRectangle',
+          borderRadius: 8,
+          borderWidth: 2,
+          borderColor: '#1E3A8A',
+          borderDasharray: 'none',
+          fillColor: '#0F172A'
+        },
+        second: {
+          shape: 'roundedRectangle',
+          borderRadius: 6,
+          borderWidth: 2,
+          borderColor: '#2563EB',
+          borderDasharray: 'none',
+          fillColor: '#FFFFFF'
+        },
+        node: {
+          shape: 'roundedRectangle',
+          borderRadius: 6,
+          borderWidth: 1,
+          borderColor: '#CBD5E1',
+          borderDasharray: 'none',
+          fillColor: '#FFFFFF'
+        }
+      },
+      nodeShapeList: [
+        { name: '圆角矩形', value: 'roundedRectangle' },
+        { name: '直角矩形', value: 'rectangle' },
+        { name: '椭圆', value: 'ellipse' },
+        { name: '圆形', value: 'circle' },
+        { name: '菱形', value: 'diamond' }
+      ],
       rainbowLinesPopoverVisible: false,
       curRainbowLineColorList: null,
       currentLayout: '', // 当前结构
@@ -931,6 +1105,18 @@ export default {
     },
     borderDasharrayList() {
       return borderDasharrayList[this.$i18n.locale] || borderDasharrayList.zh
+    },
+    currentNodeStyle() {
+      return this.nodeLevelStyle[this.nodeActiveTab] || {}
+    },
+    currentNodeHasBorder: {
+      get() {
+        const s = this.nodeLevelStyle[this.nodeActiveTab]
+        return !!(s && s.borderWidth > 0 && s.borderColor && s.borderColor !== 'transparent')
+      },
+      set(val) {
+        this.toggleNodeBorder(val)
+      }
     }
   },
   watch: {
@@ -980,6 +1166,65 @@ export default {
         }
       })
       this.initMarginStyle()
+      this.initNodeStyle()
+    },
+
+    // 初始化各层级节点样式
+    initNodeStyle() {
+      ;['root', 'second', 'node'].forEach(level => {
+        const conf = this.mindMap.getThemeConfig(level) || {}
+        this.$set(this.nodeLevelStyle, level, {
+          shape: conf.shape || (level === 'root' ? 'roundedRectangle' : 'rectangle'),
+          borderRadius: conf.borderRadius !== undefined ? conf.borderRadius : (level === 'node' ? 6 : 8),
+          borderWidth: conf.borderWidth !== undefined ? conf.borderWidth : (level === 'node' ? 0 : 1),
+          borderColor: conf.borderColor || 'transparent',
+          borderDasharray: conf.borderDasharray || 'none',
+          fillColor: conf.fillColor || 'transparent'
+        })
+      })
+    },
+
+    // 切换节点外框显示
+    toggleNodeBorder(hasBorder) {
+      const level = this.nodeActiveTab
+      const target = this.nodeLevelStyle[level]
+      if (hasBorder) {
+        const defaultWidth = (target.borderWidth && target.borderWidth > 0) ? target.borderWidth : 1
+        const defaultColor = (target.borderColor && target.borderColor !== 'transparent')
+          ? target.borderColor
+          : (level === 'root' ? '#1E3A8A' : (level === 'second' ? '#2563EB' : '#A5D6A7'))
+        this.updateNodeStyle('borderWidth', defaultWidth)
+        this.updateNodeStyle('borderColor', defaultColor)
+        if (target.shape === 'rectangle') {
+          this.updateNodeStyle('shape', 'roundedRectangle')
+        }
+        if (!target.borderRadius) {
+          this.updateNodeStyle('borderRadius', 6)
+        }
+      } else {
+        this.updateNodeStyle('borderWidth', 0)
+        this.updateNodeStyle('borderColor', 'transparent')
+      }
+    },
+
+    // 更新节点样式
+    updateNodeStyle(prop, val) {
+      const level = this.nodeActiveTab
+      if (!this.data.theme.config[level]) {
+        this.data.theme.config[level] = {}
+      }
+      this.data.theme.config[level][prop] = val
+      if (this.nodeLevelStyle[level]) {
+        this.nodeLevelStyle[level][prop] = val
+      }
+      this.$bus.$emit('showLoading')
+      this.mindMap.setThemeConfig(this.data.theme.config)
+      storeData({
+        theme: {
+          template: this.mindMap.getTheme(),
+          config: this.data.theme.config
+        }
+      })
     },
 
     // 初始化彩虹线条配置

@@ -33,7 +33,7 @@ import { storeData } from '@/api'
 import { mapState, mapMutations } from 'vuex'
 import themeImgMap from 'simple-mind-map-plugin-themes/themeImgMap'
 import themeList from 'simple-mind-map-plugin-themes/themeList'
-import customThemes from '@/customThemes'
+import customThemes, { relaxedThemes, businessThemes } from '@/customThemes'
 
 // 主题
 export default {
@@ -137,8 +137,12 @@ export default {
       })
       this.defaultGroupList = [
         {
+          name: '轻松曲线',
+          list: relaxedThemes
+        },
+        {
           name: '商务推荐',
-          list: customThemes
+          list: businessThemes
         },
         {
           name: this.$t('theme.classics'),
