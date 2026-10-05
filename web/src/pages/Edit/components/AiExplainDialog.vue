@@ -1,76 +1,134 @@
 <template>
   <el-dialog
     class="aiExplainDialog"
-    :title="$t('aiExplain.title') || '🤖 AI 概念释义与节点备注'"
+    :custom-class="'aiExplainDialogInner' + (isDark ? ' isDark' : '')"
+    :title="$t('aiExplain.title') || '✨ AI 概念释义与知识助手'"
     :visible.sync="dialogVisible"
-    width="680px"
-    top="10vh"
+    width="720px"
+    top="7vh"
     append-to-body
     :close-on-click-modal="false"
   >
-    <el-tabs v-model="activeTab" class="aiTabs">
-      <!-- Tab 1: AI 释义与生成 -->
-      <el-tab-pane label="AI 智能释义" name="explain">
-        <div class="explainContainer customScrollbar">
-          <!-- 上下文信息 -->
-          <div class="contextCard">
-            <div class="contextItem">
-              <span class="label">待释义词条：</span>
-              <el-tag size="medium" effect="dark" type="success" class="termTag">
-                {{ currentTerm || '（请选择或输入词条）' }}
-              </el-tag>
-              <el-button
-                type="text"
-                size="mini"
-                icon="el-icon-edit"
-                @click="showEditTerm = !showEditTerm"
-              >
-                {{ showEditTerm ? '完成修改' : '修改词条' }}
-              </el-button>
-            </div>
-            <div class="contextItem" v-if="showEditTerm">
-              <el-input
-                size="small"
-                v-model="currentTerm"
-                placeholder="请输入要释义的关键词或内容"
-                style="width: 280px"
-                @change="onTermChange"
-              ></el-input>
-            </div>
-            <div class="contextItem" v-if="targetNode">
-              <span class="label">所属节点：</span>
-              <span class="nodeContentText">{{ nodeTextSummary }}</span>
-            </div>
-          </div>
+    <div class="aiExplainContainer" :class="{ isDark: isDark }">
+      <el-tabs v-model="activeTab" class="aiTabs">
+        <!-- Tab 1: AI 智能释义 -->
+        <el-tab-pane label="AI 智能释义" name="explain">
+          <div class="explainContainer customScrollbar">
+            <!-- 英雄词条卡片 (Hero Spotlight Card) -->
+            <div class="explainHeroCard">
+              <div class="heroHeaderRow">
+                <div class="badgeAndBreadcrumb">
+                  <span class="aiPillBadge">
+                    <i class="el-icon-magic-stick"></i> 划词释义
+                  </span>
+                  <span class="nodeBreadcrumb" v-if="targetNode" :title="nodeTextSummary">
+                    <i class="el-icon-folder"></i> 节点：{{ nodeTextSummary }}
+                  </span>
+                </div>
+                <div class="heroActions">
+                  <el-button
+                    type="text"
+                    size="mini"
+                    class="editTermBtn"
+                    :icon="showEditTerm ? 'el-icon-check' : 'el-icon-edit-outline'"
+                    @click="showEditTerm = !showEditTerm"
+                  >
+                    {{ showEditTerm ? '完成修改' : '修改词条' }}
+                  </el-button>
+                </div>
+              </div>
 
-          <!-- Prompt 预设选择与自定义编辑 -->
-          <div class="promptConfigBox">
-            <div class="promptHeader">
-              <span class="label">释义 Prompt 模式：</span>
-              <el-select
-                v-model="selectedPreset"
-                size="small"
-                style="width: 220px"
-                @change="onPresetChange"
-              >
-                <el-option
-                  v-for="item in explanationPresets"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                ></el-option>
-              </el-select>
-              <el-button
-                type="text"
-                size="small"
-                class="toggleCustomBtn"
-                @click="showCustomPromptEditor = !showCustomPromptEditor"
-              >
-                {{ showCustomPromptEditor ? '收起 Prompt 模版' : '查看/编辑 Prompt' }}
-              </el-button>
+              <!-- 词条展示 / 编辑 -->
+              <div class="termDisplayWrap" v-if="!showEditTerm">
+                <div class="termTitle" :title="currentTerm">
+                  {{ currentTerm || '（请选择或输入要释义的词条）' }}
+                </div>
+              </div>
+              <div class="termEditWrap" v-else>
+                <el-input
+                  size="small"
+                  v-model="currentTerm"
+                  placeholder="请输入要释义的词条或短语..."
+                  clearable
+                  @change="onTermChange"
+                  @keyup.enter.native="showEditTerm = false"
+                ></el-input>
+              </div>
             </div>
 
-            <!-- 自定义 Prompt 编辑区 -->
+            <!-- 控制与配置工具栏 (Control Bar) -->
+            <div class="controlToolbar">
+              <div class="toolbarLeft">
+                <span class="toolLabel">释义风格：</span>
+                <el-select
+                  v-model="selectedPreset"
+                  size="small"
+                  class="presetSelect"
+                  @change="onPresetChange"
+                >
+                  <el-option
+                    v-for="item in explanationPresets"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id"
+                  ></el-option>
+                </el-select>
+                <el-button
+                  type="text"
+                  size="small"
+                  class="customPromptToggleBtn"
+                  :icon="showCustomPromptEditor ? 'el-icon-arrow-up' : 'el-icon-setting'"
+                  @click="showCustomPromptEditor = !showCustomPromptEditor"
+                >
+                  {{ showCustomPromptEditor ? '收起模版' : '自定义模版' }}
+                </el-button>
+              </div>
+
+              <div class="toolbarRight">
+                <!-- 自动同步徽标 -->
+                <el-tooltip
+                  :content="localConfig.enableAiNoteBox ? (localConfig.aiNoteRecordMode === 'auto' ? '自动记录开启：释义生成完成后将自动保存到该节点的备注中' : '手动记录模式：释义生成后由您确认并点击保存') : 'AI备注框未开启（可在系统设置中开启）'"
+                  placement="top"
+                >
+                  <span
+                    class="syncStatusChip"
+                    :class="{
+                      auto: localConfig.enableAiNoteBox && localConfig.aiNoteRecordMode === 'auto',
+                      manual: localConfig.enableAiNoteBox && localConfig.aiNoteRecordMode === 'manual',
+                      disabled: !localConfig.enableAiNoteBox
+                    }"
+                  >
+                    <i :class="localConfig.enableAiNoteBox && localConfig.aiNoteRecordMode === 'auto' ? 'el-icon-circle-check' : 'el-icon-info'"></i>
+                    {{ localConfig.enableAiNoteBox && localConfig.aiNoteRecordMode === 'auto' ? '自动同步备注' : '手动保存模式' }}
+                  </span>
+                </el-tooltip>
+
+                <!-- 生成按钮 -->
+                <el-button
+                  v-if="!isGenerating"
+                  type="primary"
+                  size="small"
+                  class="generateActionBtn"
+                  icon="el-icon-refresh-right"
+                  @click="startExplain"
+                  :disabled="!currentTerm"
+                >
+                  {{ hasGenerated ? '重新释义' : '开始 AI 释义' }}
+                </el-button>
+                <el-button
+                  v-else
+                  type="danger"
+                  size="small"
+                  class="stopActionBtn"
+                  icon="el-icon-video-pause"
+                  @click="stopExplain"
+                >
+                  停止生成
+                </el-button>
+              </div>
+            </div>
+
+            <!-- 可折叠的自定义 Prompt 编辑面板 -->
             <el-collapse-transition>
               <div v-show="showCustomPromptEditor || selectedPreset === 'custom'" class="promptEditorBox">
                 <el-input
@@ -85,244 +143,241 @@
                 </div>
               </div>
             </el-collapse-transition>
-          </div>
 
-          <!-- 模式状态与操作栏 -->
-          <div class="actionToolbar">
-            <div class="modeIndicator">
-              <span v-if="localConfig.enableAiNoteBox && localConfig.aiNoteRecordMode === 'auto'" class="autoNoteBadge">
-                <i class="el-icon-check"></i> 自动记录开启：释义完成将自动保存至该节点备注
-              </span>
-              <span v-else-if="localConfig.enableAiNoteBox" class="manualNoteBadge">
-                <i class="el-icon-info"></i> 手动记录模式：生成后可点击保存至节点备注
-              </span>
-              <span v-else class="disabledNoteBadge">
-                <i class="el-icon-warning-outline"></i> AI备注框未开启（可在系统设置中开启）
-              </span>
-            </div>
-
-            <div class="actionBtns">
-              <el-button
-                v-if="!isGenerating"
-                type="primary"
-                size="small"
-                icon="el-icon-magic-stick"
-                @click="startExplain"
-                :disabled="!currentTerm"
-              >
-                {{ hasGenerated ? '重新释义' : '开始 AI 释义' }}
-              </el-button>
-              <el-button
-                v-else
-                type="warning"
-                size="small"
-                icon="el-icon-video-pause"
-                @click="stopExplain"
-              >
-                停止生成
-              </el-button>
-            </div>
-          </div>
-
-          <!-- 结果展示与编辑面板 -->
-          <div class="resultCard" v-if="isGenerating || explanationResult">
-            <div class="resultHeader">
-              <div class="leftTitle">
-                <i class="el-icon-reading"></i>
-                <span>释义结果</span>
-                <el-tag size="mini" v-if="isGenerating" type="warning">正在思考生成中...</el-tag>
-                <el-tag size="mini" v-else-if="isSavedToNote" type="success">已保存到节点备注</el-tag>
-              </div>
-              <div class="rightActions">
-                <el-button
-                  type="text"
-                  size="mini"
-                  icon="el-icon-edit"
-                  @click="isEditResult = !isEditResult"
-                  v-if="!isGenerating && explanationResult"
-                >
-                  {{ isEditResult ? '预览渲染' : '直接编辑文本' }}
-                </el-button>
-                <el-button
-                  type="text"
-                  size="mini"
-                  icon="el-icon-document-copy"
-                  @click="copyResult"
-                  v-if="explanationResult"
-                >
-                  复制
-                </el-button>
-              </div>
-            </div>
-
-            <div class="resultBody">
-              <!-- 渲染视图 -->
-              <div
-                v-if="!isEditResult"
-                class="markdownContent customScrollbar"
-                v-html="renderedMarkdown"
-              ></div>
-              <!-- 编辑视图 -->
-              <div v-else class="editResultWrap">
-                <el-input
-                  type="textarea"
-                  :rows="8"
-                  v-model="explanationResult"
-                  placeholder="可在此直接修改释义内容"
-                ></el-input>
-              </div>
-            </div>
-
-            <!-- 底部保存到备注按钮栏 -->
-            <div class="resultFooter" v-if="!isGenerating && explanationResult">
-              <el-button
-                type="success"
-                size="small"
-                icon="el-icon-notebook-2"
-                @click="manualSaveToNote"
-                :disabled="!localConfig.enableAiNoteBox"
-              >
-                {{ isSavedToNote ? '更新节点备注内容' : '记录保存至节点备注' }}
-              </el-button>
-              <span class="footerTip" v-if="!localConfig.enableAiNoteBox">
-                （当前未开启AI备注框功能，可去设置开启）
-              </span>
-            </div>
-          </div>
-        </div>
-      </el-tab-pane>
-
-      <!-- Tab 2: 该节点的释义备注历史记录 -->
-      <el-tab-pane :label="`本节点释义备注 (${nodeAiNotes.length})`" name="history">
-        <div class="historyContainer customScrollbar">
-          <div class="historyHeader">
-            <div class="summary">
-              当前节点共包含 <b>{{ nodeAiNotes.length }}</b> 条 AI 释义记录
-            </div>
-            <div class="btns">
-              <el-button
-                size="mini"
-                type="primary"
-                plain
-                icon="el-icon-plus"
-                @click="showAddCustomNoteDialog = true"
-              >
-                手动新增记录
-              </el-button>
-              <el-button
-                size="mini"
-                type="danger"
-                plain
-                icon="el-icon-delete"
-                :disabled="nodeAiNotes.length === 0"
-                @click="handleClearAllNotes"
-              >
-                清空全部
-              </el-button>
-            </div>
-          </div>
-
-          <!-- 历史列表 -->
-          <div v-if="nodeAiNotes.length > 0" class="historyList">
-            <div
-              v-for="item in nodeAiNotes"
-              :key="item.id"
-              class="historyItem"
-            >
-              <div class="itemHeader">
-                <div class="itemTerm">
-                  <span class="termName">📌 {{ item.term }}</span>
-                  <span class="itemTime">{{ item.time }}</span>
-                  <el-tag size="mini" type="info" v-if="item.presetName">{{ item.presetName }}</el-tag>
+            <!-- 核心释义工作台卡片 (Response Workspace Card) -->
+            <div class="resultCard" v-if="isGenerating || explanationResult">
+              <div class="resultCardHeader">
+                <div class="resultHeaderLeft">
+                  <i class="el-icon-reading headerIcon"></i>
+                  <span class="headerTitle">释义内容</span>
+                  <span class="statusTag generating" v-if="isGenerating">
+                    <i class="el-icon-loading"></i> AI 正在深度思考生成...
+                  </span>
+                  <span class="statusTag saved" v-else-if="isSavedToNote">
+                    <i class="el-icon-circle-check"></i> 已保存至节点备注
+                  </span>
                 </div>
-                <div class="itemActions">
+                <div class="resultHeaderRight">
                   <el-button
                     type="text"
                     size="mini"
-                    icon="el-icon-edit"
-                    @click="startEditHistoryItem(item)"
+                    class="actionGhostBtn"
+                    :icon="isEditResult ? 'el-icon-view' : 'el-icon-edit-outline'"
+                    @click="isEditResult = !isEditResult"
+                    v-if="!isGenerating && explanationResult"
                   >
-                    编辑
+                    {{ isEditResult ? '预览排版' : '编辑文本' }}
                   </el-button>
                   <el-button
                     type="text"
                     size="mini"
+                    class="actionGhostBtn"
                     icon="el-icon-document-copy"
-                    @click="copyText(item.content)"
+                    @click="copyResult"
+                    v-if="explanationResult"
                   >
-                    复制
+                    复制内容
                   </el-button>
+                </div>
+              </div>
+
+              <div class="resultCardBody">
+                <!-- Markdown 渲染视图 -->
+                <div
+                  v-if="!isEditResult"
+                  class="markdownContent customScrollbar"
+                  v-html="renderedMarkdown"
+                ></div>
+                <!-- 文本编辑视图 -->
+                <div v-else class="editResultWrap">
+                  <el-input
+                    type="textarea"
+                    :rows="9"
+                    v-model="explanationResult"
+                    placeholder="可在此直接修改微调释义内容..."
+                  ></el-input>
+                </div>
+              </div>
+
+              <!-- 底部操作与提示栏 -->
+              <div class="resultCardFooter" v-if="!isGenerating && explanationResult">
+                <div class="footerHintText">
+                  <span v-if="isSavedToNote">
+                    <i class="el-icon-check"></i> 释义已同步至当前节点备注，可在思维导图悬停该节点查看卡片
+                  </span>
+                  <span v-else-if="localConfig.enableAiNoteBox">
+                    <i class="el-icon-info"></i> 满意本次释义？可点击右侧按钮保存至当前节点的备注框
+                  </span>
+                  <span v-else>
+                    <i class="el-icon-warning-outline"></i> 系统设置中未开启 AI 备注框功能
+                  </span>
+                </div>
+                <div class="footerActionGroup">
                   <el-button
-                    type="text"
-                    size="mini"
-                    icon="el-icon-delete"
-                    style="color: #f56c6c;"
-                    @click="handleDeleteNote(item.id)"
+                    type="primary"
+                    size="small"
+                    class="saveNoteCtaBtn"
+                    icon="el-icon-notebook-2"
+                    @click="manualSaveToNote"
+                    :disabled="!localConfig.enableAiNoteBox"
                   >
-                    删除
+                    {{ isSavedToNote ? '更新节点备注内容' : '保存至当前节点备注' }}
                   </el-button>
                 </div>
               </div>
+            </div>
 
-              <!-- 编辑态 -->
-              <div v-if="editingNoteId === item.id" class="itemEditBox">
-                <el-input
-                  size="small"
-                  v-model="editingTerm"
-                  placeholder="词条名称"
-                  style="margin-bottom: 8px;"
-                ></el-input>
-                <el-input
-                  type="textarea"
-                  :rows="4"
-                  v-model="editingContent"
-                  placeholder="释义内容"
-                  style="margin-bottom: 8px;"
-                ></el-input>
-                <div class="editActions">
-                  <el-button size="mini" @click="editingNoteId = ''">取消</el-button>
-                  <el-button size="mini" type="primary" @click="saveEditHistoryItem">保存修改</el-button>
-                </div>
+            <!-- 空态引导 (未生成时) -->
+            <div class="explainEmptyState" v-else-if="!isGenerating">
+              <div class="emptyIconWrap">
+                <i class="el-icon-magic-stick"></i>
               </div>
-
-              <!-- 展示态 -->
-              <div v-else class="itemContent customScrollbar" v-html="renderNoteMarkdown(item.content)"></div>
+              <div class="emptyTitle">准备就绪，即刻开始智能概念拆解</div>
+              <div class="emptyDesc">点击上方「开始 AI 释义」，AI 将结合所属节点与中心主题为您输出生动精准的释义</div>
             </div>
           </div>
+        </el-tab-pane>
 
-          <!-- 空状态 -->
-          <div v-else class="emptyNotes">
-            <i class="el-icon-document" style="font-size: 40px; color: #ccc;"></i>
-            <p>该节点暂无任何 AI 释义备注记录</p>
-            <el-button size="small" type="primary" plain @click="activeTab = 'explain'">立即进行 AI 释义</el-button>
+        <!-- Tab 2: 该节点的释义备注历史记录 -->
+        <el-tab-pane :label="`本节点释义备注 (${nodeAiNotes.length})`" name="history">
+          <div class="historyContainer customScrollbar">
+            <div class="historyHeader">
+              <div class="summary">
+                当前节点包含 <b>{{ nodeAiNotes.length }}</b> 条 AI 释义卡片
+              </div>
+              <div class="btns">
+                <el-button
+                  size="mini"
+                  type="primary"
+                  plain
+                  icon="el-icon-plus"
+                  @click="showAddCustomNoteDialog = true"
+                >
+                  手动新增记录
+                </el-button>
+                <el-button
+                  size="mini"
+                  type="danger"
+                  plain
+                  icon="el-icon-delete"
+                  :disabled="nodeAiNotes.length === 0"
+                  @click="handleClearAllNotes"
+                >
+                  清空全部
+                </el-button>
+              </div>
+            </div>
+
+            <!-- 历史列表 -->
+            <div v-if="nodeAiNotes.length > 0" class="historyList">
+              <div
+                v-for="item in nodeAiNotes"
+                :key="item.id"
+                class="historyItemCard"
+              >
+                <div class="itemCardHeader">
+                  <div class="itemTermGroup">
+                    <span class="termTitle">📌 {{ item.term }}</span>
+                    <span class="itemTime">{{ item.time }}</span>
+                    <el-tag size="mini" effect="plain" type="info" v-if="item.presetName" class="presetTag">
+                      {{ item.presetName }}
+                    </el-tag>
+                  </div>
+                  <div class="itemActions">
+                    <el-button
+                      type="text"
+                      size="mini"
+                      icon="el-icon-edit"
+                      @click="startEditHistoryItem(item)"
+                    >
+                      编辑
+                    </el-button>
+                    <el-button
+                      type="text"
+                      size="mini"
+                      icon="el-icon-document-copy"
+                      @click="copyText(item.content)"
+                    >
+                      复制
+                    </el-button>
+                    <el-button
+                      type="text"
+                      size="mini"
+                      icon="el-icon-delete"
+                      class="deleteBtn"
+                      @click="handleDeleteNote(item.id)"
+                    >
+                      删除
+                    </el-button>
+                  </div>
+                </div>
+
+                <!-- 编辑态 -->
+                <div v-if="editingNoteId === item.id" class="itemEditBox">
+                  <el-input
+                    size="small"
+                    v-model="editingTerm"
+                    placeholder="词条名称"
+                    style="margin-bottom: 8px;"
+                  ></el-input>
+                  <el-input
+                    type="textarea"
+                    :rows="4"
+                    v-model="editingContent"
+                    placeholder="释义内容"
+                    style="margin-bottom: 8px;"
+                  ></el-input>
+                  <div class="editActions">
+                    <el-button size="mini" @click="editingNoteId = ''">取消</el-button>
+                    <el-button size="mini" type="primary" @click="saveEditHistoryItem">保存修改</el-button>
+                  </div>
+                </div>
+
+                <!-- 展示态 -->
+                <div v-else class="itemContent customScrollbar" v-html="renderNoteMarkdown(item.content)"></div>
+              </div>
+            </div>
+
+            <!-- 空状态 -->
+            <div v-else class="emptyNotes">
+              <i class="el-icon-document emptyDocIcon"></i>
+              <p class="emptyTitle">该节点暂无任何 AI 释义备注记录</p>
+              <el-button size="small" type="primary" plain @click="activeTab = 'explain'">立即进行 AI 释义</el-button>
+            </div>
           </div>
-        </div>
-      </el-tab-pane>
-    </el-tabs>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
 
-    <!-- 手动新增释义记录弹窗 -->
+    <!-- 手动新增释义弹窗 -->
     <el-dialog
-      title="新增释义记录"
+      title="手动新增节点释义备注"
       :visible.sync="showAddCustomNoteDialog"
-      width="450px"
+      width="500px"
       append-to-body
+      :custom-class="isDark ? 'isDark' : ''"
     >
-      <el-form label-width="80px">
-        <el-form-item label="词条名称">
-          <el-input v-model="newCustomTerm" placeholder="例如：经纬度"></el-input>
+      <el-form label-width="80px" size="small">
+        <el-form-item label="释义词条">
+          <el-input v-model="newCustomTerm" placeholder="例如：经纬度、OKR、光合作用"></el-input>
         </el-form-item>
         <el-form-item label="释义内容">
-          <el-input type="textarea" :rows="5" v-model="newCustomContent" placeholder="请输入对该词条的解释内容"></el-input>
+          <el-input
+            type="textarea"
+            :rows="6"
+            v-model="newCustomContent"
+            placeholder="支持输入 Markdown 格式内容..."
+          ></el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="showAddCustomNoteDialog = false">取消</el-button>
-        <el-button type="primary" @click="confirmAddCustomNote">保存</el-button>
-      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" @click="showAddCustomNoteDialog = false">取消</el-button>
+        <el-button size="small" type="primary" @click="confirmAddCustomNote">保存记录</el-button>
+      </span>
     </el-dialog>
 
     <div slot="footer" class="dialog-footer">
-      <el-button @click="dialogVisible = false">关闭</el-button>
+      <el-button size="small" @click="dialogVisible = false">{{ $t('ai.cancel') || '关闭' }}</el-button>
     </div>
   </el-dialog>
 </template>
@@ -388,7 +443,8 @@ export default {
   computed: {
     ...mapState({
       aiConfig: state => state.aiConfig,
-      localConfig: state => state.localConfig
+      localConfig: state => state.localConfig,
+      isDark: state => state.localConfig.isDark
     }),
 
     nodeTextSummary() {
@@ -430,71 +486,69 @@ export default {
   },
   methods: {
     initDefaultPreset() {
-      const savedPreset = this.localConfig.aiExplanationPromptPreset || 'plain'
-      this.selectedPreset = savedPreset
-      this.updateActiveTemplate()
-    },
-
-    onPresetChange() {
-      this.updateActiveTemplate()
-    },
-
-    updateActiveTemplate() {
-      if (this.selectedPreset === 'custom') {
-        this.activePromptTemplate =
-          this.localConfig.aiExplanationCustomPrompt ||
-          '请针对词条“{text}”（所属节点：【{nodeText}】），给出清晰明了的释义与关键要点，使用Markdown格式返回。'
+      const presetId = this.localConfig.aiExplanationPromptPreset || 'plain'
+      this.selectedPreset = presetId
+      const customPrompt = this.localConfig.aiExplanationCustomPrompt
+      if (customPrompt) {
+        this.activePromptTemplate = customPrompt
       } else {
-        const preset = this.explanationPresets.find(p => p.id === this.selectedPreset)
-        this.activePromptTemplate = preset ? preset.template : ''
+        const p = this.explanationPresets.find(item => item.id === presetId)
+        this.activePromptTemplate = p ? p.template : ''
       }
     },
 
-    resetToDefaultPrompt() {
-      const preset = this.explanationPresets.find(p => p.id === this.selectedPreset)
-      if (preset && preset.template) {
-        this.activePromptTemplate = preset.template
-      }
-    },
-
-    onTermChange() {
-      this.hasGenerated = false
-      this.explanationResult = ''
-      this.isSavedToNote = false
-    },
-
-    handleAiExplainEvent({ text, node } = {}) {
-      this.targetNode = node || (this.mindMap && this.mindMap.renderer.activeNodeList[0]) || null
-      this.currentTerm = (text || '').trim()
-      this.showEditTerm = !this.currentTerm
-      this.hasGenerated = false
-      this.explanationResult = ''
-      this.isSavedToNote = false
+    handleAiExplainEvent({ text, node }) {
       this.activeTab = 'explain'
+      this.currentTerm = text ? text.trim() : ''
+      this.targetNode = node || null
+      this.showEditTerm = false
+      this.isEditResult = false
+      this.isSavedToNote = false
+      this.explanationResult = ''
+      this.hasGenerated = false
       this.loadNodeAiNotes()
-
       this.dialogVisible = true
 
-      // 如果有清晰的划词词条，自动开始释义体验更流畅
-      if (this.currentTerm) {
-        this.$nextTick(() => {
+      // 打开后自动触发一次生成
+      this.$nextTick(() => {
+        if (this.currentTerm) {
           this.startExplain()
-        })
-      }
+        }
+      })
     },
 
-    handleOpenAiNoteBoxEvent(node) {
-      this.targetNode = node || (this.mindMap && this.mindMap.renderer.activeNodeList[0]) || null
+    handleOpenAiNoteBoxEvent({ node }) {
+      this.targetNode = node || null
       this.loadNodeAiNotes()
       this.activeTab = 'history'
       this.dialogVisible = true
     },
 
     loadNodeAiNotes() {
-      if (this.targetNode) {
-        this.nodeAiNotes = getAiNotes(this.targetNode)
-      } else {
+      if (!this.targetNode) {
         this.nodeAiNotes = []
+        return
+      }
+      this.nodeAiNotes = getAiNotes(this.targetNode)
+    },
+
+    onTermChange() {
+      this.hasGenerated = false
+      this.isSavedToNote = false
+    },
+
+    onPresetChange(id) {
+      const p = this.explanationPresets.find(item => item.id === id)
+      if (p) {
+        this.activePromptTemplate = p.template
+      }
+    },
+
+    resetToDefaultPrompt() {
+      const p = this.explanationPresets.find(item => item.id === this.selectedPreset)
+      if (p) {
+        this.activePromptTemplate = p.template
+        this.$message.success('已恢复为当前预设的标准模版')
       }
     },
 
@@ -555,7 +609,7 @@ export default {
           err => {
             console.error('AI 解释出错:', err)
             this.isGenerating = false
-            this.$message.error('AI 解释请求失败，请检查配置与网络')
+            this.$message.error('AI 解释请求失败，请检查模型接入配置')
           }
         )
       } catch (e) {
@@ -699,234 +753,490 @@ export default {
 <style lang="less" scoped>
 .aiExplainDialog {
   /deep/ .el-dialog__body {
-    padding: 10px 24px 20px;
+    padding: 12px 24px 20px;
+  }
+
+  /deep/ .aiExplainDialogInner.isDark {
+    background-color: #22262c !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+
+    .el-dialog__title {
+      color: #f1f5f9;
+    }
+
+    .el-dialog__headerbtn .el-dialog__close {
+      color: #94a3b8;
+
+      &:hover {
+        color: #fff;
+      }
+    }
   }
 
   .aiTabs {
     /deep/ .el-tabs__header {
-      margin-bottom: 14px;
+      margin-bottom: 16px;
+    }
+
+    /deep/ .el-tabs__item {
+      font-size: 14px;
+      font-weight: 500;
     }
   }
 
   .explainContainer {
-    max-height: 520px;
+    max-height: 560px;
     overflow-y: auto;
     padding-right: 4px;
   }
 
-  .contextCard {
+  /* 英雄词条卡片 */
+  .explainHeroCard {
     background: #f8fafc;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 10px 14px;
+    border-radius: 10px;
+    padding: 14px 18px;
     margin-bottom: 14px;
+    transition: all 0.25s ease;
 
-    .contextItem {
+    .heroHeaderRow {
       display: flex;
       align-items: center;
-      margin-bottom: 6px;
+      justify-content: space-between;
+      margin-bottom: 8px;
 
-      &:last-child {
-        margin-bottom: 0;
-      }
-
-      .label {
-        font-size: 13px;
-        color: #64748b;
-        font-weight: 500;
-        width: 84px;
-        flex-shrink: 0;
-      }
-
-      .termTag {
-        font-weight: 600;
-        font-size: 14px;
-        margin-right: 8px;
-      }
-
-      .nodeContentText {
-        font-size: 13px;
-        color: #1e293b;
-        background: #fff;
-        padding: 2px 8px;
-        border-radius: 4px;
-        border: 1px solid #cbd5e1;
-        max-width: 450px;
+      .badgeAndBreadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex: 1;
         overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+
+        .aiPillBadge {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          font-size: 11px;
+          font-weight: 600;
+          color: #fff;
+          background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+          padding: 2px 8px;
+          border-radius: 12px;
+          letter-spacing: 0.02em;
+          flex-shrink: 0;
+        }
+
+        .nodeBreadcrumb {
+          font-size: 12px;
+          color: #64748b;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
+          i {
+            margin-right: 2px;
+          }
+        }
       }
+
+      .heroActions {
+        flex-shrink: 0;
+        margin-left: 10px;
+
+        .editTermBtn {
+          font-size: 12px;
+          color: #3b82f6;
+          padding: 0;
+
+          &:hover {
+            color: #1d4ed8;
+          }
+        }
+      }
+    }
+
+    .termDisplayWrap {
+      .termTitle {
+        font-size: 16px;
+        font-weight: 600;
+        color: #0f172a;
+        line-height: 1.5;
+        word-break: break-word;
+      }
+    }
+
+    .termEditWrap {
+      margin-top: 4px;
     }
   }
 
-  .promptConfigBox {
-    background: #fff;
-    border: 1px solid #e2e8f0;
+  /* 统一控制栏 */
+  .controlToolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f1f5f9;
     border-radius: 8px;
-    padding: 12px 14px;
+    padding: 8px 12px;
     margin-bottom: 14px;
+    gap: 12px;
 
-    .promptHeader {
+    .toolbarLeft {
       display: flex;
       align-items: center;
+      gap: 8px;
 
-      .label {
+      .toolLabel {
         font-size: 13px;
         font-weight: 500;
-        color: #334155;
-        margin-right: 8px;
+        color: #475569;
+        flex-shrink: 0;
       }
 
-      .toggleCustomBtn {
-        margin-left: 12px;
+      .presetSelect {
+        width: 175px;
+
+        /deep/ .el-input__inner {
+          border-radius: 6px;
+          height: 32px;
+          line-height: 32px;
+        }
       }
-    }
 
-    .promptEditorBox {
-      margin-top: 10px;
-
-      .promptTips {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 6px;
+      .customPromptToggleBtn {
         font-size: 12px;
-        color: #94a3b8;
+        color: #64748b;
 
-        code {
-          background: #f1f5f9;
-          padding: 1px 4px;
-          border-radius: 3px;
+        &:hover {
           color: #2563eb;
         }
       }
     }
-  }
 
-  .actionToolbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
-
-    .modeIndicator {
-      font-size: 12px;
-
-      .autoNoteBadge {
-        color: #16a34a;
-        font-weight: 500;
-        background: #f0fdf4;
-        padding: 4px 8px;
-        border-radius: 4px;
-        border: 1px solid #bbf7d0;
-      }
-
-      .manualNoteBadge {
-        color: #2563eb;
-        background: #eff6ff;
-        padding: 4px 8px;
-        border-radius: 4px;
-        border: 1px solid #bfdbfe;
-      }
-
-      .disabledNoteBadge {
-        color: #ea580c;
-        background: #fff7ed;
-        padding: 4px 8px;
-        border-radius: 4px;
-      }
-    }
-  }
-
-  .resultCard {
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    overflow: hidden;
-    background: #fff;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-
-    .resultHeader {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #f8fafc;
-      padding: 8px 14px;
-      border-bottom: 1px solid #e2e8f0;
-
-      .leftTitle {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-weight: 600;
-        font-size: 13px;
-        color: #1e293b;
-      }
-    }
-
-    .resultBody {
-      padding: 14px;
-
-      .markdownContent {
-        max-height: 260px;
-        overflow-y: auto;
-        font-size: 14px;
-        line-height: 1.7;
-        color: #334155;
-
-        /deep/ h3, /deep/ h4 {
-          margin-top: 10px;
-          margin-bottom: 6px;
-          color: #0f172a;
-        }
-
-        /deep/ p {
-          margin-bottom: 8px;
-        }
-
-        /deep/ ul, /deep/ ol {
-          padding-left: 20px;
-          margin-bottom: 8px;
-        }
-
-        /deep/ blockquote {
-          margin: 8px 0;
-          padding: 6px 12px;
-          background: #f8fafc;
-          border-left: 4px solid #3b82f6;
-          color: #475569;
-        }
-      }
-    }
-
-    .resultFooter {
-      padding: 8px 14px;
-      background: #f8fafc;
-      border-top: 1px solid #e2e8f0;
+    .toolbarRight {
       display: flex;
       align-items: center;
       gap: 10px;
 
-      .footerTip {
-        font-size: 12px;
-        color: #94a3b8;
+      .syncStatusChip {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 11px;
+        padding: 3px 8px;
+        border-radius: 12px;
+        cursor: default;
+        transition: all 0.2s;
+
+        &.auto {
+          color: #16a34a;
+          background: #dcfce7;
+          border: 1px solid #bbf7d0;
+        }
+
+        &.manual {
+          color: #2563eb;
+          background: #eff6ff;
+          border: 1px solid #bfdbfe;
+        }
+
+        &.disabled {
+          color: #94a3b8;
+          background: #f1f5f9;
+          border: 1px solid #e2e8f0;
+        }
+      }
+
+      .generateActionBtn {
+        border-radius: 6px;
+        font-weight: 500;
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        border: none;
+        box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+
+        &:hover {
+          opacity: 0.92;
+        }
+      }
+
+      .stopActionBtn {
+        border-radius: 6px;
+        font-weight: 500;
       }
     }
   }
 
+  /* 自定义 Prompt 编辑区 */
+  .promptEditorBox {
+    margin-bottom: 14px;
+    padding: 12px 14px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+
+    .promptTips {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+      font-size: 11px;
+      color: #94a3b8;
+
+      code {
+        background: #e2e8f0;
+        padding: 1px 4px;
+        border-radius: 3px;
+        color: #2563eb;
+      }
+    }
+  }
+
+  /* 核心释义工作台卡片 */
+  .resultCard {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    transition: all 0.25s ease;
+
+    .resultCardHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid #f1f5f9;
+      background: rgba(0, 0, 0, 0.015);
+
+      .resultHeaderLeft {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .headerIcon {
+          font-size: 15px;
+          color: #3b82f6;
+        }
+
+        .headerTitle {
+          font-size: 14px;
+          font-weight: 600;
+          color: #1e293b;
+        }
+
+        .statusTag {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          font-size: 11px;
+          padding: 2px 8px;
+          border-radius: 4px;
+
+          &.generating {
+            color: #d97706;
+            background: #fef3c7;
+            border: 1px solid #fde68a;
+          }
+
+          &.saved {
+            color: #15803d;
+            background: #dcfce7;
+            border: 1px solid #bbf7d0;
+          }
+        }
+      }
+
+      .resultHeaderRight {
+        display: flex;
+        gap: 8px;
+
+        .actionGhostBtn {
+          font-size: 12px;
+          color: #64748b;
+          padding: 4px 8px;
+          border-radius: 4px;
+
+          &:hover {
+            color: #2563eb;
+            background: #eff6ff;
+          }
+        }
+      }
+    }
+
+    .resultCardBody {
+      padding: 16px 20px;
+
+      .markdownContent {
+        line-height: 1.75;
+        font-size: 14px;
+        color: #1e293b;
+
+        /deep/ p {
+          margin-bottom: 12px;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+
+        /deep/ strong,
+        /deep/ b {
+          color: #2563eb;
+          font-weight: 600;
+        }
+
+        /deep/ h1,
+        /deep/ h2,
+        /deep/ h3 {
+          margin: 14px 0 8px;
+          font-weight: 600;
+          color: #0f172a;
+        }
+
+        /deep/ h2 {
+          font-size: 15px;
+          border-bottom: 1px solid #f1f5f9;
+          padding-bottom: 4px;
+        }
+
+        /deep/ h3 {
+          font-size: 14px;
+        }
+
+        /deep/ ul,
+        /deep/ ol {
+          padding-left: 20px;
+          margin-bottom: 12px;
+
+          li {
+            margin-bottom: 4px;
+          }
+        }
+
+        /deep/ blockquote {
+          margin: 12px 0;
+          padding: 8px 14px;
+          border-left: 3px solid #3b82f6;
+          background: #f8fafc;
+          border-radius: 0 6px 6px 0;
+          color: #475569;
+          font-size: 13px;
+        }
+
+        /deep/ code {
+          background: #f1f5f9;
+          color: #2563eb;
+          padding: 2px 5px;
+          border-radius: 4px;
+          font-size: 12px;
+        }
+      }
+
+      .editResultWrap {
+        /deep/ .el-textarea__inner {
+          font-family: inherit;
+          font-size: 14px;
+          line-height: 1.6;
+          border-radius: 6px;
+        }
+      }
+    }
+
+    .resultCardFooter {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 16px;
+      border-top: 1px solid #f1f5f9;
+      background: #f8fafc;
+
+      .footerHintText {
+        font-size: 12px;
+        color: #64748b;
+
+        i {
+          color: #10b981;
+          margin-right: 3px;
+        }
+      }
+
+      .footerActionGroup {
+        .saveNoteCtaBtn {
+          border-radius: 6px;
+          font-weight: 500;
+          background: #10b981;
+          border-color: #10b981;
+
+          &:hover {
+            background: #059669;
+            border-color: #059669;
+          }
+        }
+      }
+    }
+  }
+
+  /* 空态引导 */
+  .explainEmptyState {
+    text-align: center;
+    padding: 48px 20px;
+    border: 1px dashed #cbd5e1;
+    border-radius: 10px;
+    background: #f8fafc;
+
+    .emptyIconWrap {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #e0e7ff;
+      color: #4f46e5;
+      font-size: 26px;
+      margin-bottom: 12px;
+    }
+
+    .emptyTitle {
+      font-size: 15px;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 6px;
+    }
+
+    .emptyDesc {
+      font-size: 13px;
+      color: #94a3b8;
+      max-width: 360px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+  }
+
+  /* 历史记录 Tab 样式 */
   .historyContainer {
-    max-height: 520px;
+    max-height: 560px;
     overflow-y: auto;
+    padding-right: 4px;
 
     .historyHeader {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 12px;
-      background: #f1f5f9;
-      border-radius: 6px;
-      margin-bottom: 12px;
-      font-size: 13px;
-      color: #334155;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e2e8f0;
+
+      .summary {
+        font-size: 13px;
+        color: #64748b;
+
+        b {
+          color: #2563eb;
+        }
+      }
     }
 
     .historyList {
@@ -934,58 +1244,85 @@ export default {
       flex-direction: column;
       gap: 12px;
 
-      .historyItem {
+      .historyItemCard {
+        background: #f8fafc;
         border: 1px solid #e2e8f0;
         border-radius: 8px;
-        padding: 12px;
-        background: #fff;
-        transition: all 0.2s;
+        padding: 12px 16px;
+        transition: all 0.2s ease;
 
         &:hover {
-          border-color: #93c5fd;
-          box-shadow: 0 2px 8px rgba(59, 130, 246, 0.08);
+          border-color: #cbd5e1;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
 
-        .itemHeader {
+        .itemCardHeader {
           display: flex;
           justify-content: space-between;
           align-items: center;
           margin-bottom: 8px;
-          padding-bottom: 6px;
-          border-bottom: 1px dashed #e2e8f0;
 
-          .itemTerm {
+          .itemTermGroup {
             display: flex;
             align-items: center;
             gap: 8px;
 
-            .termName {
-              font-weight: 600;
+            .termTitle {
               font-size: 14px;
+              font-weight: 600;
               color: #1e293b;
             }
 
             .itemTime {
-              font-size: 12px;
+              font-size: 11px;
               color: #94a3b8;
+            }
+
+            .presetTag {
+              font-size: 11px;
+              height: 20px;
+              line-height: 18px;
+              padding: 0 6px;
+            }
+          }
+
+          .itemActions {
+            .deleteBtn {
+              color: #ef4444;
+
+              &:hover {
+                color: #dc2626;
+              }
             }
           }
         }
 
         .itemContent {
           font-size: 13px;
+          color: #475569;
           line-height: 1.6;
-          color: #334155;
-          max-height: 180px;
+          max-height: 140px;
           overflow-y: auto;
+          background: #ffffff;
+          padding: 8px 12px;
+          border-radius: 6px;
+          border: 1px solid #f1f5f9;
 
           /deep/ p {
             margin-bottom: 6px;
+            &:last-child {
+              margin-bottom: 0;
+            }
+          }
+
+          /deep/ strong,
+          /deep/ b {
+            color: #2563eb;
           }
         }
 
         .itemEditBox {
-          padding-top: 6px;
+          margin-top: 8px;
 
           .editActions {
             display: flex;
@@ -998,11 +1335,293 @@ export default {
 
     .emptyNotes {
       text-align: center;
-      padding: 40px 20px;
-      color: #94a3b8;
+      padding: 60px 20px;
 
-      p {
-        margin: 12px 0;
+      .emptyDocIcon {
+        font-size: 42px;
+        color: #cbd5e1;
+        margin-bottom: 12px;
+      }
+
+      .emptyTitle {
+        font-size: 14px;
+        color: #94a3b8;
+        margin-bottom: 14px;
+      }
+    }
+  }
+
+  /* ========================================================
+     深色模式适配 (Dark Mode Cohesive Styling)
+     ======================================================== */
+  .aiExplainContainer.isDark {
+    /* 英雄词条卡片 */
+    .explainHeroCard {
+      background: #282c34;
+      border-color: rgba(255, 255, 255, 0.08);
+
+      .heroHeaderRow {
+        .badgeAndBreadcrumb {
+          .nodeBreadcrumb {
+            color: #94a3b8;
+          }
+        }
+      }
+
+      .termDisplayWrap {
+        .termTitle {
+          color: #f8fafc;
+        }
+      }
+
+      .termEditWrap {
+        /deep/ .el-input__inner {
+          background-color: #1e2227;
+          border-color: rgba(255, 255, 255, 0.12);
+          color: #f1f5f9;
+        }
+      }
+    }
+
+    /* 统一控制栏 */
+    .controlToolbar {
+      background: rgba(255, 255, 255, 0.04);
+
+      .toolbarLeft {
+        .toolLabel {
+          color: #cbd5e1;
+        }
+
+        .presetSelect {
+          /deep/ .el-input__inner {
+            background-color: #1e2227;
+            border-color: rgba(255, 255, 255, 0.12);
+            color: #f1f5f9;
+          }
+        }
+
+        .customPromptToggleBtn {
+          color: #94a3b8;
+
+          &:hover {
+            color: #60a5fa;
+          }
+        }
+      }
+
+      .toolbarRight {
+        .syncStatusChip {
+          &.auto {
+            color: #4ade80;
+            background: rgba(34, 197, 94, 0.15);
+            border-color: rgba(34, 197, 94, 0.3);
+          }
+
+          &.manual {
+            color: #60a5fa;
+            background: rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.3);
+          }
+
+          &.disabled {
+            color: #64748b;
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.08);
+          }
+        }
+      }
+    }
+
+    /* 自定义 Prompt 编辑区 */
+    .promptEditorBox {
+      background: #282c34;
+      border-color: rgba(255, 255, 255, 0.08);
+
+      /deep/ .el-textarea__inner {
+        background-color: #1e2227;
+        border-color: rgba(255, 255, 255, 0.12);
+        color: #f1f5f9;
+      }
+
+      .promptTips {
+        color: #64748b;
+
+        code {
+          background: #1e2227;
+          color: #60a5fa;
+        }
+      }
+    }
+
+    /* 核心释义卡片 */
+    .resultCard {
+      background: #1e2227;
+      border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+
+      .resultCardHeader {
+        background: rgba(255, 255, 255, 0.02);
+        border-bottom-color: rgba(255, 255, 255, 0.06);
+
+        .resultHeaderLeft {
+          .headerIcon {
+            color: #60a5fa;
+          }
+
+          .headerTitle {
+            color: #f1f5f9;
+          }
+
+          .statusTag {
+            &.generating {
+              color: #fbbf24;
+              background: rgba(245, 158, 11, 0.15);
+              border-color: rgba(245, 158, 11, 0.3);
+            }
+
+            &.saved {
+              color: #4ade80;
+              background: rgba(34, 197, 94, 0.15);
+              border-color: rgba(34, 197, 94, 0.3);
+            }
+          }
+        }
+
+        .resultHeaderRight {
+          .actionGhostBtn {
+            color: #94a3b8;
+
+            &:hover {
+              color: #60a5fa;
+              background: rgba(59, 130, 246, 0.12);
+            }
+          }
+        }
+      }
+
+      .resultCardBody {
+        .markdownContent {
+          color: #e2e8f0;
+
+          /deep/ strong,
+          /deep/ b {
+            color: #60a5fa;
+          }
+
+          /deep/ h1,
+          /deep/ h2,
+          /deep/ h3 {
+            color: #f8fafc;
+          }
+
+          /deep/ h2 {
+            border-bottom-color: rgba(255, 255, 255, 0.08);
+          }
+
+          /deep/ blockquote {
+            background: rgba(59, 130, 246, 0.08);
+            border-left-color: #3b82f6;
+            color: #cbd5e1;
+          }
+
+          /deep/ code {
+            background: rgba(255, 255, 255, 0.08);
+            color: #93c5fd;
+          }
+        }
+
+        .editResultWrap {
+          /deep/ .el-textarea__inner {
+            background-color: #17191d;
+            border-color: rgba(255, 255, 255, 0.12);
+            color: #f1f5f9;
+          }
+        }
+      }
+
+      .resultCardFooter {
+        background: rgba(255, 255, 255, 0.02);
+        border-top-color: rgba(255, 255, 255, 0.06);
+
+        .footerHintText {
+          color: #94a3b8;
+        }
+      }
+    }
+
+    /* 空态 */
+    .explainEmptyState {
+      background: #282c34;
+      border-color: rgba(255, 255, 255, 0.1);
+
+      .emptyIconWrap {
+        background: rgba(99, 102, 241, 0.2);
+        color: #818cf8;
+      }
+
+      .emptyTitle {
+        color: #e2e8f0;
+      }
+
+      .emptyDesc {
+        color: #64748b;
+      }
+    }
+
+    /* 历史记录 */
+    .historyContainer {
+      .historyHeader {
+        border-bottom-color: rgba(255, 255, 255, 0.08);
+
+        .summary {
+          color: #94a3b8;
+          b {
+            color: #60a5fa;
+          }
+        }
+      }
+
+      .historyList {
+        .historyItemCard {
+          background: #282c34;
+          border-color: rgba(255, 255, 255, 0.08);
+
+          &:hover {
+            border-color: rgba(255, 255, 255, 0.18);
+          }
+
+          .itemCardHeader {
+            .itemTermGroup {
+              .termTitle {
+                color: #f8fafc;
+              }
+
+              .itemTime {
+                color: #64748b;
+              }
+            }
+          }
+
+          .itemContent {
+            background: #1e2227;
+            border-color: rgba(255, 255, 255, 0.06);
+            color: #cbd5e1;
+
+            /deep/ strong,
+            /deep/ b {
+              color: #60a5fa;
+            }
+          }
+
+          .itemEditBox {
+            /deep/ .el-input__inner,
+            /deep/ .el-textarea__inner {
+              background-color: #1e2227;
+              border-color: rgba(255, 255, 255, 0.12);
+              color: #f1f5f9;
+            }
+          }
+        }
       }
     }
   }
