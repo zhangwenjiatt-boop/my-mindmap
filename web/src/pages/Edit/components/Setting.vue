@@ -256,6 +256,47 @@
           >
         </div>
       </div>
+      <template v-if="localConfigs.enableAi">
+        <!-- 是否开启AI备注框功能 -->
+        <div class="row">
+          <div class="rowItem">
+            <el-checkbox
+              v-model="localConfigs.enableAiNoteBox"
+              @change="updateLocalConfig('enableAiNoteBox', $event)"
+              >开启节点AI释义备注框</el-checkbox
+            >
+          </div>
+        </div>
+        <!-- AI释义记录模式 -->
+        <div class="row" v-if="localConfigs.enableAiNoteBox">
+          <div class="rowItem">
+            <span class="name">释义记录模式</span>
+            <el-select
+              size="mini"
+              style="width: 140px"
+              v-model="localConfigs.aiNoteRecordMode"
+              @change="updateLocalConfig('aiNoteRecordMode', $event)"
+            >
+              <el-option label="自动记录至备注" value="auto"></el-option>
+              <el-option label="手动确认记录" value="manual"></el-option>
+            </el-select>
+          </div>
+        </div>
+        <!-- AI Prompt 配置入口 -->
+        <div class="row">
+          <div class="rowItem" style="width: 100%;">
+            <el-button
+              size="mini"
+              type="primary"
+              plain
+              @click="$bus.$emit('showAiConfigDialog')"
+              style="width: 100%;"
+            >
+              <span class="iconfont iconAIshengcheng"></span> 配置 AI 续写/解释 Prompt
+            </el-button>
+          </div>
+        </div>
+      </template>
       <!-- 配置鼠标滚轮行为 -->
       <div class="row">
         <div class="rowItem">
@@ -424,7 +465,9 @@ export default {
       localConfigs: {
         isShowScrollbar: false,
         enableDragImport: false,
-        enableAi: false
+        enableAi: false,
+        enableAiNoteBox: true,
+        aiNoteRecordMode: 'auto'
       }
     }
   },

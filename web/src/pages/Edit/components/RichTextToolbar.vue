@@ -134,6 +134,13 @@
         <span class="icon iconfont iconqingchu"></span>
       </div>
     </el-tooltip>
+
+    <!-- AI 释义 -->
+    <el-tooltip content="AI 释义与备注" placement="top" v-if="enableAi">
+      <div class="btn aiBtn" @click="handleAiExplain">
+        <span class="icon iconfont iconAIshengcheng"></span>
+      </div>
+    </el-tooltip>
   </div>
 </template>
 
@@ -166,7 +173,8 @@ export default {
   },
   computed: {
     ...mapState({
-      isDark: state => state.localConfig.isDark
+      isDark: state => state.localConfig.isDark,
+      enableAi: state => state.localConfig.enableAi
     }),
 
     fontFamilyList() {
@@ -261,6 +269,36 @@ export default {
 
     removeFormat() {
       this.mindMap.richText.removeFormat()
+    },
+
+    handleAiExplain() {
+      let selectedText = ''
+      if (
+        this.mindMap &&
+        this.mindMap.richText &&
+        this.mindMap.richText.quill &&
+        this.mindMap.richText.range
+      ) {
+        const range = this.mindMap.richText.range
+        selectedText = this.mindMap.richText.quill.getText(
+          range.index,
+          range.length
+        )
+      }
+      if (!selectedText) {
+        const selection = window.getSelection()
+        selectedText = selection ? selection.toString() : ''
+      }
+      const currentNode =
+        (this.mindMap &&
+          this.mindMap.richText &&
+          this.mindMap.richText.node) ||
+        (this.mindMap && this.mindMap.renderer.activeNodeList[0])
+
+      this.$bus.$emit('ai_explain', {
+        text: (selectedText || '').trim(),
+        node: currentNode
+      })
     }
   }
 }
@@ -305,6 +343,16 @@ export default {
 
     &.active {
       color: #12bb37;
+    }
+
+    &.aiBtn {
+      color: #2563eb;
+      border-left: 1px solid rgba(0, 0, 0, 0.08);
+
+      &:hover {
+        background-color: #eff6ff;
+        color: #1d4ed8;
+      }
     }
 
     .icon {

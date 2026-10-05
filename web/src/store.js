@@ -19,7 +19,17 @@ const store = new Vuex.Store({
       // 是否是暗黑模式
       isDark: false,
       // 是否开启AI功能
-      enableAi: true
+      enableAi: true,
+      // 是否开启AI备注框
+      enableAiNoteBox: true,
+      // AI备注框记录模式：auto(自动记录) / manual(手动记录)
+      aiNoteRecordMode: 'auto',
+      // AI续写预设与自定义prompt
+      aiContinuationPromptPreset: 'expand',
+      aiContinuationCustomPrompt: '',
+      // AI解释预设与自定义prompt
+      aiExplanationPromptPreset: 'plain',
+      aiExplanationCustomPrompt: ''
     },
     activeSidebar: '', // 当前显示的侧边栏
     isOutlineEdit: false, // 是否是大纲编辑模式

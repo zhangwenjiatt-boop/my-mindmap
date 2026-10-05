@@ -83,11 +83,35 @@
       class="createDialog"
       :title="$t('ai.aiCreatePart')"
       :visible.sync="createPartDialogVisible"
-      width="450px"
+      width="560px"
       append-to-body
     >
       <div class="inputBox">
-        <el-input type="textarea" :rows="5" v-model="aiPartInput"> </el-input>
+        <div style="margin-bottom: 12px; display: flex; align-items: center;">
+          <span style="font-size: 13px; font-weight: 500; margin-right: 8px; color: #334155;">续写 Prompt 预设：</span>
+          <el-select
+            v-model="selectedContinuationPreset"
+            size="small"
+            style="width: 240px;"
+            @change="onContinuationPresetChange"
+          >
+            <el-option
+              v-for="item in continuationPresets"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </div>
+        <el-input
+          type="textarea"
+          :rows="6"
+          v-model="aiPartInput"
+          placeholder="可在此微调或直接输入续写 Prompt 指令"
+        ></el-input>
+        <div class="tip" style="font-size: 12px; color: #94a3b8; margin-top: 8px;">
+          提示：可在提示词中使用 <code>{topic}</code> 占位中心主题，<code>{nodeText}</code> 占位当前节点。
+        </div>
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="closeAiCreatePartDialog">{{
@@ -112,6 +136,7 @@ import {
 } from 'simple-mind-map/src/utils'
 import { mapState } from 'vuex'
 import AiConfigDialog from './AiConfigDialog.vue'
+import { AI_CONTINUATION_PRESETS, formatPrompt } from '@/utils/aiPrompts'
 
 export default {
   components: {
@@ -143,11 +168,13 @@ export default {
 
       createPartDialogVisible: false,
       aiPartInput: '',
-      beingCreatePartNode: null
+      beingCreatePartNode: null,
+      continuationPresets: AI_CONTINUATION_PRESETS,
+      selectedContinuationPreset: 'expand'
     }
   },
   computed: {
-    ...mapState(['aiConfig'])
+    ...mapState(['aiConfig', 'localConfig'])
   },
   created() {
     this.$bus.$on('ai_create_all', this.aiCrateAll)
@@ -399,16 +426,40 @@ export default {
     // 显示AI续写弹窗
     showAiCreatePartDialog(node) {
       this.beingCreatePartNode = node
-      const currentMindMapData = this.mindMap.getData()
-      // 填充默认内容
-      this.aiPartInput = `${this.$t(
-        'ai.aiCreatePartMsgPrefix'
-      )}${getStrWithBrFromHtml(currentMindMapData.data.text)}${this.$t(
-        'ai.aiCreatePartMsgCenter'
-      )}${getStrWithBrFromHtml(node.getData('text'))}${this.$t(
-        'ai.aiCreatePartMsgPostfix'
-      )}`
+      this.selectedContinuationPreset =
+        this.localConfig.aiContinuationPromptPreset || 'expand'
+      this.updateContinuationPrompt()
       this.createPartDialogVisible = true
+    },
+
+    onContinuationPresetChange() {
+      this.updateContinuationPrompt()
+    },
+
+    updateContinuationPrompt() {
+      if (!this.beingCreatePartNode) return
+      const currentMindMapData = this.mindMap.getData()
+      const topic =
+        currentMindMapData && currentMindMapData.data
+          ? getStrWithBrFromHtml(currentMindMapData.data.text)
+          : ''
+      const nodeText = getStrWithBrFromHtml(
+        this.beingCreatePartNode.getData('text')
+      )
+
+      if (this.selectedContinuationPreset === 'custom') {
+        const customTpl =
+          this.localConfig.aiContinuationCustomPrompt ||
+          '我有一个主题为【{topic}】的思维导图。请对其中的子节点【{nodeText}】进行发散拓展，以Markdown列表格式输出。'
+        this.aiPartInput = formatPrompt(customTpl, { topic, nodeText })
+      } else {
+        const preset = this.continuationPresets.find(
+          p => p.id === this.selectedContinuationPreset
+        )
+        if (preset) {
+          this.aiPartInput = formatPrompt(preset.template, { topic, nodeText })
+        }
+      }
     },
 
     // 关闭AI续写弹窗

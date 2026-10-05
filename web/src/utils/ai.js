@@ -73,20 +73,46 @@ class Ai {
 
   async postMsg(data) {
     this.controller = new AbortController()
-    const res = await fetch(`http://localhost:${this.options.port}/ai/chat`, {
-      signal: this.controller.signal,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        ...this.baseData,
-        data: {
-          ...this.baseData.data,
-          ...data
-        }
+    let url = `/ai/chat`
+    if (this.options.port && this.options.port != window.location.port) {
+      url = `http://localhost:${this.options.port}/ai/chat`
+    }
+    let res
+    try {
+      res = await fetch(url, {
+        signal: this.controller.signal,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          ...this.baseData,
+          data: {
+            ...this.baseData.data,
+            ...data
+          }
+        })
       })
-    })
+    } catch (e) {
+      if (url !== '/ai/chat') {
+        res = await fetch('/ai/chat', {
+          signal: this.controller.signal,
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            ...this.baseData,
+            data: {
+              ...this.baseData.data,
+              ...data
+            }
+          })
+        })
+      } else {
+        throw e
+      }
+    }
     if (res.status && res.status !== 200) {
       throw new Error('请求失败')
     }

@@ -109,6 +109,9 @@
       <div class="item" @click="aiCreate" v-if="enableAi">
         <span class="name">{{ $t('contextmenu.aiCreate') }}</span>
       </div>
+      <div class="item" @click="aiExplain" v-if="enableAi">
+        <span class="name">AI 概念释义与备注</span>
+      </div>
     </template>
     <template v-if="type === 'svg'">
       <div class="item" @click="exec('RETURN_CENTER')">
@@ -512,6 +515,18 @@ export default {
     // AI续写
     aiCreate() {
       this.$bus.$emit('ai_create_part', this.node)
+      this.hide()
+    },
+
+    // AI释义与备注
+    aiExplain() {
+      const text = this.node
+        ? (this.node.getData('text') || '').replace(/<[^>]+>/g, '').trim()
+        : ''
+      this.$bus.$emit('ai_explain', {
+        text,
+        node: this.node
+      })
       this.hide()
     }
   }

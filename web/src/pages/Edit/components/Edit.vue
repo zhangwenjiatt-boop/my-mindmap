@@ -63,6 +63,7 @@
     <NodeNoteSidebar v-if="mindMap" :mindMap="mindMap"></NodeNoteSidebar>
     <AiCreate v-if="mindMap && enableAi" :mindMap="mindMap"></AiCreate>
     <AiChat v-if="enableAi"></AiChat>
+    <AiExplainDialog v-if="mindMap && enableAi" :mindMap="mindMap"></AiExplainDialog>
     <div
       class="dragMask"
       v-if="showDragMask"
@@ -140,6 +141,7 @@ import MarkdownSplitEditor from './MarkdownSplitEditor.vue'
 import NodeNoteSidebar from './NodeNoteSidebar.vue'
 import AiCreate from './AiCreate.vue'
 import AiChat from './AiChat.vue'
+import AiExplainDialog from './AiExplainDialog.vue'
 
 // 注册插件
 MindMap.usePlugin(MiniMap)
@@ -202,7 +204,8 @@ export default {
     MarkdownSplitEditor,
     NodeNoteSidebar,
     AiCreate,
-    AiChat
+    AiChat,
+    AiExplainDialog
   },
   data() {
     return {
