@@ -45,6 +45,35 @@ function getLocalIP() {
   return 'localhost';
 }
 
+function normalizeChatUrl(rawUrl) {
+  if (!rawUrl) return '';
+  let url = rawUrl.trim();
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    url = 'https://' + url;
+  }
+  url = url.replace(/\/+$/, '');
+  if (!url.endsWith('/chat/completions')) {
+    if (url.includes('volces.com')) {
+      if (!url.includes('/api/v3')) {
+        url += '/api/v3/chat/completions';
+      } else {
+        url += '/chat/completions';
+      }
+    } else if (url.includes('/v1') || url.includes('/v3') || url.includes('/v4')) {
+      url += '/chat/completions';
+    } else if (url.includes('deepseek.com')) {
+      url += '/chat/completions';
+    } else if (url.includes('moonshot.cn')) {
+      url += '/v1/chat/completions';
+    } else if (url.includes('aliyuncs.com')) {
+      url += '/compatible-mode/v1/chat/completions';
+    } else {
+      url += '/chat/completions';
+    }
+  }
+  return url;
+}
+
 const server = http.createServer((req, res) => {
   // Decode URL and strip query string / hash
   let decodedUrl;
@@ -102,6 +131,19 @@ const server = http.createServer((req, res) => {
       ];
 
       const isLocal = urlStr.includes('localhost') || urlStr.includes('127.0.0.1');
+
+      if (urlStr.includes('volces.com')) {
+        res.setHeader('Content-Type', 'application/json; charset=utf-8');
+        res.end(JSON.stringify({
+          code: 0,
+          data: [
+            { id: 'ep-2025xxxx-xxxxx', name: 'ep-2025xxxx-xxxxx (请在火山方舟控制台复制接入点 ID)' }
+          ],
+          isVolcano: true,
+          msg: '火山方舟需在控制台「在线推理 -> 推理接入点」复制以 ep- 开头的接入点 ID'
+        }));
+        return;
+      }
 
       if (!urlStr || (!apiKey && !isLocal)) {
         res.setHeader('Content-Type', 'application/json; charset=utf-8');
@@ -185,7 +227,9 @@ const server = http.createServer((req, res) => {
     req.on('end', () => {
       let payload = {};
       try { payload = JSON.parse(body); } catch (e) {}
-      const { api, key, model } = payload;
+      let api = normalizeChatUrl(payload.api || payload.url || '');
+      let key = (payload.key || '').trim();
+      let model = (payload.model || '').trim();
       const startTime = Date.now();
 
       if (!api) {
@@ -194,8 +238,17 @@ const server = http.createServer((req, res) => {
         return;
       }
 
+      let urlObj;
+      try {
+        urlObj = new URL(api);
+      } catch (e) {
+        res.setHeader('Content-Type', 'application/json; charset=utf-8');
+        res.end(JSON.stringify({ code: -1, msg: `无效的接口 URL 格式: ${api}` }));
+        return;
+      }
+
       const isLocal = api.includes('localhost') || api.includes('127.0.0.1');
-      if (!isLocal && (!key || key.trim().length < 5)) {
+      if (!isLocal && (!key || key.length < 5)) {
         res.setHeader('Content-Type', 'application/json; charset=utf-8');
         res.end(JSON.stringify({
           code: 0,
@@ -206,9 +259,20 @@ const server = http.createServer((req, res) => {
         return;
       }
 
+      // Volcano Ark requires endpoint ID starting with ep-
+      if (urlObj.hostname.includes('volces.com')) {
+        if (!model || !model.startsWith('ep-')) {
+          res.setHeader('Content-Type', 'application/json; charset=utf-8');
+          res.end(JSON.stringify({
+            code: -1,
+            msg: '火山方舟要求“模型/接入点”填写在线推理接入点 ID（格式为 ep- 开头，例如 ep-2025xxxx-xxxxx），请前往火山引擎控制台复制接入点 ID。'
+          }));
+          return;
+        }
+      }
+
       try {
         const client = api.startsWith('https') ? require('https') : require('http');
-        const urlObj = new URL(api);
         const reqPayload = JSON.stringify({
           model: model || 'default',
           messages: [{ role: 'user', content: 'hi' }],
@@ -220,8 +284,8 @@ const server = http.createServer((req, res) => {
           'Content-Type': 'application/json',
           'Content-Length': Buffer.byteLength(reqPayload)
         };
-        if (key && key.trim()) {
-          headers['Authorization'] = 'Bearer ' + key.trim();
+        if (key) {
+          headers['Authorization'] = 'Bearer ' + key;
         }
 
         const proxyReq = client.request(urlObj, {
@@ -243,10 +307,29 @@ const server = http.createServer((req, res) => {
               }));
             } else {
               let errMsg = `HTTP ${proxyRes.statusCode}`;
+              let detail = '';
               try {
                 const j = JSON.parse(resData);
-                if (j.error && j.error.message) errMsg += `: ${j.error.message}`;
+                if (j.error && j.error.message) detail = j.error.message;
+                else if (j.message) detail = j.message;
               } catch(e) {}
+
+              if (proxyRes.statusCode === 404) {
+                if (urlObj.hostname.includes('volces.com')) {
+                  errMsg = `火山方舟 404 NOT_FOUND：未找到推理接入点 [${model || '未填'}]。请前往火山引擎控制台「在线推理 -> 推理接入点」确认 Endpoint ID 是否存在且状态为“运行中”。`;
+                } else if (!urlObj.pathname.includes('/chat/completions')) {
+                  errMsg = `HTTP 404 路径不存在：当前请求路径为 ${urlObj.pathname}，聊天接口通常需以 /chat/completions 结尾。`;
+                } else {
+                  errMsg = `HTTP 404 目标未找到：${detail || '目标平台未找到指定的模型 [' + (model || '默认') + '] 或 API 路径不存在，请检查模型名称与接口 URL。'}`;
+                }
+              } else if (proxyRes.statusCode === 401) {
+                errMsg = `HTTP 401 鉴权失败：${detail || 'API Key 无效或已过期，请检查 Key 是否复制完整。'}`;
+              } else if (proxyRes.statusCode === 403) {
+                errMsg = `HTTP 403 权限不足：${detail || '该 API Key 没有权限调用此模型或该地区不可用。'}`;
+              } else {
+                if (detail) errMsg += `: ${detail}`;
+              }
+
               res.setHeader('Content-Type', 'application/json; charset=utf-8');
               res.end(JSON.stringify({
                 code: -1,
@@ -268,7 +351,7 @@ const server = http.createServer((req, res) => {
           res.setHeader('Content-Type', 'application/json; charset=utf-8');
           res.end(JSON.stringify({
             code: -1,
-            msg: '连接超时（超过 10 秒无响应）'
+            msg: '连接超时（超过 10 秒无响应，请检查网络设置）'
           }));
         });
         proxyReq.write(reqPayload);
@@ -299,7 +382,8 @@ const server = http.createServer((req, res) => {
         payload = JSON.parse(body);
       } catch (e) {}
 
-      const { api, method = 'POST', headers = {}, data } = payload;
+      let { api, method = 'POST', headers = {}, data } = payload;
+      api = normalizeChatUrl(api);
       res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
       res.setHeader('Cache-Control', 'no-cache');
       res.setHeader('Connection', 'keep-alive');

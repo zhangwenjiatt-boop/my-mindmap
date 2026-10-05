@@ -85,6 +85,7 @@
                 v-model="ruleForm.api"
                 placeholder="例如：https://api.deepseek.com/chat/completions"
                 clearable
+                @blur="onApiBlur"
               ></el-input>
               <div class="formItemTip">
                 标准 OpenAI 兼容的聊天补全接口（Chat Completions API）。无需填写代理端口。
@@ -128,6 +129,19 @@
               </div>
               <div class="formItemTip">
                 支持直接在输入框中回车输入自定义模型名，或点击「自动拉取清单」获取该 API Key 下的可用模型。
+              </div>
+
+              <!-- 火山方舟专属提示框 -->
+              <div class="volcanoArkAlert" v-if="isVolcanoProvider">
+                <div class="alertTitle"><i class="el-icon-warning"></i> 火山方舟特别说明：</div>
+                <div class="alertText">
+                  火山引擎要求在<b>「模型/接入点」</b>中填写控制台创建的<b>推理接入点 ID</b>（格式以 <code>ep-</code> 开头，如 <code>ep-2025xxxx-xxxxx</code>），不能填写基础模型名称（如 doubao-pro）或留空，否则火山服务器将直接返回 <b>HTTP 404: NOT_FOUND</b>。
+                </div>
+                <div class="alertLinkRow">
+                  <a href="https://console.volcengine.com/ark/region:ark+cn-beijing/endpoint" target="_blank" class="volcanoLink">
+                    <i class="el-icon-top-right"></i> 打开火山方舟控制台复制接入点 ID
+                  </a>
+                </div>
               </div>
             </el-form-item>
           </el-form>
@@ -458,6 +472,13 @@ export default {
       return this.explanationPresets.find(
         p => p.id === this.promptForm.aiExplanationPromptPreset
       )
+    },
+
+    isVolcanoProvider() {
+      return (
+        this.ruleForm.provider === 'volcengine' ||
+        (this.ruleForm.api && this.ruleForm.api.includes('volces.com'))
+      )
     }
   },
   watch: {
@@ -490,6 +511,17 @@ export default {
           this.ruleForm[key] = this.aiConfig[key]
         }
       })
+
+      // 智能识别当前 provider
+      if (this.ruleForm.api) {
+        if (this.ruleForm.api.includes('deepseek.com')) this.ruleForm.provider = 'deepseek'
+        else if (this.ruleForm.api.includes('volces.com')) this.ruleForm.provider = 'volcengine'
+        else if (this.ruleForm.api.includes('aliyuncs.com')) this.ruleForm.provider = 'qwen'
+        else if (this.ruleForm.api.includes('moonshot.cn')) this.ruleForm.provider = 'kimi'
+        else if (this.ruleForm.api.includes('bigmodel.cn')) this.ruleForm.provider = 'zhipu'
+        else if (this.ruleForm.api.includes('openai.com')) this.ruleForm.provider = 'openai'
+        else if (this.ruleForm.api.includes('localhost:11434')) this.ruleForm.provider = 'ollama'
+      }
 
       // 服务商预设与推荐模型选项
       const matched = this.providers.find(p => p.id === this.ruleForm.provider)
@@ -537,6 +569,44 @@ export default {
         this.localConfig.aiNoteRecordMode || 'auto'
     },
 
+    normalizeUrl(rawUrl) {
+      if (!rawUrl) return ''
+      let url = rawUrl.trim()
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        url = 'https://' + url
+      }
+      url = url.replace(/\/+$/, '')
+      if (!url.endsWith('/chat/completions')) {
+        if (url.includes('volces.com')) {
+          if (!url.includes('/api/v3')) {
+            url += '/api/v3/chat/completions'
+          } else {
+            url += '/chat/completions'
+          }
+        } else if (url.includes('/v1') || url.includes('/v3') || url.includes('/v4')) {
+          url += '/chat/completions'
+        } else if (url.includes('deepseek.com')) {
+          url += '/chat/completions'
+        } else if (url.includes('moonshot.cn')) {
+          url += '/v1/chat/completions'
+        } else if (url.includes('aliyuncs.com')) {
+          url += '/compatible-mode/v1/chat/completions'
+        } else {
+          url += '/chat/completions'
+        }
+      }
+      return url
+    },
+
+    onApiBlur() {
+      if (this.ruleForm.api) {
+        const norm = this.normalizeUrl(this.ruleForm.api)
+        if (norm !== this.ruleForm.api) {
+          this.ruleForm.api = norm
+        }
+      }
+    },
+
     onProviderChange(providerId) {
       const p = this.providers.find(item => item.id === providerId)
       if (!p) return
@@ -545,10 +615,10 @@ export default {
       }
       if (p.models && p.models.length > 0) {
         this.modelOptions = [...p.models]
-        if (p.defaultModel) {
-          this.ruleForm.model = p.defaultModel
-        }
+      } else {
+        this.modelOptions = []
       }
+      this.ruleForm.model = p.defaultModel || (p.models[0] ? p.models[0].id : '')
     },
 
     // 自动拉取模型清单
@@ -557,6 +627,13 @@ export default {
         this.$message.warning('请先输入接口 URL')
         return
       }
+
+      this.ruleForm.api = this.normalizeUrl(this.ruleForm.api)
+
+      if (this.isVolcanoProvider) {
+        this.$message.info('火山方舟的接入点需在火山引擎控制台「在线推理」中创建，格式以 ep- 开头。')
+      }
+
       this.isLoadingModels = true
       try {
         const res = await fetch('/ai/models', {
@@ -580,6 +657,8 @@ export default {
           }
           if (result.isFallback) {
             this.$message.info('已加载推荐常用模型列表，可直接选用或输入自定义模型')
+          } else if (result.isVolcano) {
+            this.$message.info(result.msg || '火山方舟接入点需在控制台创建')
           } else {
             this.$message.success(`成功拉取 ${result.data.length} 个模型！`)
           }
@@ -599,6 +678,16 @@ export default {
         this.$message.warning('请先输入接口 URL')
         return
       }
+
+      this.ruleForm.api = this.normalizeUrl(this.ruleForm.api)
+
+      if (this.isVolcanoProvider) {
+        if (!this.ruleForm.model || !this.ruleForm.model.trim().startsWith('ep-')) {
+          this.$message.warning('火山方舟必须在“模型/接入点”中填写以 ep- 开头的接入点 ID，请前往火山引擎控制台复制后填入')
+          return
+        }
+      }
+
       this.isTestingConnection = true
       try {
         const res = await fetch('/ai/test-connection', {
@@ -839,6 +928,54 @@ export default {
 
       .pullModelsBtn {
         flex-shrink: 0;
+      }
+    }
+
+    .volcanoArkAlert {
+      margin-top: 10px;
+      margin-bottom: 6px;
+      padding: 10px 14px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 6px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #1e3a8a;
+
+      .alertTitle {
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: #1d4ed8;
+
+        i {
+          margin-right: 4px;
+        }
+      }
+
+      .alertText {
+        color: #1e40af;
+
+        code {
+          background: #dbeafe;
+          padding: 1px 5px;
+          border-radius: 3px;
+          color: #1e40af;
+          font-weight: 600;
+        }
+      }
+
+      .alertLinkRow {
+        margin-top: 6px;
+
+        .volcanoLink {
+          color: #2563eb;
+          text-decoration: underline;
+          font-weight: 500;
+
+          &:hover {
+            color: #1d4ed8;
+          }
+        }
       }
     }
 
