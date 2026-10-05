@@ -1,59 +1,88 @@
 <template>
   <div
-    class="markdownSplitEditor"
-    :class="{ isDark: isDark, collapsed: !visible }"
+    class="markdownSplitEditorWrapper"
+    :class="{ isDark: isDark, isCollapsed: isCollapsed, isDragging: isDragging }"
     v-show="visible"
   >
-    <!-- 头部工具栏 -->
-    <div class="editorHeader">
-      <div class="headerLeft">
-        <span class="headerTitle">
-          <i class="el-icon-document"></i> Markdown 笔记
-        </span>
-        <span class="syncStatus" :class="{ syncing: isSyncing }">
-          <i class="el-icon-loading" v-if="isSyncing"></i>
-          <i class="el-icon-check" v-else></i>
-          {{ isSyncing ? '同步中...' : '实时联动' }}
-        </span>
+    <!-- 左侧编辑器主体 -->
+    <div
+      class="markdownSplitEditor"
+      :style="{ width: isCollapsed ? '0px' : width + 'px' }"
+    >
+      <!-- 头部工具栏 -->
+      <div class="editorHeader">
+        <div class="headerLeft">
+          <span class="headerTitle">
+            <i class="el-icon-document"></i> Markdown 笔记
+          </span>
+          <span class="syncStatus" :class="{ syncing: isSyncing }">
+            <i class="el-icon-loading" v-if="isSyncing"></i>
+            <i class="el-icon-check" v-else></i>
+            {{ isSyncing ? '同步中...' : '实时联动' }}
+          </span>
+        </div>
+        <div class="headerRight">
+          <el-tooltip content="复制 Markdown 文本" placement="top" :open-delay="400">
+            <button class="headerBtn" @click="copyMarkdown">
+              <i class="el-icon-document-copy"></i>
+            </button>
+          </el-tooltip>
+          <el-tooltip content="格式整理" placement="top" :open-delay="400">
+            <button class="headerBtn" @click="formatMarkdown">
+              <i class="el-icon-magic-stick"></i>
+            </button>
+          </el-tooltip>
+          <el-tooltip content="折叠笔记面板" placement="top" :open-delay="400">
+            <button class="headerBtn foldBtn" @click="toggleCollapse">
+              <i class="el-icon-s-fold"></i>
+            </button>
+          </el-tooltip>
+          <el-tooltip content="关闭双栏编辑" placement="top" :open-delay="400">
+            <button class="headerBtn closeBtn" @click="close">
+              <i class="el-icon-close"></i>
+            </button>
+          </el-tooltip>
+        </div>
       </div>
-      <div class="headerRight">
-        <el-tooltip content="复制 Markdown 文本" placement="top" :open-delay="400">
-          <button class="headerBtn" @click="copyMarkdown">
-            <i class="el-icon-document-copy"></i>
-          </button>
-        </el-tooltip>
-        <el-tooltip content="格式整理" placement="top" :open-delay="400">
-          <button class="headerBtn" @click="formatMarkdown">
-            <i class="el-icon-magic-stick"></i>
-          </button>
-        </el-tooltip>
-        <el-tooltip content="关闭双栏编辑" placement="top" :open-delay="400">
-          <button class="headerBtn closeBtn" @click="close">
-            <i class="el-icon-close"></i>
-          </button>
-        </el-tooltip>
+
+      <!-- 语法快捷插入工具栏 -->
+      <div class="quickSyntaxBar">
+        <span class="syntaxTag" @click="insertSyntax('# ', '')"># 一级</span>
+        <span class="syntaxTag" @click="insertSyntax('## ', '')">## 二级</span>
+        <span class="syntaxTag" @click="insertSyntax('### ', '')">### 三级</span>
+        <span class="syntaxTag" @click="insertSyntax('- ', '')">- 列表</span>
+        <span class="syntaxTag" @click="insertSyntax('- [ ] ', '')">待办</span>
+        <span class="syntaxTag" @click="insertSyntax('**', '**')">加粗</span>
+      </div>
+
+      <!-- 编辑器主体 -->
+      <div class="editorContainer" ref="editorContainer"></div>
+
+      <!-- 底部状态与提示栏 -->
+      <div class="editorFooter">
+        <span class="tipText">
+          <i class="el-icon-info"></i> 支持 # 标题与列表，左侧实时绘制脑图
+        </span>
+        <span class="wordCount">{{ lineCount }} 行 | {{ charCount }} 字</span>
       </div>
     </div>
 
-    <!-- 语法快捷插入工具栏 -->
-    <div class="quickSyntaxBar">
-      <span class="syntaxTag" @click="insertSyntax('# ', '')"># 一级</span>
-      <span class="syntaxTag" @click="insertSyntax('## ', '')">## 二级</span>
-      <span class="syntaxTag" @click="insertSyntax('### ', '')">### 三级</span>
-      <span class="syntaxTag" @click="insertSyntax('- ', '')">- 列表</span>
-      <span class="syntaxTag" @click="insertSyntax('- [ ] ', '')">待办</span>
-      <span class="syntaxTag" @click="insertSyntax('**', '**')">加粗</span>
-    </div>
-
-    <!-- 编辑器主体 -->
-    <div class="editorContainer" ref="editorContainer"></div>
-
-    <!-- 底部状态与提示栏 -->
-    <div class="editorFooter">
-      <span class="tipText">
-        <i class="el-icon-info"></i> 支持 # 标题分级与列表缩进，左侧编辑实时绘制脑图
-      </span>
-      <span class="wordCount">{{ lineCount }} 行 | {{ charCount }} 字</span>
+    <!-- 拖拽调节宽度分割线与折叠按钮 -->
+    <div
+      class="resizerDivider"
+      :class="{ isDragging: isDragging, isCollapsed: isCollapsed }"
+      :style="{ left: isCollapsed ? '0px' : width + 'px' }"
+      @mousedown="startResize"
+      title="按住左右拖拽调节宽度"
+    >
+      <div class="resizerLine"></div>
+      <div
+        class="toggleCollapseHandle"
+        @click.stop="toggleCollapse"
+        :title="isCollapsed ? '展开 Markdown 笔记 (点击展开)' : '折叠 Markdown 笔记 (点击折叠)'"
+      >
+        <i :class="isCollapsed ? 'el-icon-arrow-right' : 'el-icon-arrow-left'"></i>
+      </div>
     </div>
   </div>
 </template>
@@ -66,6 +95,8 @@ import 'codemirror/mode/markdown/markdown.js'
 import { transformMarkdownTo } from 'simple-mind-map/src/parse/markdownTo'
 import { transformToMarkdown } from 'simple-mind-map/src/parse/toMarkdown'
 import { storeData } from '@/api'
+
+const STORAGE_KEY_WIDTH = 'MARKDOWN_SPLIT_WIDTH'
 
 export default {
   name: 'MarkdownSplitEditor',
@@ -84,7 +115,13 @@ export default {
       debounceTimer: null,
       mindMapDebounceTimer: null,
       lineCount: 0,
-      charCount: 0
+      charCount: 0,
+      // 宽度与折叠控制
+      width: 440,
+      isCollapsed: false,
+      isDragging: false,
+      startX: 0,
+      startWidth: 440
     }
   },
   computed: {
@@ -100,6 +137,7 @@ export default {
     }
   },
   created() {
+    this.initSavedWidth()
     this.$bus.$on('toggleMarkdownSplit', this.toggle)
     this.$bus.$on('openMarkdownSplit', this.open)
     this.$bus.$on('closeMarkdownSplit', this.close)
@@ -113,10 +151,22 @@ export default {
     this.$bus.$off('openMarkdownSplit', this.open)
     this.$bus.$off('closeMarkdownSplit', this.close)
     this.unbindMindMapEvents()
+    this.stopResize()
     if (this.debounceTimer) clearTimeout(this.debounceTimer)
     if (this.mindMapDebounceTimer) clearTimeout(this.mindMapDebounceTimer)
   },
   methods: {
+    initSavedWidth() {
+      try {
+        const saved = parseInt(localStorage.getItem(STORAGE_KEY_WIDTH), 10)
+        if (saved && !isNaN(saved) && saved >= 260 && saved <= window.innerWidth - 300) {
+          this.width = saved
+        }
+      } catch (e) {
+        // ignore
+      }
+    },
+
     initEditor() {
       this.editor = CodeMirror(this.$refs.editorContainer, {
         value: '',
@@ -148,7 +198,6 @@ export default {
     },
 
     updateEditorTheme() {
-      // 保持与界面一致的商务清晰黑白/深色风格
       if (!this.editor) return
       const wrapper = this.editor.getWrapperElement()
       if (wrapper) {
@@ -176,8 +225,8 @@ export default {
 
     open() {
       this.visible = true
-      this.$emit('change', true)
-      this.$bus.$emit('split_editor_change', true)
+      this.isCollapsed = false
+      this.notifyResize()
       this.syncFromMindMap()
       this.$nextTick(() => {
         if (this.editor) {
@@ -192,13 +241,96 @@ export default {
 
     close() {
       this.visible = false
-      this.$emit('change', false)
+      this.$bus.$emit('split_editor_resize', {
+        show: false,
+        width: this.width,
+        isCollapsed: this.isCollapsed,
+        isDragging: false
+      })
       this.$bus.$emit('split_editor_change', false)
       this.$nextTick(() => {
         if (this.mindMap) {
           this.mindMap.resize()
         }
       })
+    },
+
+    // 折叠/展开切换
+    toggleCollapse() {
+      this.isCollapsed = !this.isCollapsed
+      this.notifyResize()
+      this.$nextTick(() => {
+        if (!this.isCollapsed && this.editor) {
+          this.editor.refresh()
+          this.editor.focus()
+        }
+        if (this.mindMap) {
+          this.mindMap.resize()
+        }
+      })
+    },
+
+    // 拖拽宽度调节
+    startResize(e) {
+      if (this.isCollapsed) return
+      this.isDragging = true
+      this.startX = e.clientX
+      this.startWidth = this.width
+      document.body.style.cursor = 'col-resize'
+      document.body.style.userSelect = 'none'
+
+      window.addEventListener('mousemove', this.onResizing)
+      window.addEventListener('mouseup', this.stopResize)
+    },
+
+    onResizing(e) {
+      if (!this.isDragging) return
+      const deltaX = e.clientX - this.startX
+      let newWidth = this.startWidth + deltaX
+      const minWidth = 260
+      const maxWidth = Math.max(minWidth, window.innerWidth - 320)
+
+      if (newWidth < minWidth) newWidth = minWidth
+      if (newWidth > maxWidth) newWidth = maxWidth
+
+      this.width = newWidth
+      this.notifyResize(true)
+    },
+
+    stopResize() {
+      if (!this.isDragging) return
+      this.isDragging = false
+      document.body.style.cursor = ''
+      document.body.style.userSelect = ''
+
+      window.removeEventListener('mousemove', this.onResizing)
+      window.removeEventListener('mouseup', this.stopResize)
+
+      try {
+        localStorage.setItem(STORAGE_KEY_WIDTH, this.width)
+      } catch (e) {
+        // ignore
+      }
+
+      this.notifyResize(false)
+      this.$nextTick(() => {
+        if (this.editor) {
+          this.editor.refresh()
+        }
+        if (this.mindMap) {
+          this.mindMap.resize()
+        }
+      })
+    },
+
+    notifyResize(isDragging = false) {
+      this.$bus.$emit('split_editor_resize', {
+        show: this.visible,
+        width: this.width,
+        isCollapsed: this.isCollapsed,
+        isDragging
+      })
+      this.$bus.$emit('split_editor_change', this.visible && !this.isCollapsed)
     },
 
     // 从思维导图同步到 Markdown
@@ -310,50 +442,79 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.markdownSplitEditor {
-  width: 440px;
-  height: 100%;
+.markdownSplitEditorWrapper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1001;
   display: flex;
-  flex-direction: column;
-  background: #ffffff;
-  border-right: 1px solid #e2e8f0;
-  box-shadow: 4px 0 16px rgba(15, 23, 42, 0.04);
-  z-index: 100;
-  transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
   user-select: none;
 
   &.isDark {
-    background: #1e293b;
-    border-right-color: #334155;
-    box-shadow: 4px 0 16px rgba(0, 0, 0, 0.3);
+    .markdownSplitEditor {
+      background: #1e293b;
+      border-right-color: #334155;
+      box-shadow: 4px 0 16px rgba(0, 0, 0, 0.3);
 
-    .editorHeader {
-      background: #0f172a;
-      border-bottom-color: #334155;
+      .editorHeader {
+        background: #0f172a;
+        border-bottom-color: #334155;
 
-      .headerTitle {
-        color: #f1f5f9;
+        .headerTitle {
+          color: #f1f5f9;
+        }
+
+        .headerBtn {
+          color: #94a3b8;
+
+          &:hover {
+            background: #334155;
+            color: #f8fafc;
+          }
+        }
       }
 
-      .headerBtn {
-        color: #94a3b8;
+      .quickSyntaxBar {
+        background: #1e293b;
+        border-bottom-color: #334155;
 
-        &:hover {
+        .syntaxTag {
           background: #334155;
-          color: #f8fafc;
+          color: #cbd5e1;
+          border-color: #475569;
+
+          &:hover {
+            background: #2563eb;
+            color: #ffffff;
+            border-color: #2563eb;
+          }
         }
+      }
+
+      .editorFooter {
+        background: #0f172a;
+        border-top-color: #334155;
+        color: #94a3b8;
       }
     }
 
-    .quickSyntaxBar {
-      background: #1e293b;
-      border-bottom-color: #334155;
+    .resizerDivider {
+      background: transparent;
 
-      .syntaxTag {
+      .resizerLine {
         background: #334155;
+      }
+
+      &:hover .resizerLine,
+      &.isDragging .resizerLine {
+        background: #38bdf8;
+      }
+
+      .toggleCollapseHandle {
+        background: #1e293b;
+        border-color: #334155;
         color: #cbd5e1;
-        border-color: #475569;
 
         &:hover {
           background: #2563eb;
@@ -362,11 +523,93 @@ export default {
         }
       }
     }
+  }
 
-    .editorFooter {
-      background: #0f172a;
-      border-top-color: #334155;
-      color: #94a3b8;
+  .markdownSplitEditor {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border-right: 1px solid #e2e8f0;
+    box-shadow: 4px 0 20px rgba(15, 23, 42, 0.05);
+    overflow: hidden;
+    transition: width 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &.isDragging {
+    .markdownSplitEditor {
+      transition: none !important;
+    }
+    .resizerDivider {
+      transition: none !important;
+    }
+  }
+
+  /* 拖拽调节与折叠把手 */
+  .resizerDivider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 14px;
+    margin-left: -7px;
+    z-index: 1002;
+    cursor: col-resize;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: left 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &.isCollapsed {
+      margin-left: 0;
+      width: 18px;
+      cursor: pointer;
+
+      .resizerLine {
+        display: none;
+      }
+
+      .toggleCollapseHandle {
+        border-radius: 0 6px 6px 0;
+        box-shadow: 3px 0 10px rgba(15, 23, 42, 0.15);
+      }
+    }
+
+    .resizerLine {
+      width: 2px;
+      height: 100%;
+      background: transparent;
+      transition: background 0.15s ease;
+    }
+
+    &:hover .resizerLine,
+    &.isDragging .resizerLine {
+      background: #2563eb;
+    }
+
+    .toggleCollapseHandle {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.1);
+      color: #64748b;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+
+      &:hover {
+        background: #2563eb;
+        color: #ffffff;
+        border-color: #2563eb;
+        transform: translateY(-50%) scale(1.08);
+      }
     }
   }
 
@@ -378,6 +621,7 @@ export default {
     justify-content: space-between;
     background: #f8fafc;
     border-bottom: 1px solid #e2e8f0;
+    flex-shrink: 0;
 
     .headerLeft {
       display: flex;
@@ -452,6 +696,7 @@ export default {
     border-bottom: 1px solid #f1f5f9;
     overflow-x: auto;
     white-space: nowrap;
+    flex-shrink: 0;
 
     .syntaxTag {
       font-size: 11px;
@@ -573,6 +818,7 @@ export default {
     border-top: 1px solid #e2e8f0;
     font-size: 11px;
     color: #64748b;
+    flex-shrink: 0;
 
     .tipText {
       display: flex;

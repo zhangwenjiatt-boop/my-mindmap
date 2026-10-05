@@ -16,6 +16,7 @@
       class="mindMapContainer"
       id="mindMapContainer"
       ref="mindMapContainer"
+      :style="mindMapContainerStyle"
     ></div>
     <Count :mindMap="mindMap" v-if="!isZenMode"></Count>
     <Navigator v-if="mindMap" :mindMap="mindMap"></Navigator>
@@ -212,7 +213,10 @@ export default {
       prevImg: '',
       storeConfigTimer: null,
       showDragMask: false,
-      showSplitEditor: false
+      showSplitEditor: false,
+      splitEditorWidth: 440,
+      splitEditorCollapsed: false,
+      isSplitDragging: false
     }
   },
   computed: {
@@ -226,7 +230,26 @@ export default {
       extraTextOnExport: state => state.extraTextOnExport,
       isDragOutlineTreeNode: state => state.isDragOutlineTreeNode,
       enableAi: state => state.localConfig.enableAi
-    })
+    }),
+
+    mindMapContainerStyle() {
+      if (!this.showSplitEditor || this.splitEditorCollapsed) {
+        return {
+          left: '0px',
+          width: '100%',
+          transition: this.isSplitDragging
+            ? 'none'
+            : 'left 0.22s cubic-bezier(0.4, 0, 0.2, 1), width 0.22s cubic-bezier(0.4, 0, 0.2, 1)'
+        }
+      }
+      return {
+        left: `${this.splitEditorWidth}px`,
+        width: `calc(100% - ${this.splitEditorWidth}px)`,
+        transition: this.isSplitDragging
+          ? 'none'
+          : 'left 0.22s cubic-bezier(0.4, 0, 0.2, 1), width 0.22s cubic-bezier(0.4, 0, 0.2, 1)'
+      }
+    }
   },
   watch: {
     openNodeRichText() {
@@ -259,6 +282,7 @@ export default {
     this.$bus.$on('node_tree_render_end', this.handleHideLoading)
     this.$bus.$on('showLoading', this.handleShowLoading)
     this.$bus.$on('localStorageExceeded', this.onLocalStorageExceeded)
+    this.$bus.$on('split_editor_resize', this.onSplitEditorResize)
     window.addEventListener('resize', this.handleResize)
     this.$bus.$on('showDownloadTip', this.showDownloadTip)
     this.webTip()
@@ -275,6 +299,7 @@ export default {
     this.$bus.$off('node_tree_render_end', this.handleHideLoading)
     this.$bus.$off('showLoading', this.handleShowLoading)
     this.$bus.$off('localStorageExceeded', this.onLocalStorageExceeded)
+    this.$bus.$off('split_editor_resize', this.onSplitEditorResize)
     window.removeEventListener('resize', this.handleResize)
     this.$bus.$off('showDownloadTip', this.showDownloadTip)
     this.mindMap.destroy()
@@ -676,6 +701,18 @@ export default {
       this.$message.info(desc)
     },
 
+    onSplitEditorResize({ show, width, isCollapsed, isDragging }) {
+      if (show !== undefined) this.showSplitEditor = show
+      if (width !== undefined) this.splitEditorWidth = width
+      if (isCollapsed !== undefined) this.splitEditorCollapsed = isCollapsed
+      this.isSplitDragging = !!isDragging
+      this.$nextTick(() => {
+        if (this.mindMap) {
+          this.mindMap.resize()
+        }
+      })
+    },
+
     onSplitEditorChange(show) {
       this.showSplitEditor = show
       this.$nextTick(() => {
@@ -696,13 +733,6 @@ export default {
   top: 0;
   bottom: 0;
   display: flex;
-
-  &.hasSplitEditor {
-    .mindMapContainer {
-      left: 440px;
-      width: calc(100% - 440px);
-    }
-  }
 
   .dragMask {
     position: absolute;
@@ -728,8 +758,6 @@ export default {
     top: 0px;
     width: 100%;
     height: 100%;
-    transition: left 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-      width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 </style>

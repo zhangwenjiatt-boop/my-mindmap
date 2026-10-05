@@ -1,6 +1,36 @@
 <template>
   <div class="toolbarContainer" :class="{ isDark: isDark, hasSplitEditor: hasSplitEditor }">
-    <div class="toolbar" ref="toolbarRef">
+    <!-- 展开工具栏悬浮把手（当工具栏收起/隐藏时显示） -->
+    <transition name="el-zoom-in-top">
+      <div
+        class="toolbarFloatingTrigger"
+        v-if="isToolbarHidden"
+        :style="triggerStyle"
+        @click="toggleToolbar(true)"
+        title="展开工具栏 (快捷键 Alt+H)"
+      >
+        <i class="el-icon-arrow-down"></i>
+        <span class="triggerText">展开工具栏</span>
+      </div>
+    </transition>
+
+    <div
+      class="toolbar"
+      ref="toolbarRef"
+      :style="toolbarStyle"
+      :class="{ isDragging: isDraggingToolbar, isHidden: isToolbarHidden }"
+    >
+      <!-- 移动拖拽手柄 -->
+      <div
+        class="toolbarDragGrip"
+        @pointerdown="startDrag"
+        @dblclick="resetPosition"
+        title="按住鼠标拖拽移动工具栏，双击恢复默认居中"
+      >
+        <span class="gripIcon el-icon-rank"></span>
+        <span class="gripText">移动</span>
+      </div>
+
       <!-- 节点操作 -->
       <div class="toolbarBlock">
         <ToolbarNodeBtnList :list="horizontalList"></ToolbarNodeBtnList>
@@ -79,10 +109,18 @@
           class="toolbarBtn"
           @click="enterZenMode"
           title="全屏沉浸，专注笔记与思考 (按 Esc 退出)"
-          style="margin-right: 0;"
         >
           <span class="icon iconfont iconquanping"></span>
           <span class="text">专注模式</span>
+        </div>
+        <div
+          class="toolbarBtn hideToolbarBtn"
+          @click="toggleToolbar(false)"
+          title="收起/隐藏顶部工具栏 (快捷键 Alt+H)"
+          style="margin-right: 0;"
+        >
+          <span class="icon el-icon-arrow-up" style="font-size: 15px;"></span>
+          <span class="text">隐藏</span>
         </div>
         <!-- 本地文件树 -->
         <div
@@ -223,7 +261,17 @@ export default {
       rootDirName: '',
       fileTreeExpand: true,
       waitingWriteToLocalFile: false,
-      hasSplitEditor: false
+      hasSplitEditor: false,
+      splitEditorWidth: 440,
+      splitEditorCollapsed: false,
+      isSplitDragging: false,
+      isToolbarHidden: false,
+      isDraggingToolbar: false,
+      customPos: null,
+      dragStartX: 0,
+      dragStartY: 0,
+      initialToolbarX: 0,
+      initialToolbarY: 0
     }
   },
   computed: {
@@ -233,6 +281,68 @@ export default {
       openNodeRichText: state => state.localConfig.openNodeRichText,
       enableAi: state => state.localConfig.enableAi
     }),
+
+    toolbarStyle() {
+      const baseTransition = this.isDraggingToolbar
+        ? 'none'
+        : 'opacity 0.22s ease, transform 0.22s ease, left 0.22s cubic-bezier(0.4, 0, 0.2, 1)'
+
+      if (this.isToolbarHidden) {
+        return {
+          opacity: 0,
+          pointerEvents: 'none',
+          transform: this.customPos
+            ? 'translateY(-30px) scale(0.95)'
+            : 'translateX(-50%) translateY(-30px) scale(0.95)',
+          transition: 'all 0.22s cubic-bezier(0.4, 0, 0.2, 1)'
+        }
+      }
+
+      if (this.customPos) {
+        return {
+          left: `${this.customPos.x}px`,
+          top: `${this.customPos.y}px`,
+          transform: 'none',
+          transition: baseTransition
+        }
+      }
+
+      if (!this.hasSplitEditor || this.splitEditorCollapsed) {
+        return {
+          left: '50%',
+          top: '20px',
+          transform: 'translateX(-50%)',
+          transition: baseTransition
+        }
+      }
+
+      return {
+        left: `calc(50% + ${this.splitEditorWidth / 2}px)`,
+        top: '20px',
+        transform: 'translateX(-50%)',
+        transition: baseTransition
+      }
+    },
+
+    triggerStyle() {
+      if (this.customPos) {
+        const x = Math.min(Math.max(80, this.customPos.x + 80), window.innerWidth - 80)
+        return {
+          left: `${x}px`,
+          transform: 'translateX(-50%)'
+        }
+      }
+      if (!this.hasSplitEditor || this.splitEditorCollapsed) {
+        return {
+          left: '50%',
+          transform: 'translateX(-50%)'
+        }
+      }
+      return {
+        left: `calc(50% + ${this.splitEditorWidth / 2}px)`,
+        transform: 'translateX(-50%)'
+      }
+    },
 
     btnLit() {
       let res = [...defaultBtnList]
@@ -263,8 +373,12 @@ export default {
     }
   },
   created() {
+    this.initToolbarState()
     this.$bus.$on('write_local_file', this.onWriteLocalFile)
     this.$bus.$on('split_editor_change', this.onSplitEditorChange)
+    this.$bus.$on('split_editor_resize', this.onSplitEditorResize)
+    this.$bus.$on('toggle_toolbar_show', this.toggleToolbar)
+    this.$bus.$on('reset_toolbar_position', this.resetPosition)
   },
   mounted() {
     this.computeToolbarShow()
@@ -273,20 +387,137 @@ export default {
     this.$bus.$on('lang_change', this.computeToolbarShowThrottle)
     window.addEventListener('beforeunload', this.onUnload)
     this.$bus.$on('node_note_dblclick', this.onNodeNoteDblclick)
+    window.addEventListener('keydown', this.handleKeyDown)
   },
   beforeDestroy() {
     this.$bus.$off('write_local_file', this.onWriteLocalFile)
     this.$bus.$off('split_editor_change', this.onSplitEditorChange)
+    this.$bus.$off('split_editor_resize', this.onSplitEditorResize)
+    this.$bus.$off('toggle_toolbar_show', this.toggleToolbar)
+    this.$bus.$off('reset_toolbar_position', this.resetPosition)
     window.removeEventListener('resize', this.computeToolbarShowThrottle)
     this.$bus.$off('lang_change', this.computeToolbarShowThrottle)
     window.removeEventListener('beforeunload', this.onUnload)
     this.$bus.$off('node_note_dblclick', this.onNodeNoteDblclick)
+    window.removeEventListener('keydown', this.handleKeyDown)
+    window.removeEventListener('pointermove', this.onDragging)
+    window.removeEventListener('pointerup', this.stopDrag)
   },
   methods: {
     ...mapMutations(['setLocalConfig']),
 
+    initToolbarState() {
+      try {
+        const savedPos = localStorage.getItem('TOOLBAR_CUSTOM_POS')
+        if (savedPos) {
+          const parsed = JSON.parse(savedPos)
+          if (typeof parsed.x === 'number' && typeof parsed.y === 'number') {
+            const maxX = Math.max(10, window.innerWidth - 100)
+            const maxY = Math.max(10, window.innerHeight - 100)
+            this.customPos = {
+              x: Math.max(10, Math.min(parsed.x, maxX)),
+              y: Math.max(10, Math.min(parsed.y, maxY))
+            }
+          }
+        }
+        const savedHidden = localStorage.getItem('TOOLBAR_HIDDEN')
+        if (savedHidden === 'true') {
+          this.isToolbarHidden = true
+        }
+      } catch (e) {}
+    },
+
+    startDrag(e) {
+      if (e.button !== 0) return
+      this.isDraggingToolbar = true
+      this.dragStartX = e.clientX
+      this.dragStartY = e.clientY
+
+      const rect = this.$refs.toolbarRef.getBoundingClientRect()
+      this.initialToolbarX = rect.left
+      this.initialToolbarY = rect.top
+
+      document.body.style.userSelect = 'none'
+
+      window.addEventListener('pointermove', this.onDragging)
+      window.addEventListener('pointerup', this.stopDrag)
+    },
+
+    onDragging(e) {
+      if (!this.isDraggingToolbar) return
+      const deltaX = e.clientX - this.dragStartX
+      const deltaY = e.clientY - this.dragStartY
+
+      let newX = this.initialToolbarX + deltaX
+      let newY = this.initialToolbarY + deltaY
+
+      const rect = this.$refs.toolbarRef.getBoundingClientRect()
+      const maxX = Math.max(10, window.innerWidth - rect.width - 10)
+      const maxY = Math.max(10, window.innerHeight - rect.height - 10)
+
+      newX = Math.max(10, Math.min(newX, maxX))
+      newY = Math.max(10, Math.min(newY, maxY))
+
+      this.customPos = { x: Math.round(newX), y: Math.round(newY) }
+    },
+
+    stopDrag() {
+      if (!this.isDraggingToolbar) return
+      this.isDraggingToolbar = false
+      document.body.style.userSelect = ''
+
+      window.removeEventListener('pointermove', this.onDragging)
+      window.removeEventListener('pointerup', this.stopDrag)
+
+      if (this.customPos) {
+        try {
+          localStorage.setItem('TOOLBAR_CUSTOM_POS', JSON.stringify(this.customPos))
+        } catch (e) {}
+      }
+    },
+
+    resetPosition() {
+      this.customPos = null
+      try {
+        localStorage.removeItem('TOOLBAR_CUSTOM_POS')
+      } catch (e) {}
+      this.$message.success('已恢复工具栏默认居中位置')
+    },
+
+    toggleToolbar(show) {
+      if (typeof show === 'boolean') {
+        this.isToolbarHidden = !show
+      } else {
+        this.isToolbarHidden = !this.isToolbarHidden
+      }
+      try {
+        localStorage.setItem('TOOLBAR_HIDDEN', this.isToolbarHidden ? 'true' : 'false')
+      } catch (e) {}
+      this.$bus.$emit('toolbar_visibility_change', !this.isToolbarHidden)
+    },
+
+    handleKeyDown(e) {
+      if (e.altKey && (e.key === 'h' || e.key === 'H')) {
+        e.preventDefault()
+        this.toggleToolbar()
+      }
+    },
+
+    onSplitEditorResize({ show, width, isCollapsed, isDragging }) {
+      if (show !== undefined) this.hasSplitEditor = show
+      if (width !== undefined) this.splitEditorWidth = width
+      if (isCollapsed !== undefined) this.splitEditorCollapsed = isCollapsed
+      this.isSplitDragging = !!isDragging
+      this.$nextTick(() => {
+        this.computeToolbarShow()
+      })
+    },
+
     onSplitEditorChange(show) {
       this.hasSplitEditor = show
+      this.$nextTick(() => {
+        this.computeToolbarShow()
+      })
     },
 
     enterZenMode() {
@@ -296,7 +527,19 @@ export default {
     // 计算工具按钮如何显示
     computeToolbarShow() {
       if (!this.$refs.toolbarRef) return
-      const windowWidth = window.innerWidth - 40
+      if (this.customPos && this.$refs.toolbarRef) {
+        const rect = this.$refs.toolbarRef.getBoundingClientRect()
+        const maxX = Math.max(10, window.innerWidth - rect.width - 10)
+        const maxY = Math.max(10, window.innerHeight - rect.height - 10)
+        if (this.customPos.x > maxX || this.customPos.y > maxY) {
+          this.customPos = {
+            x: Math.min(this.customPos.x, maxX),
+            y: Math.min(this.customPos.y, maxY)
+          }
+        }
+      }
+      const splitOffset = (this.hasSplitEditor && !this.splitEditorCollapsed) ? this.splitEditorWidth : 0
+      const windowWidth = Math.max(280, window.innerWidth - splitOffset - 40)
       const all = [...this.btnLit]
       let index = 1
       const loopCheck = () => {
@@ -628,19 +871,80 @@ export default {
         }
       }
     }
+
+    .toolbarFloatingTrigger {
+      background: #262a2e;
+      border-color: #3f444e;
+      color: #f1f5f9;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+
+      i {
+        color: #38bdf8;
+      }
+
+      &:hover {
+        background: #32373d;
+        color: #38bdf8;
+        box-shadow: 0 6px 20px rgba(56, 189, 248, 0.25);
+      }
+    }
+
+    .toolbar {
+      .toolbarDragGrip {
+        background-color: #262a2e;
+        border-color: #3f444e;
+        color: #94a3b8;
+
+        &:hover {
+          background-color: #32373d;
+          border-color: #60a5fa;
+          color: #60a5fa;
+        }
+      }
+    }
   }
 
-  &.hasSplitEditor {
-    .toolbar {
-      left: calc(50% + 220px);
+  .toolbarFloatingTrigger {
+    position: fixed;
+    top: 0;
+    z-index: 1003;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px 8px;
+    background: #ffffff;
+    color: #1e293b;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.12);
+    border: 1px solid #e2e8f0;
+    border-top: none;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+
+    i {
+      font-size: 13px;
+      color: #2563eb;
+      transition: transform 0.2s ease;
+    }
+
+    &:hover {
+      background: #f8fafc;
+      color: #2563eb;
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.18);
+      transform: translateX(-50%) translateY(2px) !important;
+
+      i {
+        transform: translateY(2px);
+      }
     }
   }
 
   .toolbar {
     position: fixed;
-    left: 50%;
     transform: translateX(-50%);
-    transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     top: 20px;
     width: max-content;
     display: flex;
@@ -649,6 +953,53 @@ export default {
     font-weight: 400;
     color: rgba(26, 26, 26, 0.8);
     z-index: 2;
+
+    &.isDragging {
+      cursor: grabbing !important;
+      user-select: none;
+      .toolbarDragGrip {
+        cursor: grabbing !important;
+      }
+    }
+
+    .toolbarDragGrip {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #fff;
+      padding: 10px 10px;
+      border-radius: 6px;
+      box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.06);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      margin-right: 12px;
+      cursor: grab;
+      color: #64748b;
+      user-select: none;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+
+      &:hover {
+        color: #2563eb;
+        border-color: rgba(37, 99, 235, 0.3);
+        box-shadow: 0 4px 20px 0 rgba(37, 99, 235, 0.12);
+      }
+
+      &:active {
+        cursor: grabbing;
+      }
+
+      .gripIcon {
+        font-size: 16px;
+      }
+
+      .gripText {
+        font-size: 11px;
+        margin-top: 4px;
+        white-space: nowrap;
+        opacity: 0.85;
+      }
+    }
 
     .toolbarBlock {
       display: flex;

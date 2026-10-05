@@ -81,6 +81,20 @@
       </el-tooltip>
     </div>
     <div class="item">
+      <el-tooltip
+        effect="dark"
+        :content="isToolbarHidden ? '展开顶部工具栏 (Alt+H)' : '收起顶部工具栏 (Alt+H)'"
+        placement="top"
+      >
+        <div
+          class="btn"
+          :class="[isToolbarHidden ? 'el-icon-arrow-down' : 'el-icon-arrow-up']"
+          style="font-size: 16px; line-height: 24px;"
+          @click="$bus.$emit('toggle_toolbar_show')"
+        ></div>
+      </el-tooltip>
+    </div>
+    <div class="item">
       <Fullscreen :isDark="isDark" :mindMap="mindMap"></Fullscreen>
     </div>
     <div class="item">
@@ -161,7 +175,8 @@ export default {
       version: pkg.version,
       langList,
       lang: '',
-      openMiniMap: false
+      openMiniMap: false,
+      isToolbarHidden: false
     }
   },
   computed: {
@@ -172,8 +187,18 @@ export default {
   },
   created() {
     this.lang = getLang()
+    try {
+      this.isToolbarHidden = localStorage.getItem('TOOLBAR_HIDDEN') === 'true'
+    } catch (e) {}
+    this.$bus.$on('toolbar_visibility_change', this.onToolbarVisibilityChange)
+  },
+  beforeDestroy() {
+    this.$bus.$off('toolbar_visibility_change', this.onToolbarVisibilityChange)
   },
   methods: {
+    onToolbarVisibilityChange(visible) {
+      this.isToolbarHidden = !visible
+    },
     ...mapMutations([
       'setLocalConfig',
       'setIsReadonly',
