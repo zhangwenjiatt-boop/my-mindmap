@@ -4,8 +4,8 @@
     :custom-class="'aiExplainDialogInner' + (isDark ? ' isDark' : '')"
     :title="$t('aiExplain.title') || '✨ AI 概念释义与知识助手'"
     :visible.sync="dialogVisible"
-    width="720px"
-    top="7vh"
+    :width="isMobile ? '94%' : '720px'"
+    :top="isMobile ? '12px' : '7vh'"
     append-to-body
     :close-on-click-modal="false"
   >
@@ -353,7 +353,7 @@
     <el-dialog
       title="手动新增节点释义备注"
       :visible.sync="showAddCustomNoteDialog"
-      width="500px"
+      :width="isMobile ? '92%' : '500px'"
       append-to-body
       :custom-class="isDark ? 'isDark' : ''"
     >
@@ -397,6 +397,7 @@ import {
   deleteAiNote,
   clearAllAiNotes
 } from '@/utils/aiNoteHelper'
+import { isMobile } from 'simple-mind-map/src/utils/index'
 
 let md = new MarkdownIt()
 
@@ -409,6 +410,7 @@ export default {
   },
   data() {
     return {
+      isMobile: isMobile(),
       dialogVisible: false,
       activeTab: 'explain',
       targetNode: null,
@@ -517,7 +519,8 @@ export default {
       })
     },
 
-    handleOpenAiNoteBoxEvent({ node }) {
+    handleOpenAiNoteBoxEvent(payload) {
+      const node = payload && payload.node ? payload.node : payload
       this.targetNode = node || null
       this.loadNodeAiNotes()
       this.activeTab = 'history'
@@ -1623,6 +1626,53 @@ export default {
           }
         }
       }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .aiExplainDialog {
+    /deep/ .el-dialog {
+      margin-bottom: 20px !important;
+    }
+
+    /deep/ .el-dialog__header {
+      padding: 14px 16px 10px !important;
+    }
+
+    /deep/ .el-dialog__body {
+      padding: 10px 12px !important;
+    }
+  }
+
+  .explainHeroCard {
+    padding: 12px !important;
+
+    .termRow {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 6px !important;
+    }
+  }
+
+  .presetSelectorBar {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+
+    .presetPills {
+      flex-wrap: wrap !important;
+    }
+  }
+
+  .actionControlBar {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+
+    .actionRight {
+      width: 100% !important;
+      display: flex !important;
+      justify-content: flex-end !important;
     }
   }
 }

@@ -626,10 +626,15 @@ export default {
   watch: {
     activeSidebar(val) {
       if (val === 'nodeStyle') {
-        this.$refs.sidebar.show = true
+        if (this.$refs.sidebar) this.$refs.sidebar.show = true
       } else {
-        this.$refs.sidebar.show = false
+        if (this.$refs.sidebar) this.$refs.sidebar.show = false
       }
+    }
+  },
+  mounted() {
+    if (this.activeSidebar === 'nodeStyle' && this.$refs.sidebar) {
+      this.$refs.sidebar.show = true
     }
   },
   created() {

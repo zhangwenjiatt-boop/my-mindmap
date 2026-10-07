@@ -1,0 +1,66 @@
+[
+  {
+    "id": "u_muv1hqrh_5c6a4674",
+    "username": "testuser",
+    "nickname": "测试导师",
+    "salt": "05a9b472980178ad7463e2dbfdb52b4f",
+    "passwordHash": "68e17291fce5911b62902ad120be5ee46b4924f19782abc09e6d88319d8a8964",
+    "createdAt": 1791192039101
+  },
+  {
+    "id": "u_muv1prfi_acef11ff",
+    "username": "user_5l914",
+    "nickname": "架构师",
+    "salt": "073f02d6c88e9170e369e9f4f69dc447",
+    "passwordHash": "20fdf8ff05eb4af5b9d04c32d8d1a2c22d2bf911dbe1f29a47f28c1f0efe27ae",
+    "createdAt": 1791192413214
+  },
+  {
+    "id": "u_muvzl3wu_2ee2c17c",
+    "username": "alice_muvzl3vr",
+    "nickname": "爱丽丝",
+    "salt": "a889613e48f12687473312ffbe9d8a80",
+    "passwordHash": "288adbfd37db582bd6c05f2ed454b3268c4861dc742e1aee0010ca50f3b0ed83",
+    "createdAt": 1791249303054
+  },
+  {
+    "id": "u_muvzl3x8_208aa27f",
+    "username": "bob_muvzl3vr",
+    "nickname": "鲍勃",
+    "salt": "71a2426576c6978e7270245a9cf149e1",
+    "passwordHash": "70b3d79c5df7ad29d763e77bbaff085b7e6db7a2a441c1d6f93f85894f2c1abd",
+    "createdAt": 1791249303068
+  },
+  {
+    "id": "u_muw4nnxl_e65cf203",
+    "username": "21299184",
+    "nickname": "小张",
+    "salt": "7072e47e7f47660394b0e472d38d5ae3",
+    "passwordHash": "534ca2649602ee77954e29c378661f989b40e95b94be2c611eab406e587cc3e1",
+    "createdAt": 1791257820393
+  },
+  {
+    "id": "u_muw5k1vx_25ac22dc",
+    "username": "tester_1791259331422",
+    "nickname": "测试用户",
+    "salt": "ac53ebb294f528a4d35165fa10f71f5b",
+    "passwordHash": "b5a869477faa28857a28c7b5e39c05f371bcbc8ef29fa58b28e674f06b439727",
+    "createdAt": 1791259331469
+  },
+  {
+    "id": "u_muw70d8s_278ad7e5",
+    "username": "jacob_architect_muw70d7s",
+    "nickname": "架构师Jacob",
+    "salt": "930313eeebac0a63d63c16cd11b917aa",
+    "passwordHash": "ab89f59081aa62b2bfbf49e969c58a5789c6585379768809c0037e276a0fd3c2",
+    "createdAt": 1791261772300
+  },
+  {
+    "id": "u_muw71ojx_6cb182c1",
+    "username": "test_1791261833588",
+    "nickname": "测试用户",
+    "salt": "bf1b82b620d80ed9f7c59cad5a797348",
+    "passwordHash": "0c657bde993feb7cfa7ab4e018c6ddcd105eb6bfae0d554442b57bc2a92190f3",
+    "createdAt": 1791261833613
+  }
+]

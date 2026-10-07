@@ -144,6 +144,7 @@ export default {
   },
   created() {
     this.$bus.$on('showNoteContent', this.onShowNoteContent)
+    this.$bus.$on('node_note_click', this.onNodeNoteClick)
     this.$bus.$on('hideNoteContent', this.hideNoteContent)
     document.body.addEventListener('click', this.hideNoteContent)
     this.$bus.$on('node_active', this.onNodeActive)
@@ -158,6 +159,7 @@ export default {
   },
   beforeDestroy() {
     this.$bus.$off('showNoteContent', this.onShowNoteContent)
+    this.$bus.$off('node_note_click', this.onNodeNoteClick)
     this.$bus.$off('hideNoteContent', this.hideNoteContent)
     document.body.removeEventListener('click', this.hideNoteContent)
     this.$bus.$off('node_active', this.onNodeActive)
@@ -238,12 +240,24 @@ export default {
       })
     },
 
+    onNodeNoteClick(node) {
+      if (!node) return
+      const { left, top } = node.getNoteContentPosition()
+      this.onShowNoteContent(node.getData('note'), left, top, node)
+    },
+
     // 更新位置
     updateNoteContentPosition(left, top) {
+      if (!this.$refs.noteContentViewer) return
       const { width, height } = this.$refs.noteContentViewer.getBoundingClientRect()
-      const { right, bottom } = this.mindMap.elRect
-      this.left = left + width > right ? right - width : left
-      this.top = top + height > bottom ? bottom - height : top
+      const winWidth = window.innerWidth
+      const winHeight = window.innerHeight
+
+      let l = left + width > winWidth ? winWidth - width - 12 : left
+      let t = top + height > winHeight ? winHeight - height - 12 : top
+
+      this.left = Math.max(10, l)
+      this.top = Math.max(60, t)
     },
 
     // 画布缩放事件
@@ -278,10 +292,13 @@ export default {
   border-radius: 8px;
   box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.12);
   border: 1px solid rgba(0, 0, 0, 0.08);
+  max-width: calc(100vw - 24px);
+  box-sizing: border-box;
   z-index: 2000;
 
   &.isAiNoteMode {
     width: 320px;
+    max-width: calc(100vw - 24px);
     padding: 12px;
   }
 

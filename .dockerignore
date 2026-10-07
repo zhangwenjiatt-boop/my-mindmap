@@ -1,0 +1,12 @@
+node_modules
+web/node_modules
+.git
+.gitignore
+tests
+scratch
+*.png
+*.log
+*.ps1
+run_browser_verification.js
+test_clean.js
+test_clean_and_remove.js

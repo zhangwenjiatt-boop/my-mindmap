@@ -10,6 +10,22 @@ const SIMPLE_MIND_MAP_LOCAL_CONFIG = 'SIMPLE_MIND_MAP_LOCAL_CONFIG'
 
 let mindMapData = null
 
+// 纯净的新思维导图默认数据（干净工作区，仅单个中心主题）
+export const defaultBlankMindMapData = {
+  root: {
+    data: {
+      text: '中心主题'
+    },
+    children: []
+  },
+  theme: {
+    template: 'classic4',
+    config: {}
+  },
+  layout: 'logicalStructure',
+  view: null
+}
+
 // 获取缓存的思维导图数据
 export const getData = () => {
   // 接管模式
@@ -23,12 +39,17 @@ export const getData = () => {
   }
   let store = localStorage.getItem(SIMPLE_MIND_MAP_DATA)
   if (store === null) {
-    return simpleDeepClone(exampleData)
+    return simpleDeepClone(defaultBlankMindMapData)
   } else {
     try {
+      // 检查是否为旧版本的繁杂 demo 示例数据（带有 sxmind.cn 或特定示例图片）
+      if (store.includes('sxmind.cn') || store.includes('enJFNMHnedQTYTESGfDkctCp2')) {
+        localStorage.removeItem(SIMPLE_MIND_MAP_DATA)
+        return simpleDeepClone(defaultBlankMindMapData)
+      }
       return JSON.parse(store)
     } catch (error) {
-      return simpleDeepClone(exampleData)
+      return simpleDeepClone(defaultBlankMindMapData)
     }
   }
 }

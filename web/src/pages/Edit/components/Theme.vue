@@ -87,10 +87,16 @@ export default {
     activeSidebar(val) {
       if (val === 'theme') {
         this.theme = this.mindMap.getTheme()
-        this.$refs.sidebar.show = true
+        if (this.$refs.sidebar) this.$refs.sidebar.show = true
       } else {
-        this.$refs.sidebar.show = false
+        if (this.$refs.sidebar) this.$refs.sidebar.show = false
       }
+    }
+  },
+  mounted() {
+    if (this.activeSidebar === 'theme' && this.$refs.sidebar) {
+      this.theme = this.mindMap ? this.mindMap.getTheme() : ''
+      this.$refs.sidebar.show = true
     }
   },
   created() {

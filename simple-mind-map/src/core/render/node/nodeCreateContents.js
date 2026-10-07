@@ -22,6 +22,72 @@ const measureText = (text, style) => {
   return g.bbox()
 }
 
+// 计算节点的合理换行宽度，结合单词长度与同级节点协调
+const getNodeAutoWrapWidth = (node, text, measureFn) => {
+  // 如果用户手动拖拽调整了自定义宽度
+  if (node.hasCustomWidth && node.hasCustomWidth()) {
+    return node.customTextWidth
+  }
+  if (node.customTextWidth !== undefined) {
+    return node.customTextWidth
+  }
+
+  const defaultMaxWidth =
+    (node.mindMap && node.mindMap.opt && node.mindMap.opt.textAutoWrapWidth) || 500
+
+  // 提取纯文本单词，过滤掉富文本 HTML 标签和实体
+  const extractWords = str => {
+    const clean = String(str || '')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&[a-zA-Z0-9#]+;/g, ' ')
+    return clean.match(/[a-zA-Z0-9_\-'.]+/g) || []
+  }
+
+  // 1. 测量当前节点文本中的最长英文/数字单词宽度
+  let maxWordWidth = 0
+  if (text) {
+    const words = extractWords(text)
+    words.forEach(w => {
+      const width = measureFn(w)
+      if (width > maxWordWidth) {
+        maxWordWidth = width
+      }
+    })
+  }
+
+  // 2. 检查同级节点（同一个父节点下的兄弟节点）
+  let siblingMaxWordWidth = maxWordWidth
+
+  if (node.parent && node.parent.nodeData && Array.isArray(node.parent.nodeData.children)) {
+    const siblings = node.parent.nodeData.children
+    if (siblings.length > 1) {
+      siblings.forEach(siblingData => {
+        if (!siblingData || !siblingData.data) return
+        const sWords = extractWords(siblingData.data.text || '')
+        sWords.forEach(w => {
+          const width = measureFn(w)
+          if (width > siblingMaxWordWidth) {
+            siblingMaxWordWidth = width
+          }
+        })
+      })
+    }
+  }
+
+  // 3. 计算协调目标宽度
+  // 基础舒适宽度：对于导图节点，260px 是兼顾中英文双语的最佳排版宽度
+  // 必须 >= 最长单词宽度 + 24，确保长单词绝对能在一行容纳，绝不被硬截断
+  let targetWidth = Math.max(260, Math.ceil(siblingMaxWordWidth + 24))
+
+  // 如果最长单词未超出 defaultMaxWidth，则以 defaultMaxWidth 为上限
+  // 若最长单词自身超出了 defaultMaxWidth，则以单词宽度为准保证完整显示不截断
+  if (targetWidth > defaultMaxWidth && siblingMaxWordWidth + 24 <= defaultMaxWidth) {
+    targetWidth = defaultMaxWidth
+  }
+
+  return targetWidth
+}
+
 // 标签默认的样式
 const defaultTagStyle = {
   radius: 3, // 标签矩形的圆角大小
@@ -135,11 +201,18 @@ function createIconNode() {
 
 // 创建富文本节点
 function createRichTextNode(specifyText) {
-  const hasCustomWidth = this.hasCustomWidth()
+  const hasCustomWidth = this.hasCustomWidth ? this.hasCustomWidth() : false
   let text =
     typeof specifyText === 'string' ? specifyText : this.getData('text')
-  let { textAutoWrapWidth, emptyTextMeasureHeightText } = this.mindMap.opt
-  textAutoWrapWidth = hasCustomWidth ? this.customTextWidth : textAutoWrapWidth
+  let { emptyTextMeasureHeightText } = this.mindMap.opt
+  let textAutoWrapWidth
+  if (hasCustomWidth) {
+    textAutoWrapWidth = this.customTextWidth
+  } else {
+    textAutoWrapWidth = getNodeAutoWrapWidth(this, text, str => {
+      return measureText(str, this.style).width
+    })
+  }
   const g = new G()
   // 创建富文本结构，或复位富文本样式
   let recoverText = false
@@ -188,6 +261,8 @@ function createRichTextNode(specifyText) {
   const el = div.children[0]
   el.classList.add('smm-richtext-node-wrap')
   addXmlns(el)
+  el.style.wordBreak = 'normal'
+  el.style.overflowWrap = 'break-word'
   el.style.maxWidth = textAutoWrapWidth + 'px'
   if (hasCustomWidth) {
     el.style.width = this.customTextWidth + 'px'
@@ -207,6 +282,7 @@ function createRichTextNode(specifyText) {
   height = Math.ceil(height)
   g.attr('data-width', width)
   g.attr('data-height', height)
+  g.attr('data-max-width', textAutoWrapWidth)
   const foreignObject = createForeignObjectNode({
     el: div.children[0],
     width,
@@ -252,30 +328,74 @@ function createTextNode(specifyText) {
   if (!isUndef(text)) {
     textArr = String(text).split(/\n/gim)
   }
-  const { textAutoWrapWidth: maxWidth, emptyTextMeasureHeightText } =
-    this.mindMap.opt
+  const hasCustomWidth = this.hasCustomWidth ? this.hasCustomWidth() : false
+  const getWidth = str => measureText(str, this.style).width
+  const maxWidth = hasCustomWidth
+    ? this.customTextWidth
+    : getNodeAutoWrapWidth(this, text, getWidth)
+  const { emptyTextMeasureHeightText } = this.mindMap.opt
   let isMultiLine = textArr.length > 1
   textArr.forEach((item, index) => {
-    let arr = item.split('')
-    let lines = []
-    let line = []
-    while (arr.length) {
-      let str = arr.shift()
-      let text = [...line, str].join('')
-      if (measureText(text, this.style).width <= maxWidth) {
-        line.push(str)
+    // 快速检查：如果当前行未超过最大换行宽度，保持原样
+    if (getWidth(item) <= maxWidth) {
+      return
+    }
+
+    // 智能 Token 拆分：英文字词+标点整体不截断，CJK 汉字按字换行，空格作为自然分界
+    const tokenRegex = /([a-zA-Z0-9_\-'.]+[,:;?!]*|[\u4e00-\u9fa5\u3040-\u30ff\uac00-\ud7af][，。、；：？！’”）》\]}]?|\s+|.)/gu
+    const tokens = []
+    let m
+    while ((m = tokenRegex.exec(item)) !== null) {
+      tokens.push(m[0])
+    }
+
+    const lines = []
+    let currentLine = ''
+
+    for (let i = 0; i < tokens.length; i++) {
+      const token = tokens[i]
+
+      // 新行开头的纯空格忽略，防止左侧缩进参差不齐
+      if (!currentLine && /^\s+$/.test(token)) {
+        continue
+      }
+
+      const candidate = currentLine + token
+
+      if (getWidth(candidate) <= maxWidth) {
+        currentLine = candidate
       } else {
-        lines.push(line.join(''))
-        line = [str]
+        if (currentLine) {
+          // 当前行已满：放入 lines，当前单词移至下一行完整展示（不硬截断单词！）
+          lines.push(currentLine.trimEnd())
+          currentLine = /^\s+$/.test(token) ? '' : token
+        } else {
+          // 单个单词本身极其巨大（超过 maxWidth）：仅在极端情况下降级切分
+          let chars = token.split('')
+          let subLine = ''
+          while (chars.length > 0) {
+            let ch = chars.shift()
+            if (getWidth(subLine + ch) <= maxWidth) {
+              subLine += ch
+            } else {
+              if (subLine) lines.push(subLine)
+              subLine = ch
+            }
+          }
+          currentLine = subLine
+        }
       }
     }
-    if (line.length > 0) {
-      lines.push(line.join(''))
+
+    if (currentLine && currentLine.trim()) {
+      lines.push(currentLine.trimEnd())
     }
+
     if (lines.length > 1) {
       isMultiLine = true
     }
-    textArr[index] = lines.join('\n')
+
+    textArr[index] = lines.length ? lines.join('\n') : item
   })
   textArr = textArr.join('\n').replace(/\n$/g, '').split(/\n/gim)
   textArr.forEach((item, index) => {
@@ -313,6 +433,7 @@ function createTextNode(specifyText) {
   height = Math.ceil(height)
   g.attr('data-width', width)
   g.attr('data-height', height)
+  g.attr('data-max-width', maxWidth)
   g.attr('data-ismultiLine', isMultiLine || textArr.length > 1)
   return {
     node: g,

@@ -415,6 +415,15 @@ class View {
   // 计算图形四个方向的位置边界值
   getPositionLimit() {
     const { scaleX, scaleY } = this.mindMap.draw.transform()
+    if (!this.mindMap.renderer.root || !this.mindMap.renderer.root.group) {
+      return {
+        scale: scaleX,
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0
+      }
+    }
     const drawRect = this.mindMap.draw.rbox()
     const rootRect = this.mindMap.renderer.root.group.rbox()
     const rootCenterOffset = this.mindMap.renderer.layout.getRootCenterOffset(

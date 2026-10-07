@@ -537,6 +537,11 @@ export const langList = [
 // 侧边栏列表
 export const sidebarTriggerList = [
   {
+    name: '开始',
+    value: 'start',
+    icon: 'iconzhuye'
+  },
+  {
     name: '节点样式',
     value: 'nodeStyle',
     icon: 'iconzhuti'

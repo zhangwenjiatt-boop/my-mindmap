@@ -1,0 +1,14 @@
+{
+  "root": {
+    "data": {
+      "text": "新项目"
+    },
+    "children": []
+  },
+  "theme": {
+    "template": "classic4",
+    "config": {}
+  },
+  "layout": "logicalStructure",
+  "view": null
+}

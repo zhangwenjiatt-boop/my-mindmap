@@ -1,0 +1,21 @@
+{
+  "root": {
+    "data": {
+      "text": "Q4 战略核心"
+    },
+    "children": [
+      {
+        "data": {
+          "text": "业务线A"
+        },
+        "children": []
+      }
+    ]
+  },
+  "theme": {
+    "template": "classic4",
+    "config": {}
+  },
+  "layout": "logicalStructure",
+  "view": null
+}

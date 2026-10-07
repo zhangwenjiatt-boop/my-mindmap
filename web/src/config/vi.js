@@ -439,6 +439,11 @@ export const langList = [
 // Danh sách thanh bên
 export const sidebarTriggerList = [
   {
+    name: 'Bắt đầu',
+    value: 'start',
+    icon: 'iconzhuye'
+  },
+  {
     name: 'Kiểu nút',
     value: 'nodeStyle',
     icon: 'iconzhuti'

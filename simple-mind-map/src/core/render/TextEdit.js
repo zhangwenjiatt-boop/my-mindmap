@@ -325,8 +325,9 @@ export default class TextEdit {
         margin-left: -${this.textNodePaddingX}px;
         margin-top: -${this.textNodePaddingY}px;
         outline: none; 
-        word-break: break-all;
-        line-break: anywhere;
+        word-break: normal;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
       `
       this.textEditNode.setAttribute('contenteditable', true)
       this.textEditNode.addEventListener('keyup', e => {
@@ -385,7 +386,12 @@ export default class TextEdit {
     this.textEditNode.style.left = Math.floor(rect.left) + 'px'
     this.textEditNode.style.top = Math.floor(rect.top) + 'px'
     this.textEditNode.style.display = 'block'
-    this.textEditNode.style.maxWidth = textAutoWrapWidth * scale + 'px'
+    const effectiveMaxWidth =
+      (node._textData &&
+        node._textData.node &&
+        Number(node._textData.node.attr('data-max-width'))) ||
+      textAutoWrapWidth
+    this.textEditNode.style.maxWidth = effectiveMaxWidth * scale + 'px'
     if (isMultiLine) {
       this.textEditNode.style.lineHeight = noneRichTextNodeLineHeight
       this.textEditNode.style.transform = `translateY(${

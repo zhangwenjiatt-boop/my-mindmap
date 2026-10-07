@@ -169,6 +169,9 @@ class Scrollbar {
 
   // 更新视图
   updateMindMapView(type, offset) {
+    if (!this.mindMap.renderer.root || !this.mindMap.renderer.root.group) {
+      return
+    }
     const scrollbarData = this.calculationScrollbar()
     const t = this.mindMap.draw.transform()
     const drawRect = this.mindMap.draw.rbox()

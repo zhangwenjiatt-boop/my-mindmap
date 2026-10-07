@@ -1,0 +1,27 @@
+{
+  "root": {
+    "data": {
+      "text": "产品战略 2026 (定稿)"
+    },
+    "children": [
+      {
+        "data": {
+          "text": "移动端迭代"
+        },
+        "children": []
+      },
+      {
+        "data": {
+          "text": "AI 工作台"
+        },
+        "children": []
+      },
+      {
+        "data": {
+          "text": "海外版多语言"
+        },
+        "children": []
+      }
+    ]
+  }
+}

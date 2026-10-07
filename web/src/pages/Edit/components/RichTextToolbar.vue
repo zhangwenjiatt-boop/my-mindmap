@@ -3,17 +3,17 @@
     class="richTextToolbar"
     ref="richTextToolbar"
     :style="style"
-    :class="{ isDark: isDark }"
-    @click.stop.passive
+    :class="{ isDark: isDark, isMobile: isMobile }"
+    @click.stop
     v-show="showRichTextToolbar"
   >
-    <el-tooltip :content="$t('richTextToolbar.bold')" placement="top">
+    <el-tooltip :content="$t('richTextToolbar.bold')" placement="top" :disabled="isMobile">
       <div class="btn" :class="{ active: formatInfo.bold }" @click="toggleBold">
         <span class="icon iconfont iconzitijiacu"></span>
       </div>
     </el-tooltip>
 
-    <el-tooltip :content="$t('richTextToolbar.italic')" placement="top">
+    <el-tooltip :content="$t('richTextToolbar.italic')" placement="top" :disabled="isMobile">
       <div
         class="btn"
         :class="{ active: formatInfo.italic }"
@@ -23,7 +23,7 @@
       </div>
     </el-tooltip>
 
-    <el-tooltip :content="$t('richTextToolbar.underline')" placement="top">
+    <el-tooltip :content="$t('richTextToolbar.underline')" placement="top" :disabled="isMobile">
       <div
         class="btn"
         :class="{ active: formatInfo.underline }"
@@ -33,7 +33,7 @@
       </div>
     </el-tooltip>
 
-    <el-tooltip :content="$t('richTextToolbar.strike')" placement="top">
+    <el-tooltip :content="$t('richTextToolbar.strike')" placement="top" :disabled="isMobile">
       <div
         class="btn"
         :class="{ active: formatInfo.strike }"
@@ -43,8 +43,8 @@
       </div>
     </el-tooltip>
 
-    <el-tooltip :content="$t('richTextToolbar.fontFamily')" placement="top">
-      <el-popover placement="bottom" trigger="hover">
+    <el-tooltip :content="$t('richTextToolbar.fontFamily')" placement="top" :disabled="isMobile">
+      <el-popover placement="bottom" trigger="click">
         <div class="fontOptionsList" :class="{ isDark: isDark }">
           <div
             class="fontOptionItem"
@@ -63,8 +63,8 @@
       </el-popover>
     </el-tooltip>
 
-    <el-tooltip :content="$t('richTextToolbar.fontSize')" placement="top">
-      <el-popover placement="bottom" trigger="hover">
+    <el-tooltip :content="$t('richTextToolbar.fontSize')" placement="top" :disabled="isMobile">
+      <el-popover placement="bottom" trigger="click">
         <div class="fontOptionsList" :class="{ isDark: isDark }">
           <div
             class="fontOptionItem"
@@ -86,8 +86,8 @@
       </el-popover>
     </el-tooltip>
 
-    <el-tooltip :content="$t('richTextToolbar.color')" placement="top">
-      <el-popover placement="bottom" trigger="hover">
+    <el-tooltip :content="$t('richTextToolbar.color')" placement="top" :disabled="isMobile">
+      <el-popover placement="bottom" trigger="click">
         <Color :color="fontColor" @change="changeFontColor"></Color>
         <div class="btn" slot="reference" :style="{ color: formatInfo.color }">
           <span class="icon iconfont iconzitiyanse"></span>
@@ -98,8 +98,9 @@
     <el-tooltip
       :content="$t('richTextToolbar.backgroundColor')"
       placement="top"
+      :disabled="isMobile"
     >
-      <el-popover placement="bottom" trigger="hover">
+      <el-popover placement="bottom" trigger="click">
         <Color
           :color="fontBackgroundColor"
           @change="changeFontBackgroundColor"
@@ -110,8 +111,8 @@
       </el-popover>
     </el-tooltip>
 
-    <el-tooltip :content="$t('richTextToolbar.textAlign')" placement="top">
-      <el-popover placement="bottom" trigger="hover">
+    <el-tooltip :content="$t('richTextToolbar.textAlign')" placement="top" :disabled="isMobile">
+      <el-popover placement="bottom" trigger="click">
         <div class="fontOptionsList" :class="{ isDark: isDark }">
           <div
             class="fontOptionItem"
@@ -129,14 +130,14 @@
       </el-popover>
     </el-tooltip>
 
-    <el-tooltip :content="$t('richTextToolbar.removeFormat')" placement="top">
+    <el-tooltip :content="$t('richTextToolbar.removeFormat')" placement="top" :disabled="isMobile">
       <div class="btn" @click="removeFormat">
         <span class="icon iconfont iconqingchu"></span>
       </div>
     </el-tooltip>
 
     <!-- AI 释义 -->
-    <el-tooltip content="AI 释义与备注" placement="top" v-if="enableAi">
+    <el-tooltip content="AI 概念释义与知识助手" placement="top" v-if="enableAi" :disabled="isMobile">
       <div class="btn aiBtn" @click="handleAiExplain">
         <span class="icon iconfont iconAIshengcheng"></span>
       </div>
@@ -148,6 +149,7 @@
 import { fontFamilyList, fontSizeList, alignList } from '@/config'
 import Color from './Color.vue'
 import { mapState } from 'vuex'
+import { isMobile } from 'simple-mind-map/src/utils/index'
 
 export default {
   components: {
@@ -160,6 +162,7 @@ export default {
   },
   data() {
     return {
+      isMobile: isMobile(),
       fontSizeList,
       showRichTextToolbar: false,
       style: {
@@ -196,9 +199,18 @@ export default {
   },
   methods: {
     onRichTextSelectionChange(hasRange, rect, formatInfo) {
-      if (hasRange) {
-        this.style.left = rect.left + rect.width / 2 + 'px'
-        this.style.top = rect.top - 60 + 'px'
+      if (hasRange && rect) {
+        const winWidth = window.innerWidth
+        let left = rect.left + rect.width / 2
+        let top = rect.top - 60
+        if (top < 65) {
+          top = (rect.bottom || rect.top + 30) + 12
+        }
+        if (left < 20) left = 20
+        if (left > winWidth - 20) left = winWidth - 20
+
+        this.style.left = left + 'px'
+        this.style.top = top + 'px'
         this.formatInfo = { ...(formatInfo || {}) }
       }
       this.showRichTextToolbar = hasRange
@@ -273,31 +285,27 @@ export default {
 
     handleAiExplain() {
       let selectedText = ''
-      if (
-        this.mindMap &&
-        this.mindMap.richText &&
-        this.mindMap.richText.quill &&
-        this.mindMap.richText.range
-      ) {
-        const range = this.mindMap.richText.range
-        selectedText = this.mindMap.richText.quill.getText(
-          range.index,
-          range.length
-        )
+      try {
+        const sel = window.getSelection()
+        if (sel) {
+          selectedText = sel.toString().trim()
+        }
+      } catch (e) {
+        console.error(e)
       }
-      if (!selectedText) {
-        const selection = window.getSelection()
-        selectedText = selection ? selection.toString() : ''
+
+      const activeNodes = (this.mindMap && this.mindMap.renderer)
+        ? this.mindMap.renderer.activeNodeList
+        : []
+      const node = activeNodes.length > 0 ? activeNodes[0] : null
+
+      if (!selectedText && node) {
+        selectedText = (node.getData('text') || '').replace(/<[^>]+>/g, '').trim()
       }
-      const currentNode =
-        (this.mindMap &&
-          this.mindMap.richText &&
-          this.mindMap.richText.node) ||
-        (this.mindMap && this.mindMap.renderer.activeNodeList[0])
 
       this.$bus.$emit('ai_explain', {
-        text: (selectedText || '').trim(),
-        node: currentNode
+        text: selectedText,
+        node: node
       })
     }
   }
@@ -308,58 +316,93 @@ export default {
 .richTextToolbar {
   position: fixed;
   z-index: 2000;
-  height: 55px;
+  height: 48px;
   background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 8px;
-  box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.12);
   display: flex;
   align-items: center;
   transform: translateX(-50%);
+  max-width: calc(100vw - 20px);
+  box-sizing: border-box;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   &.isDark {
-    background: #363b3f;
+    background: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.4);
 
     .btn {
-      color: #fff;
+      color: #e2e8f0;
 
       &:hover {
-        background: hsla(0, 0%, 100%, 0.05);
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      &.aiBtn {
+        color: #818cf8;
+        border-left-color: #334155;
+
+        &:hover {
+          background: rgba(99, 102, 241, 0.2);
+          color: #c7d2fe;
+        }
       }
     }
   }
 
   .btn {
-    width: 55px;
-    height: 55px;
+    width: 44px;
+    height: 48px;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    flex-shrink: 0;
 
     &:hover {
-      background-color: #eefbed;
+      background-color: #f1f5f9;
     }
 
     &.active {
-      color: #12bb37;
+      color: #2563eb;
     }
 
     &.aiBtn {
-      color: #2563eb;
+      color: #6366f1;
       border-left: 1px solid rgba(0, 0, 0, 0.08);
 
       &:hover {
         background-color: #eff6ff;
-        color: #1d4ed8;
+        color: #4f46e5;
       }
     }
 
     .icon {
-      font-size: 20px;
+      font-size: 18px;
 
       &.fontColor {
-        font-size: 26px;
+        font-size: 22px;
+      }
+    }
+  }
+
+  &.isMobile {
+    height: 42px;
+
+    .btn {
+      width: 38px;
+      height: 42px;
+
+      .icon {
+        font-size: 16px;
       }
     }
   }
@@ -390,7 +433,7 @@ export default {
     }
 
     &.active {
-      color: #12bb37;
+      color: #2563eb;
     }
   }
 }

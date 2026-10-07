@@ -74,7 +74,9 @@ function normalizeChatUrl(rawUrl) {
   return url;
 }
 
-const server = http.createServer((req, res) => {
+const { handleApiRequest } = require('./server_storage');
+
+const server = http.createServer(async (req, res) => {
   // Decode URL and strip query string / hash
   let decodedUrl;
   try {
@@ -82,6 +84,21 @@ const server = http.createServer((req, res) => {
   } catch (e) {
     res.statusCode = 400;
     res.end('Bad Request');
+    return;
+  }
+
+  // Handle Auth & Projects API
+  try {
+    if (await handleApiRequest(req, res, decodedUrl)) {
+      return;
+    }
+  } catch (apiErr) {
+    console.error('API Error:', apiErr);
+    if (!res.headersSent) {
+      res.statusCode = 500;
+      res.setHeader('Content-Type', 'application/json; charset=utf-8');
+      res.end(JSON.stringify({ code: 500, msg: '服务器处理请求异常' }));
+    }
     return;
   }
 
@@ -459,6 +476,24 @@ const server = http.createServer((req, res) => {
 
   // Normalize path to prevent directory traversal
   let safePath = path.normalize(decodedUrl).replace(/^(\.\.[\/\\])+/, '');
+
+  // Security check: Never expose sensitive server files, source code, data directory or system files
+  const normalizedLower = safePath.replace(/\\/g, '/').toLowerCase().replace(/^\/+/, '');
+  const baseName = path.basename(safePath).toLowerCase();
+  const forbiddenPrefixes = ['data', 'node_modules', 'simple-mind-map', 'tests', 'web', '.git'];
+  const forbiddenFiles = ['server.js', 'server_storage.js', 'package.json', 'package-lock.json', '.gitignore', '.env'];
+
+  const isForbidden = forbiddenPrefixes.some(p => normalizedLower === p || normalizedLower.startsWith(p + '/')) ||
+                      forbiddenFiles.includes(baseName) ||
+                      baseName.startsWith('.');
+
+  if (isForbidden) {
+    res.statusCode = 403;
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.end('403 Forbidden');
+    return;
+  }
+
   let filePath = path.join(ROOT_DIR, safePath);
 
   // If requesting a directory, serve index.html

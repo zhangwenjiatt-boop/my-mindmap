@@ -20,6 +20,7 @@ export const walk = (
   index = 0,
   ancestors = []
 ) => {
+  if (!root) return
   let stop = false
   if (beforeCallback) {
     stop = beforeCallback(root, parent, isRoot, layerIndex, index, ancestors)
@@ -45,6 +46,7 @@ export const walk = (
 
 //  广度优先遍历树
 export const bfsWalk = (root, callback) => {
+  if (!root) return
   let stack = [root]
   let isStop = false
   if (callback(root, null) === 'stop') {

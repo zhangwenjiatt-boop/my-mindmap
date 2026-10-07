@@ -3,7 +3,7 @@
     class="sidebarContainer"
     @click.stop
     :class="{ show: show, isDark: isDark }"
-    :style="{ zIndex: zIndex }"
+    :style="sidebarStyle"
   >
     <span class="closeBtn el-icon-close" @click="close"></span>
     <div class="sidebarHeader" v-if="title">
@@ -25,34 +25,64 @@ export default {
     title: {
       type: String,
       default: ''
+    },
+    width: {
+      type: String,
+      default: '300px'
     }
   },
   data() {
     return {
       show: false,
-      zIndex: 0
+      zIndex: 1000
     }
   },
   computed: {
     ...mapState({
       isDark: state => state.localConfig.isDark
-    })
+    }),
+    sidebarStyle() {
+      const widthVal = this.width || '300px'
+      return {
+        zIndex: Math.max(999, this.zIndex || 999),
+        width: widthVal,
+        right: this.show ? '0px' : `-${widthVal}`
+      }
+    }
   },
   watch: {
     show(val, oldVal) {
       if (val && !oldVal) {
-        this.zIndex = store.sidebarZIndex++
+        this.zIndex = Math.max(1000, store.sidebarZIndex++)
       }
     }
   },
   created() {
     this.$bus.$on('closeSideBar', this.handleCloseSidebar)
+    this.$bus.$on('svg_mousedown', this.handleCanvasClick)
+    this.$bus.$on('draw_click', this.handleCanvasClick)
+    window.addEventListener('keydown', this.handleKeyDown)
   },
   beforeDestroy() {
     this.$bus.$off('closeSideBar', this.handleCloseSidebar)
+    this.$bus.$off('svg_mousedown', this.handleCanvasClick)
+    this.$bus.$off('draw_click', this.handleCanvasClick)
+    window.removeEventListener('keydown', this.handleKeyDown)
   },
   methods: {
     ...mapMutations(['setActiveSidebar']),
+
+    handleCanvasClick() {
+      if (this.show) {
+        this.close()
+      }
+    },
+
+    handleKeyDown(e) {
+      if (e.key === 'Escape' && this.show) {
+        this.close()
+      }
+    },
 
     handleCloseSidebar() {
       this.close()
@@ -74,14 +104,16 @@ export default {
 .sidebarContainer {
   position: fixed;
   right: -300px;
-  top: 110px;
+  top: 70px;
   bottom: 0;
   width: 300px;
   background-color: #fff;
-  border-left: 1px solid #e8e8e8;
+  border-left: 1px solid #e2e8f0;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;
-  transition: all 0.3s;
+  transition: right 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 999;
 
   &.isDark {
     background-color: #262a2e;

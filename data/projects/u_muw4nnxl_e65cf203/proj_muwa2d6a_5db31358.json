@@ -1,0 +1,2413 @@
+{
+  "root": {
+    "data": {
+      "text": "<p><span>Using urban space wisely — Can we maintain a sustainable urban environment?</span></p>",
+      "text_origin": "Using urban space wisely — Can we maintain a sustainable urban environment?",
+      "text_trans": "善用城市空间——我们能否维持可持续的城市环境？",
+      "lang_origin": "en",
+      "lang_trans": "zh",
+      "expand": true,
+      "uid": "0d80cc15-5a0e-4ee9-b198-33f60515c874",
+      "richText": true,
+      "isActive": false,
+      "imgMap": {},
+      "customTextWidth": 400
+    },
+    "children": [
+      {
+        "data": {
+          "text": "<p><span>Chapter 1 Where are the large cities in the world?</span></p>",
+          "text_origin": "Chapter 1 Where are the large cities in the world?",
+          "text_trans": "第一章 世界上有哪些大城市？",
+          "lang_origin": "en",
+          "lang_trans": "zh",
+          "uid": "5293242f-dbf1-4a76-a425-3730a04a7c2f",
+          "richText": true,
+          "expand": true,
+          "isActive": false
+        },
+        "children": [
+          {
+            "data": {
+              "text": "<p><span>1.1 Where are the major continents and oceans of the world?</span></p>",
+              "expand": false,
+              "text_origin": "1.1 Where are the major continents and oceans of the world?",
+              "text_trans": "1.1 世界上的主要大洲和大洋在哪里？",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "0cfaedb3-35c3-47d1-a353-c15535615449",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Global Geographical Framework</span></p>",
+                  "expand": false,
+                  "text_origin": "Global Geographical Framework",
+                  "text_trans": "全球地理框架",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "35fd4fb7-412d-4c9e-bb7d-05b89e577318",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>7 Continents: Asia, Europe, Africa, Oceania, North America, South America, Antarctica</span></p>",
+                      "text_origin": "7 Continents: Asia, Europe, Africa, Oceania, North America, South America, Antarctica",
+                      "text_trans": "七大洲：亚洲、欧洲、非洲、大洋洲、北美洲、南美洲、南极洲",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "5488d2cb-535c-4758-873a-f8d10a5a03d2",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>3 Oceans: Pacific Ocean, Atlantic Ocean, Indian Ocean</span></p>",
+                      "text_origin": "3 Oceans: Pacific Ocean, Atlantic Ocean, Indian Ocean",
+                      "text_trans": "三大洋：太平洋、大西洋、印度洋",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "5ece0094-7e70-4ebc-98d3-49a4d7f2ab95",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Relative location of cities: e.g., London in Europe; Pacific Ocean to the east of Hong Kong</span></p>",
+                      "text_origin": "Relative location of cities: e.g., London in Europe; Pacific Ocean to the east of Hong Kong",
+                      "text_trans": "城市相对位置：例如伦敦位于欧洲；太平洋在香港以东",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "5d6b881d-45a9-4196-b7fa-6ac914587cea",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "data": {
+              "text": "<p><span>1.2 What are lines of latitude and longitude?</span></p>",
+              "expand": false,
+              "text_origin": "1.2 What are lines of latitude and longitude?",
+              "text_trans": "1.2 什么是经纬线？",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "daa24370-d7c7-4339-b5f5-d934b42041aa",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Grid System of Latitude and Longitude</span></p>",
+                  "expand": false,
+                  "text_origin": "Grid System of Latitude and Longitude",
+                  "text_trans": "经纬线网格系统",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "8fef7751-3eb3-41bb-b1a7-6b4b51d30c35",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Lines of latitude: Run in an east-west direction; Equator (0°) divides the Earth into Northern &amp; Southern Hemispheres; Tropic of Cancer (23½°N), Tropic of Capricorn (23½°S), Arctic Circle (66½°N), Antarctic Circle (66½°S)</span></p>",
+                      "text_origin": "Lines of latitude: Run in an east-west direction; Equator (0°) divides the Earth into Northern & Southern Hemispheres; Tropic of Cancer (23½°N), Tropic of Capricorn (23½°S), Arctic Circle (66½°N), Antarctic Circle (66½°S)",
+                      "text_trans": "纬线：呈东西走向；赤道（0°）将地球分为南北半球；北回归线（23½°N）、南回归线（23½°S）、北极圈（66½°N）、南极圈（66½°S）",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "f1ffc892-5c60-49e8-a4ba-e7050c3b1a5e",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Lines of longitude: Run in a north-south direction between North and South Poles; Prime Meridian (0°) through Royal Observatory Greenwich divides the Earth into Eastern &amp; Western Hemispheres</span></p>",
+                      "text_origin": "Lines of longitude: Run in a north-south direction between North and South Poles; Prime Meridian (0°) through Royal Observatory Greenwich divides the Earth into Eastern & Western Hemispheres",
+                      "text_trans": "经线：呈南北走向，连接南北两极；本初子午线（0°）穿过格林威治皇家天文台，将地球分为东西半球",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "7132e18d-998a-4173-a027-0f61aa2fbd08",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "data": {
+              "text": "<p><span>Skills Box: Locating a city using latitude and longitude</span></p>",
+              "expand": false,
+              "text_origin": "Skills Box: Locating a city using latitude and longitude",
+              "text_trans": "技能框：利用经纬度定位城市",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "975b1147-6ce1-4876-8e5d-655b3af3b29f",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Map Reading Skill</span></p>",
+                  "expand": false,
+                  "text_origin": "Map Reading Skill",
+                  "text_trans": "地图阅读技能",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "229901c6-7a04-4f6d-8ee9-df433ee49078",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Coordinate reading rule: Always read latitude first, then longitude (e.g., Hong Kong is located at 22°N, 114°E)</span></p>",
+                      "text_origin": "Coordinate reading rule: Always read latitude first, then longitude (e.g., Hong Kong is located at 22°N, 114°E)",
+                      "text_trans": "坐标读取规则：始终先读纬度，后读经度（例如香港位于北纬22°，东经114°）",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "a10f81b8-ef76-4cdd-bd63-95a6cb6bd282",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "data": {
+          "text": "<p><span>Chapter 2 What are urban areas and rural areas?</span></p>",
+          "text_origin": "Chapter 2 What are urban areas and rural areas?",
+          "text_trans": "第二章 什么是城市地区和乡村地区？",
+          "lang_origin": "en",
+          "lang_trans": "zh",
+          "uid": "c34d0a68-18de-4008-bfa8-3cab42263866",
+          "richText": true,
+          "expand": true,
+          "isActive": false
+        },
+        "children": [
+          {
+            "data": {
+              "text": "<p><span>2.1 What do urban areas and rural areas look like?</span></p>",
+              "expand": false,
+              "text_origin": "2.1 What do urban areas and rural areas look like?",
+              "text_trans": "2.1 城市地区和乡村地区有何特征？",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "da0c1b84-690a-49fd-b5f1-839429eca824",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Characteristics of Urban Areas</span></p>",
+                  "expand": false,
+                  "text_origin": "Characteristics of Urban Areas",
+                  "text_trans": "城市地区特征",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "10a27836-1214-4c4b-af1e-dd9bc1e141ed",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Urban landscapes: Built-up areas with large settlements, dense high-rise buildings, convenient transport networks, and commercial/service/industrial activities</span></p>",
+                      "text_origin": "Urban landscapes: Built-up areas with large settlements, dense high-rise buildings, convenient transport networks, and commercial/service/industrial activities",
+                      "text_trans": "城市景观：有大型定居点的建成区，高楼密集，交通网络便利，工商业和服务业活动活跃",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "8f2add12-26c9-484a-af3f-8f483f043db9",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "data": {
+                  "text": "<p><span>Characteristics of Rural Areas</span></p>",
+                  "expand": false,
+                  "text_origin": "Characteristics of Rural Areas",
+                  "text_trans": "乡村地区特征",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "547d46bf-ba69-44ec-92d5-44b3090c84af",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Rural landscapes: Open areas with smaller settlements, farmland, fish ponds, woodland, country parks, less convenient transport, and primary activities (farming, fishing)</span></p>",
+                      "text_origin": "Rural landscapes: Open areas with smaller settlements, farmland, fish ponds, woodland, country parks, less convenient transport, and primary activities (farming, fishing)",
+                      "text_trans": "乡村景观：开阔区域，有小型定居点、农田、鱼塘、林地、郊野公园，交通不太便利，以初级产业（农业、渔业）为主",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "499df04b-9549-4d16-84c3-b96cfe4cfd1c",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "data": {
+              "text": "<p><span>2.2 Where are urban and rural areas in Hong Kong?</span></p>",
+              "expand": false,
+              "text_origin": "2.2 Where are urban and rural areas in Hong Kong?",
+              "text_trans": "2.2 香港的城市地区和乡村地区在哪里？",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "b1fe9a64-3bd3-4968-88f1-69c495a454af",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Spatial Distribution in Hong Kong</span></p>",
+                  "expand": false,
+                  "text_origin": "Spatial Distribution in Hong Kong",
+                  "text_trans": "香港的空间分布",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "1f88025c-9667-47a0-82c3-1b2e254fa5fc",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Urban areas: Hong Kong Island, Kowloon Peninsula, and New Towns</span></p>",
+                      "text_origin": "Urban areas: Hong Kong Island, Kowloon Peninsula, and New Towns",
+                      "text_trans": "城市地区：香港岛、九龙半岛和新市镇",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "cfd010ea-5f76-49d4-ac3e-e306aaaacd17",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Rural areas: New Territories and Outlying Islands (e.g., Lantau Island)</span></p>",
+                      "text_origin": "Rural areas: New Territories and Outlying Islands (e.g., Lantau Island)",
+                      "text_trans": "乡村地区：新界和离岛区（例如大屿山）",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "42c0f3dc-5d3c-485c-8e8b-5830e1916835",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "data": {
+              "text": "<p><span>2.3 How can we identify urban and rural areas on a map?</span></p>",
+              "expand": false,
+              "text_origin": "2.3 How can we identify urban and rural areas on a map?",
+              "text_trans": "2.3 如何在地图上辨别城市地区和乡村地区？",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "af1ef302-4b01-4b62-ad39-8187531c51e5",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Skills Box A: Conventional Signs</span></p>",
+                  "expand": false,
+                  "text_origin": "Skills Box A: Conventional Signs",
+                  "text_trans": "技能框A：图例符号",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "6742304b-44e1-4d24-9111-a29a6e2325cd",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Map key symbols: Ponds, footpaths, main roads, hospitals, railways, stations, and built-up areas</span></p>",
+                      "text_origin": "Map key symbols: Ponds, footpaths, main roads, hospitals, railways, stations, and built-up areas",
+                      "text_trans": "地图图例符号：池塘、小径、主干道、医院、铁路、车站和建成区",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "d7e324c1-f4c8-4290-9f30-688d78df960d",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "data": {
+                  "text": "<p><span>Skills Box B: Grid References</span></p>",
+                  "expand": false,
+                  "text_origin": "Skills Box B: Grid References",
+                  "text_trans": "技能框B：方格坐标",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "549aff70-32c6-439c-a9eb-50d95faffae1",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Grid lines: Eastings (vertical lines, numbers increase eastward) and Northings (horizontal lines, numbers increase northward)</span></p>",
+                      "text_origin": "Grid lines: Eastings (vertical lines, numbers increase eastward) and Northings (horizontal lines, numbers increase northward)",
+                      "text_trans": "方格线：纵轴（竖直方向，数字向东增大）和横轴（水平方向，数字向北增大）",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "2d8814bf-afcb-4762-a43c-4e8808f56654",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Four-figure grid reference: Read Easting on the left first, then Northing at the bottom (e.g., 9586)</span></p>",
+                      "text_origin": "Four-figure grid reference: Read Easting on the left first, then Northing at the bottom (e.g., 9586)",
+                      "text_trans": "四位方格坐标：先读左侧纵轴数字，再读下方横轴数字（例如9586）",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "b2e1db3d-62d7-478a-9903-f9a6b429d65c",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Six-figure grid reference: Divide grid square into 10 equal subdivisions for higher precision (e.g., 952865)</span></p>",
+                      "text_origin": "Six-figure grid reference: Divide grid square into 10 equal subdivisions for higher precision (e.g., 952865)",
+                      "text_trans": "六位方格坐标：将方格平分为10个等份以提高精度（例如952865）",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "d863ee34-5ed5-4b7b-9ed9-5c5b82ae75d9",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "data": {
+          "text": "<p><span>Chapter 3 What are the major types of urban land use in Hong Kong?</span></p>",
+          "text_origin": "Chapter 3 What are the major types of urban land use in Hong Kong?",
+          "text_trans": "第三章 香港的主要城市用地类型有哪些？",
+          "lang_origin": "en",
+          "lang_trans": "zh",
+          "uid": "3c063a58-b09a-470b-b40b-cc65b1144a75",
+          "richText": true,
+          "expand": true,
+          "isActive": false
+        },
+        "children": [
+          {
+            "data": {
+              "text": "<p><span>3.1 How is land used in the urban areas of Hong Kong?</span></p>",
+              "expand": false,
+              "text_origin": "3.1 How is land used in the urban areas of Hong Kong?",
+              "text_trans": "3.1 香港城市地区的土地如何使用？",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "3b7af1b7-e85d-4fff-8aca-130a1e77882b",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Six Major Urban Land Use Types</span></p>",
+                  "expand": false,
+                  "text_origin": "Six Major Urban Land Use Types",
+                  "text_trans": "六大主要城市用地类型",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "af83269b-ed82-4f2f-8727-bd6e14c2340f",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Commercial: Shops, office buildings, banks, hotels</span></p>",
+                      "text_origin": "Commercial: Shops, office buildings, banks, hotels",
+                      "text_trans": "商业用地：商店、写字楼、银行、酒店",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "bbca41ff-533e-41d1-81e0-db6f9a39d054",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Residential: Public and private housing estates</span></p>",
+                      "text_origin": "Residential: Public and private housing estates",
+                      "text_trans": "住宅用地：公屋和私人住宅区",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "f4a96c8c-1268-472b-9853-702a456b63a9",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Industrial: Factories, power plants, warehouses</span></p>",
+                      "text_origin": "Industrial: Factories, power plants, warehouses",
+                      "text_trans": "工业用地：工厂、发电厂、仓库",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "385b1363-772c-4bc4-9f37-2f8f8894bb85",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Institutional: Government offices, schools, hospitals, police stations</span></p>",
+                      "text_origin": "Institutional: Government offices, schools, hospitals, police stations",
+                      "text_trans": "机构用地：政府办公室、学校、医院、警察局",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "fe571f1d-6f72-414e-880c-d78883fb8d5e",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Transport: Airports, railway stations, bus terminals, roads, piers</span></p>",
+                      "text_origin": "Transport: Airports, railway stations, bus terminals, roads, piers",
+                      "text_trans": "交通用地：机场、火车站、巴士总站、道路、码头",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "706daef6-dc2a-498a-b042-e5a06946416d",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Recreational: Parks, playgrounds, sports grounds, swimming pools</span></p>",
+                      "text_origin": "Recreational: Parks, playgrounds, sports grounds, swimming pools",
+                      "text_trans": "休憩用地：公园、游乐场、运动场、游泳池",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "960c5a63-d707-40f7-b9e6-6969d1ab861b",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "data": {
+                  "text": "<p><span>Mixed Land Use</span></p>",
+                  "expand": false,
+                  "text_origin": "Mixed Land Use",
+                  "text_trans": "混合用地",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "63b2bdbe-5eb7-4b78-8414-c25b4eff64ce",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Definition &amp; occurrence: More than one type of land use occurring in the same building or area (e.g., commercial/industrial on ground floors, residential on upper floors)</span></p>",
+                      "text_origin": "Definition & occurrence: More than one type of land use occurring in the same building or area (e.g., commercial/industrial on ground floors, residential on upper floors)",
+                      "text_trans": "定义与分布：同一栋建筑或区域内同时存在两种或以上用地类型（例如低层为商业/工业，高层为住宅）",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "54e53f1f-5ca1-4fe7-b5c0-0c2bf337fde4",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "data": {
+              "text": "<p><span>3.2 Where can we find the major types of urban land use in Hong Kong?</span></p>",
+              "expand": false,
+              "text_origin": "3.2 Where can we find the major types of urban land use in Hong Kong?",
+              "text_trans": "3.2 香港的主要城市用地类型分布在哪里？",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "d6adfed1-3d15-4616-bd73-daa11ab14f6e",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Spatial Distribution of Land Uses</span></p>",
+                  "expand": false,
+                  "text_origin": "Spatial Distribution of Land Uses",
+                  "text_trans": "用地的空间分布",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "49ed6a61-319c-4a02-bec8-23637878c0cc",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Commercial land use: Concentrated along both sides of Victoria Harbour</span></p>",
+                      "text_origin": "Commercial land use: Concentrated along both sides of Victoria Harbour",
+                      "text_trans": "商业用地：集中在维多利亚港两岸",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "3b75140f-2503-475c-b1e9-0f75b7b1dcde",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Residential land use: Widely distributed across Hong Kong, occupying the largest proportion of urban land</span></p>",
+                      "text_origin": "Residential land use: Widely distributed across Hong Kong, occupying the largest proportion of urban land",
+                      "text_trans": "住宅用地：遍布全港，占城市用地比例最大",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "2e1ecf32-5fa8-4f57-aca6-5b1963645fc9",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Industrial land use: Found in old urban areas (e.g., San Po Kong, Chai Wan) and New Town industrial estates</span></p>",
+                      "text_origin": "Industrial land use: Found in old urban areas (e.g., San Po Kong, Chai Wan) and New Town industrial estates",
+                      "text_trans": "工业用地：分布于旧城区（例如观塘、柴湾）和新市镇工业邨",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "142b5e22-970b-4405-9a0c-d60f9c605bf7",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Mixed land use: Common in old urban districts (e.g., Sham Shui Po, Mong Kok, Sheung Wan, Wan Chai)</span></p>",
+                      "text_origin": "Mixed land use: Common in old urban districts (e.g., Sham Shui Po, Mong Kok, Sheung Wan, Wan Chai)",
+                      "text_trans": "混合用地：常见于旧市区（例如深水埗、旺角、上环、湾仔）",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "f9f80cad-389a-436d-8ef3-ed95ffd34cb1",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "data": {
+              "text": "<p><span>Skills Box &amp; Fieldwork: Directions &amp; Mapping</span></p>",
+              "expand": false,
+              "text_origin": "Skills Box & Fieldwork: Directions & Mapping",
+              "text_trans": "技能框与实地考察：方位与地图绘制",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "d73a2333-c5b9-4df7-8299-b2a042001a8b",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Directional Expressions</span></p>",
+                  "expand": false,
+                  "text_origin": "Directional Expressions",
+                  "text_trans": "方位表达",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "e5ab2e65-0d94-4747-89eb-8c46b9ece12c",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>16-point compass points: N, E, S, W, NE, ENE, etc.</span></p>",
+                      "text_origin": "16-point compass points: N, E, S, W, NE, ENE, etc.",
+                      "text_trans": "十六方位：N（北）、E（东）、S（南）、W（西）、NE（东北）、ENE（东北偏东）等",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "0dbd2cbd-db71-48fc-8be1-dbe444b382a5",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Whole-circle bearing: Measured clockwise from North (0°–360°)</span></p>",
+                      "text_origin": "Whole-circle bearing: Measured clockwise from North (0°–360°)",
+                      "text_trans": "全圆方位：从正北顺时针量度（0°–360°）",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "6b3e2c2a-caac-4ab7-8db5-4efbdec51380",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Reduced bearing: Measured from North or South towards East or West (e.g., S20°E)</span></p>",
+                      "text_origin": "Reduced bearing: Measured from North or South towards East or West (e.g., S20°E)",
+                      "text_trans": "半圆方位：从正北或正南向正东或正西量度（例如南偏东20°）",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "0f75c993-9ca6-4918-ab29-a600ca277206",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "data": {
+                  "text": "<p><span>Fieldwork Practice</span></p>",
+                  "expand": false,
+                  "text_origin": "Fieldwork Practice",
+                  "text_trans": "实地考察实践",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "730129eb-f0bd-413e-a107-0c49073639e8",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Data collection &amp; mapping: Collecting land use data around school -&gt; Using short forms (C, Res, Ind, Ins, T, Rec, Mix) -&gt; Drawing colour-coded land use map with a key</span></p>",
+                      "text_origin": "Data collection & mapping: Collecting land use data around school -> Using short forms (C, Res, Ind, Ins, T, Rec, Mix) -> Drawing colour-coded land use map with a key",
+                      "text_trans": "数据收集与地图绘制：收集学校周边用地数据→使用简写（商、住、工、机、交、休、混）→绘制彩色用地分布图并附图例",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "b97a745b-4bc6-4801-84fa-4940b9529eaa",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "data": {
+          "text": "<p><span>Chapter 4 Where is our Central Business District?</span></p>",
+          "text_origin": "Chapter 4 Where is our Central Business District?",
+          "text_trans": "第四章 我们的中央商务区在哪里？",
+          "lang_origin": "en",
+          "lang_trans": "zh",
+          "uid": "d04a3aab-dd5c-4d01-90f6-2c330433da15",
+          "richText": true,
+          "expand": true,
+          "isActive": false
+        },
+        "children": [
+          {
+            "data": {
+              "text": "<p><span>4.1 What are the characteristics of our CBD?</span></p>",
+              "expand": false,
+              "text_origin": "4.1 What are the characteristics of our CBD?",
+              "text_trans": "4.1 我们的中央商务区有何特征？",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "ce5d53c4-05ed-4d35-a870-77f17f0ab86f",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Core Concept of CBD</span></p>",
+                  "expand": false,
+                  "text_origin": "Core Concept of CBD",
+                  "text_trans": "中央商务区核心概念",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "b265f607-a6f1-4769-ac64-e3b015a59000",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Definition: Focal commercial area of a city with a high concentration of commercial activities, selling high-order goods and offering high-order services</span></p>",
+                      "text_origin": "Definition: Focal commercial area of a city with a high concentration of commercial activities, selling high-order goods and offering high-order services",
+                      "text_trans": "定义：城市的核心商业区，商业活动高度集中，经营高级商品并提供高级服务",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "308cf696-b556-4de2-8352-164a46578a76",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "data": {
+                  "text": "<p><span>Characteristics of Hong Kong CBD (Central District)</span></p>",
+                  "expand": false,
+                  "text_origin": "Characteristics of Hong Kong CBD (Central District)",
+                  "text_trans": "香港中央商务区的特征",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "c5eb816c-78a6-47b1-a20e-586a1b3f35c3",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>High-order commercial activities: Bank headquarters, 5-star hotels, professional services (law, accountancy), luxury brand stores</span></p>",
+                      "text_origin": "High-order commercial activities: Bank headquarters, 5-star hotels, professional services (law, accountancy), luxury brand stores",
+                      "text_trans": "高级商业活动：银行总部、五星级酒店、专业服务业（法律、会计）、奢侈品牌店",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "1d63b0ea-f37f-499e-a397-00fdd6d4da55",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>High accessibility: Comprehensive transport network (MTR, buses, trams, ferries, minibuses)</span></p>",
+                      "text_origin": "High accessibility: Comprehensive transport network (MTR, buses, trams, ferries, minibuses)",
+                      "text_trans": "高度可达性：综合交通网络（地铁、巴士、电车、渡轮、小巴）",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "776caac4-95ff-4e36-adec-32054442af92",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>High land rent &amp; intensive land use: Intense competition for land leads to high land values, resulting in dense skyscraper clusters</span></p>",
+                      "text_origin": "High land rent & intensive land use: Intense competition for land leads to high land values, resulting in dense skyscraper clusters",
+                      "text_trans": "高地价与集约用地：土地竞争激烈导致地价高昂，形成密集的摩天大楼群",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "aeb98f47-133b-4869-a8ba-2dcc05405db3",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "data": {
+              "text": "<p><span>Explore Further: CBD of Kuala Lumpur</span></p>",
+              "expand": false,
+              "text_origin": "Explore Further: CBD of Kuala Lumpur",
+              "text_trans": "拓展探究：吉隆坡的中央商务区",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "7a9f6e48-bd66-4efc-8aa1-589263af4195",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Case Study: Kuala Lumpur</span></p>",
+                  "expand": false,
+                  "text_origin": "Case Study: Kuala Lumpur",
+                  "text_trans": "案例研究：吉隆坡",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "fb575370-3f3b-4882-99ca-5a206835cb90",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Features: Major commercial/financial hub featuring iconic high-rises (Petronas Twin Towers) and light rail/monorail transit</span></p>",
+                      "text_origin": "Features: Major commercial/financial hub featuring iconic high-rises (Petronas Twin Towers) and light rail/monorail transit",
+                      "text_trans": "特征：重要的商业金融枢纽，拥有标志性高层建筑（双子塔）及轻轨/单轨交通系统",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "572081df-cb66-48fe-968e-4287c340a407",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Kampung Baru: A traditional Malay village at the CBD edge facing urban redevelopment planning</span></p>",
+                      "text_origin": "Kampung Baru: A traditional Malay village at the CBD edge facing urban redevelopment planning",
+                      "text_trans": "甘榜峇鲁：位于中央商务区边缘的传统马来村，正面临城市更新规划",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "ceb42337-0d3e-4d84-9726-f4bb2913602a",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "data": {
+          "text": "<p><span>Chapter 5 Are residential and industrial areas located near each other in Hong Kong?</span></p>",
+          "text_origin": "Chapter 5 Are residential and industrial areas located near each other in Hong Kong?",
+          "text_trans": "第五章 香港的住宅区和工业区是否毗邻？",
+          "lang_origin": "en",
+          "lang_trans": "zh",
+          "uid": "57cfbe3e-916f-4b96-a70b-48c79275968e",
+          "richText": true,
+          "expand": true,
+          "isActive": false
+        },
+        "children": [
+          {
+            "data": {
+              "text": "<p><span>5.1 What are the types of residential areas?</span></p>",
+              "expand": false,
+              "text_origin": "5.1 What are the types of residential areas?",
+              "text_trans": "5.1 住宅区有哪些类型？",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "16ef54c6-3082-489d-95f8-568581f24018",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Three Types of Residential Areas</span></p>",
+                  "expand": false,
+                  "text_origin": "Three Types of Residential Areas",
+                  "text_trans": "三种住宅区类型",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "d22b4817-4ef6-48a6-949a-412d85cdeafc",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>High-income residential areas: High flat prices, spacious living, quiet environment, scenic views; located on high ground (The Peak, Mid-Levels), suburban areas (Tai Po, Sai Kung), or waterfronts (West Kowloon)</span></p>",
+                      "text_origin": "High-income residential areas: High flat prices, spacious living, quiet environment, scenic views; located on high ground (The Peak, Mid-Levels), suburban areas (Tai Po, Sai Kung), or waterfronts (West Kowloon)",
+                      "text_trans": "高收入住宅区：房价高，居住空间宽敞，环境安静，景观优美；位于高地（太平山、半山）、郊区（大埔、西贡）或临海处（九龙城西）",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "e4953da5-9522-4edd-881d-c2da1a4f830c",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Middle-income residential areas: Private housing estates (e.g., Tai Koo Shing, Whampoa Garden) with comprehensive facilities (gardens, clubhouses)</span></p>",
+                      "text_origin": "Middle-income residential areas: Private housing estates (e.g., Tai Koo Shing, Whampoa Garden) with comprehensive facilities (gardens, clubhouses)",
+                      "text_trans": "中收入住宅区：私人住宅区（例如太和谷、黄埔花园），配套设施完善（花园、会所）",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "0730eb39-bd4f-46f9-b580-457b0cbc0c88",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Low-income residential areas: Public housing estates (e.g., Choi Hung Estate) or old private buildings with subdivided flats (e.g., Yau Ma Tei, Sham Shui Po); small flat sizes, crowded living conditions</span></p>",
+                      "text_origin": "Low-income residential areas: Public housing estates (e.g., Choi Hung Estate) or old private buildings with subdivided flats (e.g., Yau Ma Tei, Sham Shui Po); small flat sizes, crowded living conditions",
+                      "text_trans": "低收入住宅区：公共房屋（例如彩虹邨）或内有分隔间套房的旧式私人楼宇（例如油麻地、深水埗）；单位面积小，居住拥挤",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "67495ae6-760c-41cf-a881-3c7d1564bc26",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "data": {
+              "text": "<p><span>5.2 Where are the industrial areas in Hong Kong?</span></p>",
+              "expand": false,
+              "text_origin": "5.2 Where are the industrial areas in Hong Kong?",
+              "text_trans": "5.2 香港的工业区在哪里？",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "51ebec51-b39a-4646-aded-d87322f55bcc",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Development Periods &amp; Distribution</span></p>",
+                  "expand": false,
+                  "text_origin": "Development Periods & Distribution",
+                  "text_trans": "发展阶段与分布",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "cfb97be3-4eb0-4a41-8148-d4e978b4aac6",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Before mid-1970s: Multi-storey flatted factories built in old urban areas (To Kwa Wan, San Po Kong, Kwun Tong)</span></p>",
+                      "text_origin": "Before mid-1970s: Multi-storey flatted factories built in old urban areas (To Kwa Wan, San Po Kong, Kwun Tong)",
+                      "text_trans": "1970年代中期之前：旧城区建有大型多层工厂大厦（土瓜湾、观塘、九龙城）",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "c9268fc8-bfbe-4635-bb19-3e30a781e3fd",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Between mid-1970s and 1990s: Planned industrial estates/areas in New Towns (Yuen Long, Tuen Mun, Fanling, Tai Po, Fo Tan, Tseung Kwan O)</span></p>",
+                      "text_origin": "Between mid-1970s and 1990s: Planned industrial estates/areas in New Towns (Yuen Long, Tuen Mun, Fanling, Tai Po, Fo Tan, Tseung Kwan O)",
+                      "text_trans": "1970年代中期至1990年代：在新市镇规划工业邨/工业区（元朗、屯门、粉岭、大埔、火炭、将军澳）",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "a0425987-8e1e-4b8e-8cd2-0509fbc4f2d1",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "data": {
+              "text": "<p><span>5.3 Why are some residential areas close to industrial areas?</span></p>",
+              "expand": false,
+              "text_origin": "5.3 Why are some residential areas close to industrial areas?",
+              "text_trans": "5.3 为什么一些住宅区靠近工业区？",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "9ef24196-3fa5-4e67-b024-bcded6967204",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Historical Causes of Proximity</span></p>",
+                  "expand": false,
+                  "text_origin": "Historical Causes of Proximity",
+                  "text_trans": "毗邻的历史原因",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "b6072a8d-6ec7-4064-81f7-8c75ed811787",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Reasoning: Factories required abundant workers nearby; workers saved travel time and transport costs; lack of comprehensive urban planning in early development</span></p>",
+                      "text_origin": "Reasoning: Factories required abundant workers nearby; workers saved travel time and transport costs; lack of comprehensive urban planning in early development",
+                      "text_trans": "原因分析：工厂需要大量就近工人；工人可节省通勤时间和交通费用；早期发展缺乏完善的城市规划",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "1cb4ff7d-3d4d-406c-ab35-ea2a361f75f8",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "data": {
+              "text": "<p><span>5.4 What is wrong with residential areas located near industrial areas?</span></p>",
+              "expand": false,
+              "text_origin": "5.4 What is wrong with residential areas located near industrial areas?",
+              "text_trans": "5.4 住宅区靠近工业区有何问题？",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "44b5d619-174f-4852-b83c-627f85eb6962",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Land Use Conflict</span></p>",
+                  "expand": false,
+                  "text_origin": "Land Use Conflict",
+                  "text_trans": "用地冲突",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "1cc90026-ee0c-4b1c-bd9c-b7c4232161c0",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Impacts: Severe traffic congestion caused by heavy lorries, noise pollution, air pollution from exhaust emissions, and elevated fire hazards</span></p>",
+                      "text_origin": "Impacts: Severe traffic congestion caused by heavy lorries, noise pollution, air pollution from exhaust emissions, and elevated fire hazards",
+                      "text_trans": "影响：重型货车造成严重交通拥堵、噪音污染、汽车尾气导致空气污染，以及火灾隐患增加",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "da49a075-97f0-4721-979d-95f3fb535d98",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Other examples: Funeral parlours/landfills near residential estates; major trunk roads adjacent to housing blocks; car repair workshops polluting farmland</span></p>",
+                      "text_origin": "Other examples: Funeral parlours/landfills near residential estates; major trunk roads adjacent to housing blocks; car repair workshops polluting farmland",
+                      "text_trans": "其他例子：殡仪馆/堆填区靠近住宅区；主要干道紧邻住宅楼宇；汽车维修厂污染农田",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "d42c213c-38cf-4207-ac2f-ec95d35f3625",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "data": {
+              "text": "<p><span>Explore Further: Rio de Janeiro Favelas</span></p>",
+              "expand": false,
+              "text_origin": "Explore Further: Rio de Janeiro Favelas",
+              "text_trans": "拓展探究：里约热内卢贫民窟",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "4f54844f-2d7d-4459-bba0-ede4d5ab4a64",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Case Study: Rio de Janeiro</span></p>",
+                  "expand": false,
+                  "text_origin": "Case Study: Rio de Janeiro",
+                  "text_trans": "案例研究：里约热内卢",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "2d06dcc4-b0fb-4be7-9529-c33bee640753",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Features: Favelas (slums/squatter settlements) constructed by low-income migrants due to severe urban housing shortages; characterized by overcrowding, poor sanitation, and high crime rates</span></p>",
+                      "text_origin": "Features: Favelas (slums/squatter settlements) constructed by low-income migrants due to severe urban housing shortages; characterized by overcrowding, poor sanitation, and high crime rates",
+                      "text_trans": "特征：贫民窟（棚户区/违建区）由低收入移民兴建，因城市住房严重短缺；特点是拥挤、卫生条件差和犯罪率高",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "083d6118-e3ee-4f85-882c-832598127f2f",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "data": {
+          "text": "<p><span>Chapter 6 What urban problems is our city facing?</span></p>",
+          "text_origin": "Chapter 6 What urban problems is our city facing?",
+          "text_trans": "第六章 我们的城市面临哪些城市问题？",
+          "lang_origin": "en",
+          "lang_trans": "zh",
+          "uid": "dd7af16c-fc95-48b8-9f73-bb9d3750da41",
+          "richText": true,
+          "expand": true,
+          "isActive": false
+        },
+        "children": [
+          {
+            "data": {
+              "text": "<p><span>6.1 What are the major urban problems in Hong Kong?</span></p>",
+              "expand": false,
+              "text_origin": "6.1 What are the major urban problems in Hong Kong?",
+              "text_trans": "6.1 香港有哪些主要城市问题？",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "4cc5289a-a9a1-4954-9d7b-babb3fc3a73a",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Four Major Urban Problems</span></p>",
+                  "expand": false,
+                  "text_origin": "Four Major Urban Problems",
+                  "text_trans": "四大主要城市问题",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "78cb3643-0af7-414d-bcd9-1e68baaa9f13",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Housing problems: Severe shortage of affordable housing, long public housing waiting time (5.6 years), world's highest housing prices, overcrowded conditions (subdivided flats)</span></p>",
+                      "text_origin": "Housing problems: Severe shortage of affordable housing, long public housing waiting time (5.6 years), world's highest housing prices, overcrowded conditions (subdivided flats)",
+                      "text_trans": "住房问题：经济适用房严重短缺、公屋轮候时间长达5.6年、全球最高房价、居住拥挤（分隔间）",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "52130a0b-c1f2-4edf-8816-3bafb2736c1f",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Urban decay: Dilapidated old buildings, overcrowded living, lack of open space and community facilities in older urban districts</span></p>",
+                      "text_origin": "Urban decay: Dilapidated old buildings, overcrowded living, lack of open space and community facilities in older urban districts",
+                      "text_trans": "市区衰败：旧楼残破、居住拥挤、旧城区缺乏开放空间和社区设施",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "b396fc58-6909-426d-8d90-336900843720",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Traffic congestion: Severe bottlenecks during peak hours (Central, Lion Rock Tunnel, Cross Harbour Tunnel); wastes travel time and intensifies vehicle emissions</span></p>",
+                      "text_origin": "Traffic congestion: Severe bottlenecks during peak hours (Central, Lion Rock Tunnel, Cross Harbour Tunnel); wastes travel time and intensifies vehicle emissions",
+                      "text_trans": "交通拥堵：尖峰时段严重瓶颈（中环、狮子隧道、海底隧道）；浪费通勤时间并加剧车辆排放",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "872e64e2-f974-4927-81f3-3c0ca11566f7",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Environmental pollution: Air pollution (vehicles, power plants), sewage, noise pollution (roads, construction), solid waste disposal, light pollution (glaring signboards)</span></p>",
+                      "text_origin": "Environmental pollution: Air pollution (vehicles, power plants), sewage, noise pollution (roads, construction), solid waste disposal, light pollution (glaring signboards)",
+                      "text_trans": "环境污染：空气污染（汽车、发电厂）、污水、噪音污染（道路、建筑）、固体废物处理、光污染（刺眼招牌）",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "013897bb-712a-4643-8ded-c34f8cf9f2bd",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "data": {
+              "text": "<p><span>6.2 What are the causes of these urban problems?</span></p>",
+              "expand": false,
+              "text_origin": "6.2 What are the causes of these urban problems?",
+              "text_trans": "6.2 这些城市问题的成因是什么？",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "4ec5f084-5783-4754-89d0-fad501af44c2",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Four Key Causes</span></p>",
+                  "expand": false,
+                  "text_origin": "Four Key Causes",
+                  "text_trans": "四大关键成因",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "e16d18fc-c27b-4170-9907-c42528426884",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Small land area &amp; rugged relief: Hilly topography with 40% protected country parks -&gt; Densely populated urban cores and uneven spatial distribution</span></p>",
+                      "text_origin": "Small land area & rugged relief: Hilly topography with 40% protected country parks -> Densely populated urban cores and uneven spatial distribution",
+                      "text_trans": "土地面积狭小且地形崎岖：山地地形，40%为受保护郊野公园→城市核心区人口密集且空间分布不均",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "8668a7fb-441b-45d0-abfe-931f21088aaf",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Rapid population growth: Population reaching 7.5 million in 2020 -&gt; Huge demand for housing and infrastructure, leading to overcrowding and pollution</span></p>",
+                      "text_origin": "Rapid population growth: Population reaching 7.5 million in 2020 -> Huge demand for housing and infrastructure, leading to overcrowding and pollution",
+                      "text_trans": "人口快速增长：2020年人口达750万→对住房和基础设施需求巨大，导致拥挤和污染",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "66e0c5d5-829f-46f5-9c3d-0430d75c6992",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Historical lack of urban planning: Unplanned mixed land use and narrow road layouts in old districts</span></p>",
+                      "text_origin": "Historical lack of urban planning: Unplanned mixed land use and narrow road layouts in old districts",
+                      "text_trans": "历史上缺乏城市规划：旧城区未经规划的混合用地和狭窄道路布局",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "a0918270-97c0-4ea4-bf8a-9d289deedb30",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Rapid economic growth: Soaring commercial land demand, rising resource consumption, and rapid vehicle growth exacerbating traffic congestion</span></p>",
+                      "text_origin": "Rapid economic growth: Soaring commercial land demand, rising resource consumption, and rapid vehicle growth exacerbating traffic congestion",
+                      "text_trans": "经济快速增长：商业用地需求激增、资源消耗上升、车辆数量快速增长加剧交通拥堵",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "0f1872c8-27fb-4d52-ad13-a46f835ea619",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "data": {
+              "text": "<p><span>Skills Box: Map Scale &amp; Direct Distance</span></p>",
+              "expand": false,
+              "text_origin": "Skills Box: Map Scale & Direct Distance",
+              "text_trans": "技能框：地图比例尺与实际距离",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "2429acbe-48eb-49e9-a586-0d8e0d60dac0",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Map Scale Measurement</span></p>",
+                  "expand": false,
+                  "text_origin": "Map Scale Measurement",
+                  "text_trans": "地图比例尺量测",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "3449fc1c-d99d-47b6-a0b8-53b280e6cc82",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Scale formats: Representative Fraction (R.F., e.g., 1:20,000), Statement Scale (e.g., 1 cm to 200 m), Linear Scale</span></p>",
+                      "text_origin": "Scale formats: Representative Fraction (R.F., e.g., 1:20,000), Statement Scale (e.g., 1 cm to 200 m), Linear Scale",
+                      "text_trans": "比例尺格式：数值比例尺（例如1:20,000）、文字比例尺（例如1厘米代表200米）、线段比例尺",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "ce698bde-0ce7-4394-b9fe-5cc5a505c382",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Distance calculation: Measure straight-line distance on map with ruler and convert to actual ground distance using scale</span></p>",
+                      "text_origin": "Distance calculation: Measure straight-line distance on map with ruler and convert to actual ground distance using scale",
+                      "text_trans": "距离计算：用直尺量度地图上两点间的直线距离，再根据比例尺换算为实际地面距离",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "4689ed80-161e-4759-ac97-a8a123bd7d6f",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "data": {
+              "text": "<p><span>Explore Further: Urban Problems in Guangzhou</span></p>",
+              "expand": false,
+              "text_origin": "Explore Further: Urban Problems in Guangzhou",
+              "text_trans": "拓展探究：广州的城市问题",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "2eea6023-a8a3-42bc-9e3e-ae2033a3a3ed",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Case Study: Guangzhou</span></p>",
+                  "expand": false,
+                  "text_origin": "Case Study: Guangzhou",
+                  "text_trans": "案例研究：广州",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "cc2812f3-d845-462d-a1cc-cb25d228d00a",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Features: Escalating property prices, urban decay in old districts (Liwan, Yuexiu), chronic traffic jams, and atmospheric pollution</span></p>",
+                      "text_origin": "Features: Escalating property prices, urban decay in old districts (Liwan, Yuexiu), chronic traffic jams, and atmospheric pollution",
+                      "text_trans": "特征：房价不断攀升、旧城区（荔湾、越秀）市区衰败、长期交通堵塞和大气污染",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "9acf794a-e23f-4169-bc40-8f430f6c3074",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "data": {
+          "text": "<p><span>Chapter 7 How can we solve the urban problems in Hong Kong?</span></p>",
+          "text_origin": "Chapter 7 How can we solve the urban problems in Hong Kong?",
+          "text_trans": "第七章 我们如何解决香港的城市问题？",
+          "lang_origin": "en",
+          "lang_trans": "zh",
+          "uid": "fd742f2c-75d4-43f2-8ac9-bb82ab47f8b7",
+          "richText": true,
+          "expand": true,
+          "isActive": false
+        },
+        "children": [
+          {
+            "data": {
+              "text": "<p><span>7.1 What has been done to solve housing problems?</span></p>",
+              "expand": false,
+              "text_origin": "7.1 What has been done to solve housing problems?",
+              "text_trans": "7.1 为解决住房问题已采取哪些措施？",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "7fa99730-6910-4fdc-88b6-b3d25f410ac0",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Housing &amp; Land Supply Solutions</span></p>",
+                  "expand": false,
+                  "text_origin": "Housing & Land Supply Solutions",
+                  "text_trans": "住房与土地供应方案",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "0237a3ef-7158-47fd-bb74-e7317fb27f98",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Developing New Towns &amp; New Development Areas (NDAs): 9 New Towns + NDAs (Kwu Tung North, Fanling North, Hung Shui Kiu, Tung Chung Extension) to supply land and lower population density</span></p>",
+                      "text_origin": "Developing New Towns & New Development Areas (NDAs): 9 New Towns + NDAs (Kwu Tung North, Fanling North, Hung Shui Kiu, Tung Chung Extension) to supply land and lower population density",
+                      "text_trans": "发展新市镇和新发展区：9个新市镇加新发展区（古洞北、粉岭北、洪水桥、东涌延伸部分）以供应土地和降低人口密度",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "5567ea61-8cad-4297-ae04-7d9690d81701",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Reclamation: Creating flat land from the sea (77.6 km² total, e.g., Tuen Mun, Sha Tin, Tseung Kwan O)</span></p>",
+                      "text_origin": "Reclamation: Creating flat land from the sea (77.6 km² total, e.g., Tuen Mun, Sha Tin, Tseung Kwan O)",
+                      "text_trans": "填海造地：向海洋要地（累计77.6平方公里，例如屯门、沙田、将军澳）",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "0fc9bb4a-54c8-4e22-b418-7d9d614d9c09",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Building public housing: Subsidized public rental and sale flats accommodating 45% of HK population; Lantau Tomorrow Vision initiative</span></p>",
+                      "text_origin": "Building public housing: Subsidized public rental and sale flats accommodating 45% of HK population; Lantau Tomorrow Vision initiative",
+                      "text_trans": "建设公屋：资助性公共出租和出售单位容纳全港45%人口；明日大嶼愿景计划",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "13d0e961-87df-4615-84ff-238864777422",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "data": {
+              "text": "<p><span>7.2 What has been done to tackle urban decay?</span></p>",
+              "expand": false,
+              "text_origin": "7.2 What has been done to tackle urban decay?",
+              "text_trans": "7.2 为应对市区衰败已采取哪些措施？",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "33bdb028-7604-491e-8df4-ba3ab432e62f",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Urban Renewal Strategies</span></p>",
+                  "expand": false,
+                  "text_origin": "Urban Renewal Strategies",
+                  "text_trans": "城市更新策略",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "d10619f0-27f8-48dd-ac24-8179cd24aa49",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Redeveloping old urban areas: Urban Renewal Authority (URA) demolishes dilapidated buildings, constructs modern high-rises, and adds open spaces and public amenities (e.g., Wan Chai, Tsuen Wan)</span></p>",
+                      "text_origin": "Redeveloping old urban areas: Urban Renewal Authority (URA) demolishes dilapidated buildings, constructs modern high-rises, and adds open spaces and public amenities (e.g., Wan Chai, Tsuen Wan)",
+                      "text_trans": "旧城区重建：市区重建局（市区重建局）拆除残破建筑，兴建现代化高楼，增设开放空间和公共设施（例如湾仔、荃湾）",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "e6af7ada-f8a6-44d2-bd0e-2c1ed246b925",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Improving old buildings: Promoting regular building maintenance, repairs, and facility upgrades (e.g., installing lifts)</span></p>",
+                      "text_origin": "Improving old buildings: Promoting regular building maintenance, repairs, and facility upgrades (e.g., installing lifts)",
+                      "text_trans": "改善旧楼：推广定期楼宇保养、维修和设施升级（例如加装升降机等）",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "e4ebcaee-ed4f-4142-8d67-09541ff86f1f",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "data": {
+                  "text": "<p><span>Explore Further: Industrial Area Redevelopment</span></p>",
+                  "expand": false,
+                  "text_origin": "Explore Further: Industrial Area Redevelopment",
+                  "text_trans": "拓展探究：工业区重建",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "9c2b98af-9cae-4e9a-ad9a-bb47a5ddfdfd",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Canary Wharf in London: Transforming derelict docklands into a world-class financial district</span></p>",
+                      "text_origin": "Canary Wharf in London: Transforming derelict docklands into a world-class financial district",
+                      "text_trans": "伦敦码头区：将废弃码头改造为世界级金融区",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "d2d0ff1b-90e4-45ee-8187-b585b18b5e30",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Kowloon East in Hong Kong: Regenerating Kwun Tong, Ngau Tau Kok, and former Kai Tak Airport site into HK's 2nd CBD</span></p>",
+                      "text_origin": "Kowloon East in Hong Kong: Regenerating Kwun Tong, Ngau Tau Kok, and former Kai Tak Airport site into HK's 2nd CBD",
+                      "text_trans": "九龙东：将观塘、牛头角和前启德机场旧址发展为香港的第二个中央商务区",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "d514ef98-57f5-493e-8512-e35f2cfd763c",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "data": {
+              "text": "<p><span>7.3 What has been done to solve transport problems?</span></p>",
+              "expand": false,
+              "text_origin": "7.3 What has been done to solve transport problems?",
+              "text_trans": "7.3 为解决交通问题已采取哪些措施？",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "7c82f851-d0be-491c-8916-c5eb59e87e14",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Transport Management Solutions</span></p>",
+                  "expand": false,
+                  "text_origin": "Transport Management Solutions",
+                  "text_trans": "交通管理方案",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "8d5dc0ad-5473-4eae-8366-1594373a3b4d",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Expanding road infrastructure: Widening existing highways (Tuen Mun Road), constructing Central–Wan Chai Bypass and Route 6</span></p>",
+                      "text_origin": "Expanding road infrastructure: Widening existing highways (Tuen Mun Road), constructing Central–Wan Chai Bypass and Route 6",
+                      "text_trans": "扩展道路基础设施：拓宽现有公路（屯门公路），兴建中环—湾仔绕道及六号干线",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "d4b74d88-bcaf-4d36-bbe6-2d73fedf7fec",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Enhancing public transit: Expanding Mass Transit Railway (MTR) lines to NDAs, establishing bus-only lanes and bus-bus interchange hubs</span></p>",
+                      "text_origin": "Enhancing public transit: Expanding Mass Transit Railway (MTR) lines to NDAs, establishing bus-only lanes and bus-bus interchange hubs",
+                      "text_trans": "完善公共交通：将地铁线路延伸至新发展区，设立巴士专用道和巴士转车站",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "647ed9c9-676a-4220-a25b-df954fcbcc1d",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Restraining private vehicle growth: Imposing high first registration taxes, annual license fees, and fuel taxes</span></p>",
+                      "text_origin": "Restraining private vehicle growth: Imposing high first registration taxes, annual license fees, and fuel taxes",
+                      "text_trans": "抑制私家车增长：征收高额首次登记税、年度牌照费和燃油税",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "cb51127f-7b6f-4e07-9d5a-c64a38c00904",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "data": {
+              "text": "<p><span>7.4 What has been done to solve pollution problems?</span></p>",
+              "expand": false,
+              "text_origin": "7.4 What has been done to solve pollution problems?",
+              "text_trans": "7.4 为解决污染问题已采取哪些措施？",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "1cf289ec-3db7-4c9f-a6e1-b3d2e049db06",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Environmental Protection Measures</span></p>",
+                  "expand": false,
+                  "text_origin": "Environmental Protection Measures",
+                  "text_trans": "环境保护措施",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "13b3731f-44ed-478a-b937-867bb298b099",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Air quality: Promoting electric vehicles, mandatory energy labels, expanding electric MTR network</span></p>",
+                      "text_origin": "Air quality: Promoting electric vehicles, mandatory energy labels, expanding electric MTR network",
+                      "text_trans": "空气质量：推广电动车、实施强制性能源标签、扩展电动地铁网络",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "dec4d189-0e11-4057-b40a-832cb9ef38ea",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Water quality: Constructing advanced sewage treatment plants (e.g., Sha Tin Wastewater Treatment Works), levying sewage charges</span></p>",
+                      "text_origin": "Water quality: Constructing advanced sewage treatment plants (e.g., Sha Tin Wastewater Treatment Works), levying sewage charges",
+                      "text_trans": "水质：建设先进污水处理厂（例如沙田污水处理厂），征收排污费",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "1f9029bc-8c97-4f4b-9659-e92af55f04f9",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Noise control: Installing roadside noise barriers, laying low-noise road surfaces, enforcing environmental noise legislation</span></p>",
+                      "text_origin": "Noise control: Installing roadside noise barriers, laying low-noise road surfaces, enforcing environmental noise legislation",
+                      "text_trans": "噪音控制：安装路旁隔音屏障、铺设低噪音路面、执行环境噪音法规",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "40812ff0-ac1e-45be-84be-00c3c1c96e17",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Waste management: Promoting recycling, implementing municipal solid waste charging scheme with designated garbage bags</span></p>",
+                      "text_origin": "Waste management: Promoting recycling, implementing municipal solid waste charging scheme with designated garbage bags",
+                      "text_trans": "废物管理：推广回收，实施市政固体废弃物收费计划，使用指定垃圾袋",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "2e79a598-e501-4f0a-a31d-4e7dac528791",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Light pollution: Enforcing voluntary Charter on External Lighting (switching off decorative lights from 11 pm to 7 am)</span></p>",
+                      "text_origin": "Light pollution: Enforcing voluntary Charter on External Lighting (switching off decorative lights from 11 pm to 7 am)",
+                      "text_trans": "光污染：推行外部照明自愿宪章（晚上11时至早上7时关闭装饰性灯光）",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "993cb10c-bbd4-4fa6-86e8-ca85727f4fe0",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "data": {
+              "text": "<p><span>Skills Box: Advanced Map Measurements</span></p>",
+              "expand": false,
+              "text_origin": "Skills Box: Advanced Map Measurements",
+              "text_trans": "技能框：高级地图量测",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "7901d749-5325-49e4-958d-9b5c0ee72c2a",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Measuring Irregular Areas &amp; Curved Roads</span></p>",
+                  "expand": false,
+                  "text_origin": "Measuring Irregular Areas & Curved Roads",
+                  "text_trans": "不规则面积与弯曲道路量测",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "6fb5b648-974e-45d6-8831-9beb97e92780",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Irregular area measurement: Grid square method — (Complete grid squares + Incomplete grid squares / 2) × Area per grid square</span></p>",
+                      "text_origin": "Irregular area measurement: Grid square method — (Complete grid squares + Incomplete grid squares / 2) × Area per grid square",
+                      "text_trans": "不规则面积量测：方格法——（完整方格数 + 不完整方格数 ÷ 2）× 每方格面积",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "4dbea6a7-5ce4-403d-b37a-af611bbf127e",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Curved road length measurement: Paper strip or thread method laid along route, then measured against linear scale</span></p>",
+                      "text_origin": "Curved road length measurement: Paper strip or thread method laid along route, then measured against linear scale",
+                      "text_trans": "弯曲道路长度量测：纸条法或线绳法——沿路线铺设后与线段比例尺比较量度",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "7ba6366e-8c7c-47c2-874e-57ae95cd2ca1",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "data": {
+          "text": "<p><span>Chapter 8 Can our city be even better?</span></p>",
+          "text_origin": "Chapter 8 Can our city be even better?",
+          "text_trans": "第八章 我们的城市能否做得更好？",
+          "lang_origin": "en",
+          "lang_trans": "zh",
+          "uid": "8c4fd916-073d-4ca8-9607-63a6f6493ef7",
+          "richText": true,
+          "expand": true,
+          "isActive": false
+        },
+        "children": [
+          {
+            "data": {
+              "text": "<p><span>8.1 What is a sustainable city?</span></p>",
+              "expand": false,
+              "text_origin": "8.1 What is a sustainable city?",
+              "text_trans": "8.1 什么是可持续城市？",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "b40c692b-0669-4812-b0b8-bc4ef2fdea3f",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Definition &amp; Three Pillars of Sustainability</span></p>",
+                  "expand": false,
+                  "text_origin": "Definition & Three Pillars of Sustainability",
+                  "text_trans": "定义与可持续发展的三大支柱",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "097b58b6-ac4d-4fe1-b3d9-be0ff333a01b",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Definition: A city capable of enduring over time by harmoniously balancing economic growth, social progress, and environmental conservation to meet present and future needs</span></p>",
+                      "text_origin": "Definition: A city capable of enduring over time by harmoniously balancing economic growth, social progress, and environmental conservation to meet present and future needs",
+                      "text_trans": "定义：能够通过和谐平衡经济增长、社会进步和环境保护来长期维持的城市，满足当代与后代的需求",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "f60f8661-dd0f-4836-a8f7-53dd1f4e590b",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Economic growth: Fostering a stable, diversified economy that generates adequate employment opportunities</span></p>",
+                      "text_origin": "Economic growth: Fostering a stable, diversified economy that generates adequate employment opportunities",
+                      "text_trans": "经济增长：培育稳定多元化的经济，提供充足的就业机会",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "d8b9d6fd-5ff1-41b6-aa0e-000a99a8a2d6",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Social progress: Catering to the needs of diverse social groups and continuously elevating public living standards</span></p>",
+                      "text_origin": "Social progress: Catering to the needs of diverse social groups and continuously elevating public living standards",
+                      "text_trans": "社会进步：满足不同社会群体的需求，持续提升公众生活水平",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "77a6073b-542a-479d-b9c1-49b8f3602940",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Environmental conservation: Preserving natural ecosystems and resources while minimizing waste generation and pollution emissions</span></p>",
+                      "text_origin": "Environmental conservation: Preserving natural ecosystems and resources while minimizing waste generation and pollution emissions",
+                      "text_trans": "环境保护：保护自然生态系统和资源，尽量减少废物产生和污染排放",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "4507f895-7e6c-4482-969f-6f484413479e",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "data": {
+              "text": "<p><span>8.2 Are there any good examples of sustainable cities in the world?</span></p>",
+              "expand": false,
+              "text_origin": "8.2 Are there any good examples of sustainable cities in the world?",
+              "text_trans": "8.2 世界上有可持续城市的良好范例吗？",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "0e27d6bd-60a2-408f-a576-f44d5ddc2c2c",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Global Sustainable City Case Studies</span></p>",
+                  "expand": false,
+                  "text_origin": "Global Sustainable City Case Studies",
+                  "text_trans": "全球可持续城市案例研究",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "f310decd-8792-4ff3-a703-6f76402bad0e",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Seoul Cheonggyecheon Restoration: Restored urban river, reconfigured road infrastructure, introduced green corridors, and relocated hawkers to new markets -&gt; Boosted local economy without environmental degradation</span></p>",
+                      "text_origin": "Seoul Cheonggyecheon Restoration: Restored urban river, reconfigured road infrastructure, introduced green corridors, and relocated hawkers to new markets -> Boosted local economy without environmental degradation",
+                      "text_trans": "首尔清溪川复原：修复城市河流，重新配置道路基础设施，引入绿色廊道，将小贩迁至新市场→在环境不恶化的前提下促进本地经济",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "3b17abe6-0dd0-49e2-9fb4-78cc16990279",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Tianjin Eco-City: Developed green industrial parks, rehabilitated saltpans and wastewater ponds into wetlands/lakes, utilized solar/wind energy, prioritized light rail, with a target of 90% green transport (walking, cycling, public transit)</span></p>",
+                      "text_origin": "Tianjin Eco-City: Developed green industrial parks, rehabilitated saltpans and wastewater ponds into wetlands/lakes, utilized solar/wind energy, prioritized light rail, with a target of 90% green transport (walking, cycling, public transit)",
+                      "text_trans": "天津生态城：发展绿色产业园区，将盐田和污水塘修复为湿地/湖泊，利用太阳能/风能，优先发展轻轨，目标实现90%绿色交通（步行、骑行、公共交通）",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "9c0d045f-e391-43fc-847a-181d75c8c77b",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Helsinki: Implemented Local Agenda 21 and Helsinki City Strategy 2017–2021 (business-friendly environment, climate protection, greenhouse gas reduction, public bike sharing)</span></p>",
+                      "text_origin": "Helsinki: Implemented Local Agenda 21 and Helsinki City Strategy 2017–2021 (business-friendly environment, climate protection, greenhouse gas reduction, public bike sharing)",
+                      "text_trans": "赫尔辛基：实施地方21议程和赫尔辛基城市战略2017–2021（营造商办友好环境、气候保护、减少温室气体排放、公共自行车共享）",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "ca0d04a2-3d88-4b44-8101-528ff48a61d4",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "data": {
+              "text": "<p><span>8.3 How can we develop Hong Kong into a sustainable city?</span></p>",
+              "expand": false,
+              "text_origin": "8.3 How can we develop Hong Kong into a sustainable city?",
+              "text_trans": "8.3 如何将香港发展为可持续城市？",
+              "lang_origin": "en",
+              "lang_trans": "zh",
+              "uid": "f29b31c2-68e5-48c1-9d66-62a80661f40c",
+              "richText": true,
+              "isActive": false
+            },
+            "children": [
+              {
+                "data": {
+                  "text": "<p><span>Four Pathways for Hong Kong</span></p>",
+                  "expand": false,
+                  "text_origin": "Four Pathways for Hong Kong",
+                  "text_trans": "香港的四大路径",
+                  "lang_origin": "en",
+                  "lang_trans": "zh",
+                  "uid": "03119e5e-edfd-42a4-aa06-9da056103516",
+                  "richText": true,
+                  "resetRichText": true,
+                  "isActive": false,
+                  "needUpdate": true
+                },
+                "children": [
+                  {
+                    "data": {
+                      "text": "<p><span>Integrated urban planning: Designing green buffer belts to separate incompatible land uses</span></p>",
+                      "text_origin": "Integrated urban planning: Designing green buffer belts to separate incompatible land uses",
+                      "text_trans": "综合城市规划：设计绿色缓冲带隔离不兼容的用地类型",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "951744d6-142a-4f65-b357-88fb3ee64e28",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Inclusive social consideration: Protecting interest of all social strata (e.g., constructing modern bazaars for relocated hawkers in Kwun Tong)</span></p>",
+                      "text_origin": "Inclusive social consideration: Protecting interest of all social strata (e.g., constructing modern bazaars for relocated hawkers in Kwun Tong)",
+                      "text_trans": "包容性社会考量：保障所有社会阶层的利益（例如为观塘迁置小贩兴建现代化市集）",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "c81184de-b2eb-42cd-9098-0c7024998730",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Promoting green lifestyles: Encouraging public transit adoption and active waste recycling</span></p>",
+                      "text_origin": "Promoting green lifestyles: Encouraging public transit adoption and active waste recycling",
+                      "text_trans": "推广绿色生活方式：鼓励采用公共交通和积极的废物回收",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "bb7f5207-8025-4021-be03-b0f6d8825bbc",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  },
+                  {
+                    "data": {
+                      "text": "<p><span>Harnessing advanced technology: Expanding renewable energy applications (solar and wind power)</span></p>",
+                      "text_origin": "Harnessing advanced technology: Expanding renewable energy applications (solar and wind power)",
+                      "text_trans": "善用先进技术：扩展可再生能源应用（太阳能和风能）",
+                      "lang_origin": "en",
+                      "lang_trans": "zh",
+                      "uid": "0a6db74a-c032-4b22-afa2-3f33d74f5559",
+                      "richText": true,
+                      "resetRichText": true,
+                      "isActive": false,
+                      "needUpdate": true
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "smmVersion": "0.14.0-fix.3"
+  },
+  "theme": {
+    "template": "classic4",
+    "config": {}
+  },
+  "layout": "logicalStructure",
+  "view": {
+    "transform": {
+      "scaleX": 1,
+      "scaleY": 1,
+      "shear": 0,
+      "rotate": 0,
+      "translateX": -1073,
+      "translateY": 33,
+      "originX": 0,
+      "originY": 0,
+      "a": 1,
+      "b": 0,
+      "c": 0,
+      "d": 1,
+      "e": -1073,
+      "f": 33
+    },
+    "state": {
+      "scale": 1,
+      "x": -1073,
+      "y": 33,
+      "sx": -1303,
+      "sy": 23
+    }
+  }
+}

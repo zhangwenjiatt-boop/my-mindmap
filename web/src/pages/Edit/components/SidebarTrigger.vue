@@ -1,11 +1,16 @@
 <template>
   <div
-    class="sidebarTriggerContainer "
+    class="sidebarTriggerContainer"
     @click.stop
     :class="{ hasActive: show && activeSidebar, show: show, isDark: isDark }"
     :style="{ maxHeight: maxHeight + 'px' }"
   >
-    <div class="toggleShowBtn" :class="{ hide: !show }" @click="show = !show">
+    <div
+      class="toggleShowBtn"
+      :class="{ hide: !show }"
+      @click="toggleShow"
+      :title="show ? '收起右侧工具栏' : '展开吸边工具栏'"
+    >
       <span class="iconfont iconjiantouyou"></span>
     </div>
     <div class="trigger customScrollbar">
@@ -76,7 +81,18 @@ export default {
     ...mapMutations(['setActiveSidebar']),
 
     trigger(item) {
-      this.setActiveSidebar(item.value)
+      if (this.activeSidebar === item.value) {
+        this.setActiveSidebar(null)
+      } else {
+        this.setActiveSidebar(item.value)
+      }
+    },
+
+    toggleShow() {
+      this.show = !this.show
+      if (!this.show && this.activeSidebar) {
+        this.setActiveSidebar(null)
+      }
     },
 
     onResize() {
@@ -84,7 +100,7 @@ export default {
     },
 
     updateSize() {
-      const topMargin = 110
+      const topMargin = 70
       const bottomMargin = 80
       this.maxHeight = window.innerHeight - topMargin - bottomMargin
     }
@@ -95,23 +111,33 @@ export default {
 <style lang="less" scoped>
 .sidebarTriggerContainer {
   position: fixed;
-  top: 110px;
+  top: 70px;
   bottom: 80px;
-  right: -60px;
-  transition: all 0.3s;
+  right: -58px;
+  transition: right 0.28s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
   justify-content: center;
+  z-index: 1001;
+  pointer-events: auto;
 
   &.isDark {
     .trigger {
       background-color: #262a2e;
+      border-color: rgba(255, 255, 255, 0.1);
+      box-shadow: -4px 0 16px rgba(0, 0, 0, 0.35);
 
       .triggerItem {
-        color: hsla(0, 0%, 100%, 0.6);
+        color: hsla(0, 0%, 100%, 0.65);
 
         &:hover {
-          background-color: hsla(0, 0%, 100%, 0.05);
+          background-color: hsla(0, 0%, 100%, 0.08);
+          color: #fff;
+        }
+
+        &.active {
+          color: #409eff;
+          background-color: hsla(211, 100%, 60%, 0.12);
         }
       }
     }
@@ -122,28 +148,35 @@ export default {
   }
 
   &.hasActive {
-    right: 305px;
+    right: 300px;
+
+    .trigger {
+      border-right: 1px solid #e2e8f0;
+      box-shadow: -4px 0 12px rgba(0, 0, 0, 0.05);
+    }
   }
 
   .toggleShowBtn {
     position: absolute;
-    left: -6px;
-    width: 35px;
-    height: 60px;
+    left: -8px;
+    width: 24px;
+    height: 48px;
     background: #409eff;
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
-    transition: left 0.1s linear;
-    z-index: 0;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+    transition: all 0.2s;
+    z-index: 1;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
     display: flex;
     align-items: center;
-    padding-left: 4px;
+    justify-content: center;
+    box-shadow: -2px 0 6px rgba(64, 158, 255, 0.3);
 
     &.hide {
-      left: -8px;
+      left: -24px;
+      border-radius: 8px 0 0 8px;
 
       span {
         transform: rotateZ(180deg);
@@ -151,53 +184,78 @@ export default {
     }
 
     &:hover {
-      left: -18px;
+      background: #66b1ff;
+      left: -12px;
+      &.hide {
+        left: -24px;
+      }
     }
 
     span {
       color: #fff;
-      transition: all 0.1s;
+      font-size: 12px;
+      transition: all 0.2s;
     }
   }
 
   .trigger {
     position: relative;
-    width: 60px;
-    border-color: #eee;
+    width: 58px;
+    border: 1px solid #e2e8f0;
+    border-right: none;
     background-color: #fff;
-    box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.06);
-    border-radius: 6px;
+    box-shadow: -4px 0 16px rgba(0, 0, 0, 0.06);
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
     max-height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
+    user-select: none;
 
     .triggerItem {
-      height: 60px;
+      height: 58px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       cursor: pointer;
-      color: #464646;
+      color: #475569;
       user-select: none;
       white-space: nowrap;
+      transition: all 0.15s;
 
       &:hover {
-        background-color: #ededed;
+        background-color: #f8fafc;
+        color: #2563eb;
       }
 
       &.active {
-        color: #409eff;
-        font-weight: bold;
+        color: #2563eb;
+        background-color: #eff6ff;
+        font-weight: 600;
+        position: relative;
+
+        &::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 8px;
+          bottom: 8px;
+          width: 3px;
+          background: #2563eb;
+          border-radius: 0 2px 2px 0;
+        }
       }
 
       .triggerIcon {
         font-size: 18px;
-        margin-bottom: 5px;
+        margin-bottom: 4px;
       }
 
       .triggerName {
-        font-size: 13px;
+        font-size: 12px;
       }
     }
   }

@@ -423,6 +423,11 @@ export const shapeList = [
 // 侧边栏列表
 export const sidebarTriggerList = [
   {
+    name: 'Home',
+    value: 'start',
+    icon: 'iconzhuye'
+  },
+  {
     name: 'Node style',
     value: 'nodeStyle',
     icon: 'iconzhuti'

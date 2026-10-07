@@ -107,7 +107,9 @@ class RichText {
       'richText',
       `
       .smm-richtext-node-wrap {
-        word-break: break-all;
+        word-break: normal;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
         user-select: none;
       }
 
@@ -224,7 +226,10 @@ class RichText {
     } = this.mindMap.opt
     textAutoWrapWidth = node.hasCustomWidth()
       ? node.customTextWidth
-      : textAutoWrapWidth
+      : (node._textData &&
+          node._textData.node &&
+          Number(node._textData.node.attr('data-max-width'))) ||
+        textAutoWrapWidth
     this.node = node
     this.isInserting = isInserting
     if (!rect) rect = node._textData.node.node.getBoundingClientRect()
@@ -254,7 +259,9 @@ class RichText {
             : 'box-shadow: 0 0 20px rgba(0,0,0,.5);'
         }
         outline: none;
-        word-break: break-all;
+        word-break: normal;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
         padding: ${paddingY}px ${paddingX}px;
         line-height: 1.2;
       `

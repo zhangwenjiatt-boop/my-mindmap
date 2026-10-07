@@ -1,5 +1,5 @@
 <template>
-  <div class="toolbarContainer" :class="{ isDark: isDark, hasSplitEditor: hasSplitEditor }">
+  <div class="toolbarContainer" :class="{ isDark: isDark }">
     <!-- 展开工具栏悬浮把手（当工具栏收起/隐藏时显示） -->
     <transition name="el-zoom-in-top">
       <div
@@ -7,10 +7,10 @@
         v-if="isToolbarHidden"
         :style="triggerStyle"
         @click="toggleToolbar(true)"
-        title="展开工具栏 (快捷键 Alt+H)"
+        title="展开编辑工具栏 (快捷键 Alt+H)"
       >
         <i class="el-icon-arrow-down"></i>
-        <span class="triggerText">展开工具栏</span>
+        <span class="triggerText">展开编辑工具栏</span>
       </div>
     </transition>
 
@@ -31,7 +31,7 @@
         <span class="gripText">移动</span>
       </div>
 
-      <!-- 节点操作 -->
+      <!-- 节点操作与插入元素 -->
       <div class="toolbarBlock">
         <ToolbarNodeBtnList :list="horizontalList"></ToolbarNodeBtnList>
         <!-- 更多 -->
@@ -54,138 +54,84 @@
           </div>
         </el-popover>
       </div>
-      <!-- 导出 -->
-      <div class="toolbarBlock">
-        <div class="toolbarBtn" @click="openDirectory" v-if="!isMobile">
-          <span class="icon iconfont icondakai"></span>
-          <span class="text">{{ $t('toolbar.directory') }}</span>
-        </div>
-        <el-tooltip
-          effect="dark"
-          :content="$t('toolbar.newFileTip')"
-          placement="bottom"
-          v-if="!isMobile"
-        >
-          <div class="toolbarBtn" @click="createNewLocalFile">
-            <span class="icon iconfont iconxinjian"></span>
-            <span class="text">{{ $t('toolbar.newFile') }}</span>
-          </div>
-        </el-tooltip>
-        <el-tooltip
-          effect="dark"
-          :content="$t('toolbar.openFileTip')"
-          placement="bottom"
-          v-if="!isMobile"
-        >
-          <div class="toolbarBtn" @click="openLocalFile">
-            <span class="icon iconfont iconwenjian1"></span>
-            <span class="text">{{ $t('toolbar.openFile') }}</span>
-          </div>
-        </el-tooltip>
-        <div class="toolbarBtn" @click="saveLocalFile" v-if="!isMobile">
-          <span class="icon iconfont iconlingcunwei"></span>
-          <span class="text">{{ $t('toolbar.saveAs') }}</span>
-        </div>
-        <div class="toolbarBtn" @click="$bus.$emit('showImport')">
-          <span class="icon iconfont icondaoru"></span>
-          <span class="text">{{ $t('toolbar.import') }}</span>
-        </div>
-        <div
-          class="toolbarBtn"
-          @click="$bus.$emit('showExport')"
-        >
-          <span class="icon iconfont iconexport"></span>
-          <span class="text">{{ $t('toolbar.export') }}</span>
-        </div>
-        <div
-          class="toolbarBtn"
-          @click="$bus.$emit('toggleMarkdownSplit')"
-          title="开启/关闭 Markdown 双栏笔记联动"
-        >
-          <span class="icon el-icon-document" style="font-size: 16px;"></span>
-          <span class="text">双栏笔记</span>
-        </div>
-        <div
-          class="toolbarBtn"
-          @click="enterZenMode"
-          title="全屏沉浸，专注笔记与思考 (按 Esc 退出)"
-        >
-          <span class="icon iconfont iconquanping"></span>
-          <span class="text">专注模式</span>
-        </div>
+
+      <!-- 收起隐藏按钮 -->
+      <div class="toolbarBlock" style="padding: 0 4px;">
         <div
           class="toolbarBtn hideToolbarBtn"
           @click="toggleToolbar(false)"
-          title="收起/隐藏顶部工具栏 (快捷键 Alt+H)"
+          title="收起/隐藏编辑工具栏 (快捷键 Alt+H)"
           style="margin-right: 0;"
         >
           <span class="icon el-icon-arrow-up" style="font-size: 15px;"></span>
           <span class="text">隐藏</span>
         </div>
-        <!-- 本地文件树 -->
-        <div
-          class="fileTreeBox"
-          v-if="fileTreeVisible"
-          :class="{ expand: fileTreeExpand }"
-        >
-          <div class="fileTreeToolbar">
-            <div class="fileTreeName">
-              {{ rootDirName ? '/' + rootDirName : '' }}
-            </div>
-            <div class="fileTreeActionList">
-              <div
-                class="btn"
-                :class="[
-                  fileTreeExpand ? 'el-icon-arrow-up' : 'el-icon-arrow-down'
-                ]"
-                @click="fileTreeExpand = !fileTreeExpand"
-              ></div>
-              <div
-                class="btn el-icon-close"
-                @click="fileTreeVisible = false"
-              ></div>
-            </div>
-          </div>
-          <div class="fileTreeWrap">
-            <el-tree
-              :props="fileTreeProps"
-              :load="loadFileTreeNode"
-              :expand-on-click-node="false"
-              node-key="id"
-              lazy
-            >
-              <span class="customTreeNode" slot-scope="{ node, data }">
-                <div class="treeNodeInfo">
-                  <span
-                    class="treeNodeIcon iconfont"
-                    :class="[
-                      data.type === 'file' ? 'iconwenjian' : 'icondakai'
-                    ]"
-                  ></span>
-                  <span class="treeNodeName">{{ node.label }}</span>
-                </div>
-                <div class="treeNodeBtnList" v-if="data.type === 'file'">
-                  <el-button
-                    type="text"
-                    size="mini"
-                    v-if="data.enableEdit"
-                    @click="editLocalFile(data)"
-                    >编辑</el-button
-                  >
-                  <el-button
-                    type="text"
-                    size="mini"
-                    v-else
-                    @click="importLocalFile(data)"
-                    >导入</el-button
-                  >
-                </div>
-              </span>
-            </el-tree>
-          </div>
-        </div>
       </div>
     </div>
+
+    <!-- 本地文件树抽屉 -->
+    <div
+      class="fileTreeBox"
+      v-if="fileTreeVisible"
+      :class="{ expand: fileTreeExpand }"
+    >
+      <div class="fileTreeToolbar">
+        <div class="fileTreeName">
+          {{ rootDirName ? '/' + rootDirName : '' }}
+        </div>
+        <div class="fileTreeActionList">
+          <div
+            class="btn"
+            :class="[
+              fileTreeExpand ? 'el-icon-arrow-up' : 'el-icon-arrow-down'
+            ]"
+            @click="fileTreeExpand = !fileTreeExpand"
+          ></div>
+          <div
+            class="btn el-icon-close"
+            @click="fileTreeVisible = false"
+          ></div>
+        </div>
+      </div>
+      <div class="fileTreeWrap">
+        <el-tree
+          :props="fileTreeProps"
+          :load="loadFileTreeNode"
+          :expand-on-click-node="false"
+          node-key="id"
+          lazy
+        >
+          <span class="customTreeNode" slot-scope="{ node, data }">
+            <div class="treeNodeInfo">
+              <span
+                class="treeNodeIcon iconfont"
+                :class="[
+                  data.type === 'file' ? 'iconwenjian' : 'icondakai'
+                ]"
+              ></span>
+              <span class="treeNodeName">{{ node.label }}</span>
+            </div>
+            <div class="treeNodeBtnList" v-if="data.type === 'file'">
+              <el-button
+                type="text"
+                size="mini"
+                v-if="data.enableEdit"
+                @click="editLocalFile(data)"
+                >编辑</el-button
+              >
+              <el-button
+                type="text"
+                size="mini"
+                v-else
+                @click="importLocalFile(data)"
+                >导入</el-button
+              >
+            </div>
+          </span>
+        </el-tree>
+      </div>
+    </div>
+    <!-- 模态框与弹窗挂载 -->
     <NodeImage></NodeImage>
     <NodeHyperlink></NodeHyperlink>
     <NodeIcon></NodeIcon>
@@ -210,6 +156,7 @@ import exampleData from 'simple-mind-map/example/exampleData'
 import { getData } from '../../../api'
 import ToolbarNodeBtnList from './ToolbarNodeBtnList.vue'
 import { throttle, isMobile } from 'simple-mind-map/src/utils/index'
+import { switchMindMapBilingualMode, syncUntranslatedNodes } from '@/utils/bilingualHelper'
 
 // 工具栏
 let fileHandle = null
@@ -271,7 +218,8 @@ export default {
       dragStartX: 0,
       dragStartY: 0,
       initialToolbarX: 0,
-      initialToolbarY: 0
+      initialToolbarY: 0,
+      isSyncingBilingual: false
     }
   },
   computed: {
@@ -279,8 +227,21 @@ export default {
       isDark: state => state.localConfig.isDark,
       isHandleLocalFile: state => state.isHandleLocalFile,
       openNodeRichText: state => state.localConfig.openNodeRichText,
-      enableAi: state => state.localConfig.enableAi
+      enableAi: state => state.localConfig.enableAi,
+      aiConfig: state => state.aiConfig,
+      localConfig: state => state.localConfig
     }),
+
+    currentBilingualMode() {
+      return (this.localConfig && this.localConfig.bilingualMode) || 'dual'
+    },
+
+    currentBilingualModeLabel() {
+      const mode = this.currentBilingualMode
+      if (mode === 'zh') return '🇨🇳 纯中文'
+      if (mode === 'en') return '🇬🇧 纯英文'
+      return '📑 双语对照'
+    },
 
     toolbarStyle() {
       const baseTransition = this.isDraggingToolbar
@@ -375,8 +336,10 @@ export default {
   created() {
     this.initToolbarState()
     this.$bus.$on('write_local_file', this.onWriteLocalFile)
-    this.$bus.$on('split_editor_change', this.onSplitEditorChange)
-    this.$bus.$on('split_editor_resize', this.onSplitEditorResize)
+    this.$bus.$on('openLocalFile', this.openLocalFile)
+    this.$bus.$on('createNewLocalFile', this.createNewLocalFile)
+    this.$bus.$on('saveLocalFile', this.saveLocalFile)
+    this.$bus.$on('openDirectory', this.openDirectory)
     this.$bus.$on('toggle_toolbar_show', this.toggleToolbar)
     this.$bus.$on('reset_toolbar_position', this.resetPosition)
   },
@@ -391,8 +354,10 @@ export default {
   },
   beforeDestroy() {
     this.$bus.$off('write_local_file', this.onWriteLocalFile)
-    this.$bus.$off('split_editor_change', this.onSplitEditorChange)
-    this.$bus.$off('split_editor_resize', this.onSplitEditorResize)
+    this.$bus.$off('openLocalFile', this.openLocalFile)
+    this.$bus.$off('createNewLocalFile', this.createNewLocalFile)
+    this.$bus.$off('saveLocalFile', this.saveLocalFile)
+    this.$bus.$off('openDirectory', this.openDirectory)
     this.$bus.$off('toggle_toolbar_show', this.toggleToolbar)
     this.$bus.$off('reset_toolbar_position', this.resetPosition)
     window.removeEventListener('resize', this.computeToolbarShowThrottle)
@@ -425,6 +390,67 @@ export default {
           this.isToolbarHidden = true
         }
       } catch (e) {}
+    },
+
+    // 切换思维导图双语展示模式
+    async handleSwitchBilingualMode(mode) {
+      this.setLocalConfig({ bilingualMode: mode })
+      const mindMap = window.mindMap || (this.$parent && this.$parent.mindMap) || window.$mindMap
+      if (!mindMap) {
+        this.$message.warning('思维导图未就绪')
+        return
+      }
+
+      const fullData = mindMap.getData(true)
+      const hasAnyTrans = root => {
+        if (!root || !root.data) return false
+        if (root.data.text_trans) return true
+        if (root.children && root.children.length > 0) {
+          return root.children.some(hasAnyTrans)
+        }
+        return false
+      }
+
+      // 如果切换到中文或双语模式，但导图中完全没有任何翻译数据，自动启动一次快速批量翻译
+      if ((mode === 'zh' || mode === 'dual') && fullData && fullData.root && !hasAnyTrans(fullData.root)) {
+        this.$message.info('检测到当前导图尚未生成翻译，正在调用 AI 快速补全双语...')
+        await this.handleSyncBilingual()
+        return
+      }
+
+      switchMindMapBilingualMode(mindMap, mode)
+
+      const labels = {
+        zh: '🇨🇳 纯中文版（全图中文展示）',
+        en: '🇬🇧 纯英文原版（全图英文展示）',
+        dual: '📑 中英双语对照版（双行对照）'
+      }
+      this.$message.success(`已切换至：${labels[mode] || mode}`)
+    },
+
+    // 一键同步新加入/编辑节点的双语互译
+    async handleSyncBilingual() {
+      if (this.isSyncingBilingual) return
+      const mindMap = window.mindMap
+      if (!mindMap) {
+        this.$message.warning('思维导图未就绪')
+        return
+      }
+      this.isSyncingBilingual = true
+      try {
+        const mode = this.currentBilingualMode
+        const count = await syncUntranslatedNodes(mindMap, this.aiConfig, mode)
+        if (count > 0) {
+          this.$message.success(`已成功完成 ${count} 个新节点的双语翻译同步！`)
+        } else {
+          this.$message.info('当前导图所有节点均已具备双语翻译，无需更新')
+        }
+      } catch (err) {
+        console.error('同步双语失败:', err)
+        this.$message.error('同步双语失败，请检查 AI 模型配置')
+      } finally {
+        this.isSyncingBilingual = false
+      }
     },
 
     startDrag(e) {
@@ -1016,24 +1042,24 @@ export default {
         margin-right: 0;
       }
 
-      .fileTreeBox {
-        position: absolute;
-        left: 0;
-        top: 68px;
-        width: 100%;
-        height: 30px;
-        background-color: #fff;
-        padding: 12px 5px;
-        padding-top: 0;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        border-radius: 5px;
-        min-width: 200px;
-        box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.06);
+  .fileTreeBox {
+    position: fixed;
+    left: 20px;
+    top: 60px;
+    width: 260px;
+    height: 36px;
+    background-color: #fff;
+    padding: 6px 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    border: 1px solid #e2e8f0;
+    z-index: 100;
 
-        &.expand {
-          height: 300px;
+    &.expand {
+      height: 340px;
 
           .fileTreeWrap {
             visibility: visible;
@@ -1150,6 +1176,109 @@ export default {
         margin-top: 3px;
       }
     }
+  }
+}
+
+.bilingualPopover {
+  padding: 8px !important;
+  border-radius: 10px !important;
+}
+
+.bilingualMenu {
+  width: 250px;
+
+  &.isDark {
+    .menuHeader {
+      color: #94a3b8;
+      border-bottom-color: #334155;
+    }
+
+    .menuItem {
+      color: #e2e8f0;
+
+      &:hover {
+        background: #334155;
+      }
+
+      &.active {
+        background: rgba(37, 99, 235, 0.2);
+        color: #60a5fa;
+      }
+
+      .menuText .desc {
+        color: #64748b;
+      }
+    }
+
+    .menuDivider {
+      background: #334155;
+    }
+  }
+
+  .menuHeader {
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    padding: 6px 10px;
+    border-bottom: 1px solid #f1f5f9;
+    margin-bottom: 4px;
+  }
+
+  .menuItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover {
+      background: #f1f5f9;
+    }
+
+    &.active {
+      background: #eff6ff;
+      color: #2563eb;
+      font-weight: 600;
+    }
+
+    &.disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .flagIcon {
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+    }
+
+    .menuText {
+      flex: 1;
+
+      .title {
+        font-size: 13px;
+        line-height: 1.3;
+      }
+
+      .desc {
+        font-size: 11px;
+        color: #94a3b8;
+        margin-top: 2px;
+      }
+    }
+
+    .checkMark {
+      font-size: 14px;
+      color: #2563eb;
+    }
+  }
+
+  .menuDivider {
+    height: 1px;
+    background: #f1f5f9;
+    margin: 6px 4px;
   }
 }
 </style>

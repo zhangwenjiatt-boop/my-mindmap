@@ -481,12 +481,19 @@ export default {
   watch: {
     activeSidebar(val) {
       if (val === 'setting') {
-        this.$refs.sidebar.show = true
+        if (this.$refs.sidebar) this.$refs.sidebar.show = true
         this.initConfig()
         this.initWatermark()
       } else {
-        this.$refs.sidebar.show = false
+        if (this.$refs.sidebar) this.$refs.sidebar.show = false
       }
+    }
+  },
+  mounted() {
+    if (this.activeSidebar === 'setting' && this.$refs.sidebar) {
+      this.$refs.sidebar.show = true
+      this.initConfig()
+      this.initWatermark()
     }
   },
   created() {

@@ -46,7 +46,7 @@ function showEditTextBox(g) {
   if (!this.textEditNode) {
     this.textEditNode = document.createElement('div')
     this.textEditNode.className = ASSOCIATIVE_LINE_TEXT_EDIT_WRAP
-    this.textEditNode.style.cssText = `position:fixed;box-sizing: border-box;background-color:#fff;box-shadow: 0 0 20px rgba(0,0,0,.5);padding: 3px 5px;margin-left: -5px;margin-top: -3px;outline: none; word-break: break-all;`
+    this.textEditNode.style.cssText = `position:fixed;box-sizing: border-box;background-color:#fff;box-shadow: 0 0 20px rgba(0,0,0,.5);padding: 3px 5px;margin-left: -5px;margin-top: -3px;outline: none; word-break: normal; overflow-wrap: break-word;`
     this.textEditNode.setAttribute('contenteditable', true)
     this.textEditNode.addEventListener('keyup', e => {
       e.stopPropagation()

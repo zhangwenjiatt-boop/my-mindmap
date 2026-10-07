@@ -332,12 +332,21 @@ export default {
     // 计算右键菜单元素的显示位置
     getShowPosition(x, y) {
       const rect = this.$refs.contextmenuRef.getBoundingClientRect()
-      if (x + rect.width > window.innerWidth) {
-        x = x - rect.width - 20
+      const winWidth = window.innerWidth
+      const winHeight = window.innerHeight
+
+      if (x + rect.width > winWidth) {
+        x = winWidth - rect.width - 12
       }
-      this.subItemsShowLeft = x + rect.width + 150 > window.innerWidth
-      if (y + rect.height > window.innerHeight) {
-        y = window.innerHeight - rect.height - 10
+      if (x < 12) {
+        x = 12
+      }
+      this.subItemsShowLeft = x + rect.width + 160 > winWidth
+      if (y + rect.height > winHeight) {
+        y = winHeight - rect.height - 12
+      }
+      if (y < 12) {
+        y = 12
       }
       return { x, y }
     },
@@ -538,9 +547,12 @@ export default {
   width: 250px;
   background: #fff;
   box-shadow: 0 4px 12px 0 hsla(0, 0%, 69%, 0.5);
-  border-radius: 4px;
-  padding-top: 16px;
-  padding-bottom: 16px;
+  border-radius: 6px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  max-height: 85vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 
   &.isDark {
     background: #363b3f;
@@ -624,6 +636,18 @@ export default {
       &.showLeft {
         left: -150px;
       }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .contextmenuContainer {
+    max-width: calc(100vw - 24px);
+
+    .item {
+      height: 38px;
+      padding: 0 14px;
+      font-size: 14px;
     }
   }
 }

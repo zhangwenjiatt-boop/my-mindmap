@@ -85,10 +85,15 @@ export default {
   watch: {
     activeSidebar(val) {
       if (val === 'ai') {
-        this.$refs.sidebar.show = true
+        if (this.$refs.sidebar) this.$refs.sidebar.show = true
       } else {
-        this.$refs.sidebar.show = false
+        if (this.$refs.sidebar) this.$refs.sidebar.show = false
       }
+    }
+  },
+  mounted() {
+    if (this.activeSidebar === 'ai' && this.$refs.sidebar) {
+      this.$refs.sidebar.show = true
     }
   },
   created() {},
@@ -111,33 +116,58 @@ export default {
         return
       }
       this.text = ''
-      const historyUserMsgList = this.chatList
-        .filter(item => {
-          return item.type === 'user'
-        })
+
+      // 提取最近的对话历史（最多取最近 6 条，保留上下文连贯性但避免无限累积）
+      const validHistory = this.chatList
+        .filter(item => (item.type === 'user' || item.type === 'ai') && (item.rawContent || item.content))
+        .slice(-6)
         .map(item => {
-          return item.content
+          let textContent = item.rawContent || item.content || ''
+          textContent = textContent.replace(/<[^>]+>/g, '').trim()
+          return {
+            role: item.type === 'ai' ? 'assistant' : 'user',
+            content: textContent
+          }
         })
+
       this.chatList.push({
         id: createUid(),
         type: 'user',
-        content: text
+        content: text,
+        rawContent: text
       })
       this.chatList.push({
         id: createUid(),
         type: 'ai',
-        content: ''
+        content: '',
+        rawContent: ''
       })
       this.isCreating = true
-      const textList = [...historyUserMsgList, text]
+
+      const messages = [
+        {
+          role: 'system',
+          content: '你是一个精炼、高效的知识与思维导图助手。请聚焦并仅针对用户的最新提问进行回答，结构清晰、重点突出。切勿重复回答历史已经解答过的问题。'
+        },
+        ...validHistory,
+        {
+          role: 'user',
+          content: text
+        }
+      ]
+
       this.$bus.$emit(
         'ai_chat',
-        textList,
+        messages,
         res => {
           if (!md) {
             md = new MarkdownIt()
           }
-          this.chatList[this.chatList.length - 1].content = md.render(res)
+          const lastItem = this.chatList[this.chatList.length - 1]
+          if (lastItem) {
+            lastItem.rawContent = res
+            lastItem.content = md.render(res)
+          }
           this.$refs.chatResBoxRef.scrollTop = this.$refs.chatResBoxRef.scrollHeight
         },
         () => {

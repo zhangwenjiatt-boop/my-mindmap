@@ -1,23 +1,17 @@
 <template>
   <div
     class="editContainer"
-    :class="{ hasSplitEditor: showSplitEditor }"
     @dragenter.stop.prevent="onDragenter"
     @dragleave.stop.prevent
     @dragover.stop.prevent
     @drop.stop.prevent
   >
-    <MarkdownSplitEditor
-      v-if="mindMap && !isZenMode"
-      :mindMap="mindMap"
-      @change="onSplitEditorChange"
-    ></MarkdownSplitEditor>
     <div
       class="mindMapContainer"
       id="mindMapContainer"
       ref="mindMapContainer"
-      :style="mindMapContainerStyle"
     ></div>
+    <StartSidebar v-if="mindMap && !isZenMode" :mindMap="mindMap"></StartSidebar>
     <Count :mindMap="mindMap" v-if="!isZenMode"></Count>
     <Navigator v-if="mindMap" :mindMap="mindMap"></Navigator>
     <NavigatorToolbar :mindMap="mindMap" v-if="!isZenMode"></NavigatorToolbar>
@@ -64,6 +58,31 @@
     <AiCreate v-if="mindMap && enableAi" :mindMap="mindMap"></AiCreate>
     <AiChat v-if="enableAi"></AiChat>
     <AiExplainDialog v-if="mindMap && enableAi" :mindMap="mindMap"></AiExplainDialog>
+    <!-- 用户与项目空间胶囊 -->
+    <UserProjectBar v-if="!isZenMode"></UserProjectBar>
+    <!-- 登录/注册对话框 -->
+    <AuthDialog></AuthDialog>
+    <!-- 我的思维导图项目库 -->
+    <ProjectManagerDialog></ProjectManagerDialog>
+    <!-- 空画布提示（根节点被删除后展示） -->
+    <div
+      v-if="isMindMapEmpty"
+      class="emptyMindMapOverlay"
+    >
+      <div class="emptyCard">
+        <div class="emptyIcon">💡</div>
+        <div class="emptyTitle">画布当前为空</div>
+        <div class="emptyDesc">根节点已删除，您可以点击下方按钮或按 <b>Enter</b> 键重新创建根节点</div>
+        <el-button
+          type="primary"
+          icon="el-icon-plus"
+          size="medium"
+          @click="handleCreateRootNode"
+        >
+          创建根节点
+        </el-button>
+      </div>
+    </div>
     <div
       class="dragMask"
       v-if="showDragMask"
@@ -137,11 +156,15 @@ import Setting from './Setting.vue'
 import AssociativeLineStyle from './AssociativeLineStyle.vue'
 import NodeImgPlacementToolbar from './NodeImgPlacementToolbar.vue'
 import NodeFloatingToolbar from './NodeFloatingToolbar.vue'
-import MarkdownSplitEditor from './MarkdownSplitEditor.vue'
+import StartSidebar from './StartSidebar.vue'
 import NodeNoteSidebar from './NodeNoteSidebar.vue'
 import AiCreate from './AiCreate.vue'
 import AiChat from './AiChat.vue'
 import AiExplainDialog from './AiExplainDialog.vue'
+import UserProjectBar from './UserProjectBar.vue'
+import AuthDialog from './AuthDialog.vue'
+import ProjectManagerDialog from './ProjectManagerDialog.vue'
+import { fetchProjectDetail, saveProjectData } from '@/api/auth'
 
 // 注册插件
 MindMap.usePlugin(MiniMap)
@@ -201,11 +224,14 @@ export default {
     AssociativeLineStyle,
     NodeImgPlacementToolbar,
     NodeFloatingToolbar,
-    MarkdownSplitEditor,
+    StartSidebar,
     NodeNoteSidebar,
     AiCreate,
     AiChat,
-    AiExplainDialog
+    AiExplainDialog,
+    UserProjectBar,
+    AuthDialog,
+    ProjectManagerDialog
   },
   data() {
     return {
@@ -215,11 +241,9 @@ export default {
       mindMapConfig: {},
       prevImg: '',
       storeConfigTimer: null,
+      cloudSaveTimer: null,
       showDragMask: false,
-      showSplitEditor: false,
-      splitEditorWidth: 440,
-      splitEditorCollapsed: false,
-      isSplitDragging: false
+      isMindMapEmpty: false
     }
   },
   computed: {
@@ -232,27 +256,10 @@ export default {
         state.localConfig.useLeftKeySelectionRightKeyDrag,
       extraTextOnExport: state => state.extraTextOnExport,
       isDragOutlineTreeNode: state => state.isDragOutlineTreeNode,
-      enableAi: state => state.localConfig.enableAi
-    }),
-
-    mindMapContainerStyle() {
-      if (!this.showSplitEditor || this.splitEditorCollapsed) {
-        return {
-          left: '0px',
-          width: '100%',
-          transition: this.isSplitDragging
-            ? 'none'
-            : 'left 0.22s cubic-bezier(0.4, 0, 0.2, 1), width 0.22s cubic-bezier(0.4, 0, 0.2, 1)'
-        }
-      }
-      return {
-        left: `${this.splitEditorWidth}px`,
-        width: `calc(100% - ${this.splitEditorWidth}px)`,
-        transition: this.isSplitDragging
-          ? 'none'
-          : 'left 0.22s cubic-bezier(0.4, 0, 0.2, 1), width 0.22s cubic-bezier(0.4, 0, 0.2, 1)'
-      }
-    }
+      enableAi: state => state.localConfig.enableAi,
+      token: state => state.token,
+      currentProject: state => state.currentProject
+    })
   },
   watch: {
     openNodeRichText() {
@@ -278,23 +285,46 @@ export default {
     this.$bus.$on('paddingChange', this.onPaddingChange)
     this.$bus.$on('export', this.export)
     this.$bus.$on('setData', this.setData)
+    this.$bus.$on('loadProjectData', this.setData)
+    this.$bus.$on('flushSaveCurrentProject', () => {
+      this.syncSaveToCloud(true)
+    })
     this.$bus.$on('startTextEdit', this.handleStartTextEdit)
     this.$bus.$on('endTextEdit', this.handleEndTextEdit)
     this.$bus.$on('createAssociativeLine', this.handleCreateLineFromActiveNode)
     this.$bus.$on('startPainter', this.handleStartPainter)
-    this.$bus.$on('node_tree_render_end', this.handleHideLoading)
+    this.$bus.$on('node_tree_render_end', () => {
+      this.handleHideLoading()
+      this.checkMindMapEmpty()
+    })
     this.$bus.$on('showLoading', this.handleShowLoading)
     this.$bus.$on('localStorageExceeded', this.onLocalStorageExceeded)
-    this.$bus.$on('split_editor_resize', this.onSplitEditorResize)
     window.addEventListener('resize', this.handleResize)
+    window.addEventListener('keydown', this.handleEmptyKeydown)
     this.$bus.$on('showDownloadTip', this.showDownloadTip)
+    this.$bus.$on('manualSave', this.manualSave)
     this.webTip()
+
+    // 若用户已登录并且有上次选中的项目，从云端拉取最新数据同步
+    if (this.token && this.currentProject && this.currentProject.id) {
+      fetchProjectDetail(this.currentProject.id)
+        .then(res => {
+          if (res && res.code === 0 && res.data && res.data.data) {
+            this.setData(res.data.data)
+          }
+        })
+        .catch(err => {
+          console.warn('从云端同步导图项目失败，继续使用本地缓存:', err)
+        })
+    }
   },
   beforeDestroy() {
     this.$bus.$off('execCommand', this.execCommand)
     this.$bus.$off('paddingChange', this.onPaddingChange)
     this.$bus.$off('export', this.export)
     this.$bus.$off('setData', this.setData)
+    this.$bus.$off('loadProjectData', this.setData)
+    this.$bus.$off('flushSaveCurrentProject')
     this.$bus.$off('startTextEdit', this.handleStartTextEdit)
     this.$bus.$off('endTextEdit', this.handleEndTextEdit)
     this.$bus.$off('createAssociativeLine', this.handleCreateLineFromActiveNode)
@@ -302,12 +332,36 @@ export default {
     this.$bus.$off('node_tree_render_end', this.handleHideLoading)
     this.$bus.$off('showLoading', this.handleShowLoading)
     this.$bus.$off('localStorageExceeded', this.onLocalStorageExceeded)
-    this.$bus.$off('split_editor_resize', this.onSplitEditorResize)
+    this.$bus.$off('manualSave', this.manualSave)
     window.removeEventListener('resize', this.handleResize)
+    window.removeEventListener('keydown', this.handleEmptyKeydown)
     this.$bus.$off('showDownloadTip', this.showDownloadTip)
     this.mindMap.destroy()
   },
   methods: {
+    checkMindMapEmpty() {
+      if (!this.mindMap || !this.mindMap.renderer) {
+        this.isMindMapEmpty = false
+        return
+      }
+      this.isMindMapEmpty = !this.mindMap.renderer.renderTree || !this.mindMap.renderer.root
+    },
+
+    handleCreateRootNode() {
+      if (this.mindMap) {
+        const title = (this.currentProject && this.currentProject.title) ? this.currentProject.title : '中心主题'
+        this.mindMap.execCommand('CREATE_ROOT_NODE', title)
+        this.checkMindMapEmpty()
+      }
+    },
+
+    handleEmptyKeydown(e) {
+      if (this.isMindMapEmpty && (e.key === 'Enter' || e.key === 'Tab')) {
+        e.preventDefault()
+        this.handleCreateRootNode()
+      }
+    },
+
     onLocalStorageExceeded() {
       this.$notify({
         type: 'warning',
@@ -361,6 +415,8 @@ export default {
     bindSaveEvent() {
       this.$bus.$on('data_change', data => {
         storeData({ root: data })
+        this.syncSaveToCloud(false)
+        this.checkMindMapEmpty()
       })
       this.$bus.$on('view_data_change', data => {
         clearTimeout(this.storeConfigTimer)
@@ -368,13 +424,73 @@ export default {
           storeData({
             view: data
           })
+          this.syncSaveToCloud(false)
         }, 300)
       })
     },
 
+    cleanTitle(text) {
+      if (!text) return ''
+      return String(text)
+        .replace(/<[^>]+>/g, '')
+        .replace(/&nbsp;/g, ' ')
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'")
+        .replace(/\s+/g, ' ')
+        .trim()
+    },
+
+    // 云端项目自动同步
+    syncSaveToCloud(immediate = false) {
+      if (!this.token || !this.currentProject || !this.mindMap) return
+      clearTimeout(this.cloudSaveTimer)
+      const doSave = async () => {
+        try {
+          this.$store.commit('setIsSavingProject', true)
+          const fullData = this.mindMap.getData(true)
+          const rawText = (fullData && fullData.root && fullData.root.data && fullData.root.data.text)
+            ? fullData.root.data.text
+            : ''
+          const cleanText = this.cleanTitle(rawText)
+          const title = cleanText || this.cleanTitle(this.currentProject.title) || '未命名思维导图'
+          await saveProjectData(this.currentProject.id, {
+            data: fullData,
+            title
+          })
+          if (this.currentProject && cleanText && this.currentProject.title !== cleanText) {
+            this.$store.commit('setCurrentProject', {
+              ...this.currentProject,
+              title: cleanText
+            })
+          }
+          this.$store.commit('setIsSavingProject', false)
+          this.$store.commit('setLastSavedTime', Date.now())
+        } catch (e) {
+          console.error('Failed to sync save project:', e)
+          this.$store.commit('setIsSavingProject', false)
+        }
+      }
+      if (immediate) {
+        doSave()
+      } else {
+        this.cloudSaveTimer = setTimeout(doSave, 1000)
+      }
+    },
+
     // 手动保存
     manualSave() {
-      storeData(this.mindMap.getData(true))
+      const fullData = this.mindMap.getData(true)
+      storeData(fullData)
+      if (this.token && this.currentProject) {
+        this.syncSaveToCloud(true)
+        const displayTitle = this.cleanTitle(this.currentProject.title) || '当前项目'
+        this.$message.success(`已保存至云端项目《${displayTitle}》！`)
+      } else {
+        this.$message.success('已保存当前思维导图（本地访客模式，登录后可同步至云端项目库）！')
+      }
     },
 
     // 初始化
@@ -508,6 +624,8 @@ export default {
         }
       })
       window.mindMap = this.mindMap
+      window.$mindMap = this.mindMap
+      this.$bus.mindMap = this.mindMap
       this.loadPlugins()
       this.mindMap.keyCommand.addShortcut('Control+s', () => {
         this.manualSave()
@@ -539,6 +657,7 @@ export default {
         'demonstrate_jump',
         'exit_demonstrate',
         'node_note_dblclick',
+        'node_note_click',
         'node_mousedown'
       ].forEach(event => {
         this.mindMap.on(event, (...args) => {
@@ -546,6 +665,7 @@ export default {
         })
       })
       this.bindSaveEvent()
+      this.bindTouchLongPress()
       // 如果应用被接管，那么抛出事件传递思维导图实例
       if (window.takeOverApp) {
         this.$bus.$emit('app_inited', this.mindMap)
@@ -564,6 +684,76 @@ export default {
       this.cooperateTest()
     },
 
+    // 移动端长按手势支持（唤起右键菜单）
+    bindTouchLongPress() {
+      const container = this.$refs.mindMapContainer
+      if (!container) return
+      let timer = null
+      let touchStartPos = null
+
+      const clearTimer = () => {
+        if (timer) {
+          clearTimeout(timer)
+          timer = null
+        }
+        touchStartPos = null
+      }
+
+      container.addEventListener(
+        'touchstart',
+        e => {
+          if (e.touches.length !== 1) {
+            clearTimer()
+            return
+          }
+          const touch = e.touches[0]
+          touchStartPos = { x: touch.clientX, y: touch.clientY }
+          timer = setTimeout(() => {
+            if (!touchStartPos) return
+            const activeNodes =
+              this.mindMap && this.mindMap.renderer
+                ? this.mindMap.renderer.activeNodeList
+                : []
+            const fakeEvent = {
+              clientX: touchStartPos.x,
+              clientY: touchStartPos.y,
+              which: 3,
+              preventDefault: () => {},
+              stopPropagation: () => {}
+            }
+            if (activeNodes && activeNodes.length > 0) {
+              this.$bus.$emit('node_contextmenu', fakeEvent, activeNodes[0])
+            } else {
+              this.$bus.$emit('svg_mousedown', fakeEvent)
+              this.$bus.$emit('mouseup', fakeEvent)
+            }
+            clearTimer()
+          }, 550)
+        },
+        { passive: true }
+      )
+
+      container.addEventListener(
+        'touchmove',
+        e => {
+          if (!touchStartPos || e.touches.length !== 1) {
+            clearTimer()
+            return
+          }
+          const touch = e.touches[0]
+          const dx = Math.abs(touch.clientX - touchStartPos.x)
+          const dy = Math.abs(touch.clientY - touchStartPos.y)
+          if (dx > 8 || dy > 8) {
+            clearTimer()
+          }
+        },
+        { passive: true }
+      )
+
+      container.addEventListener('touchend', clearTimer, { passive: true })
+      container.addEventListener('touchcancel', clearTimer, { passive: true })
+    },
+
     // 加载相关插件
     loadPlugins() {
       if (this.openNodeRichText) this.addRichTextPlugin()
@@ -580,6 +770,12 @@ export default {
     // 动态设置思维导图数据
     setData(data) {
       this.handleShowLoading()
+      if (!data) {
+        this.mindMap.setData(null)
+        this.mindMap.render()
+        this.checkMindMapEmpty()
+        return
+      }
       let rootNodeData = null
       if (data.root) {
         this.mindMap.setFullData(data)
@@ -590,8 +786,9 @@ export default {
       }
       this.mindMap.view.reset()
       this.manualSave()
+      this.checkMindMapEmpty()
       // 如果导入的是富文本内容，那么自动开启富文本模式
-      if (rootNodeData.data.richText && !this.openNodeRichText) {
+      if (rootNodeData && rootNodeData.data && rootNodeData.data.richText && !this.openNodeRichText) {
         this.$bus.$emit('toggleOpenNodeRichText', true)
         this.$notify.info({
           title: this.$t('edit.tip'),
@@ -702,27 +899,6 @@ export default {
 
     showDownloadTip(title = '免费服务', desc = '免费服务') {
       this.$message.info(desc)
-    },
-
-    onSplitEditorResize({ show, width, isCollapsed, isDragging }) {
-      if (show !== undefined) this.showSplitEditor = show
-      if (width !== undefined) this.splitEditorWidth = width
-      if (isCollapsed !== undefined) this.splitEditorCollapsed = isCollapsed
-      this.isSplitDragging = !!isDragging
-      this.$nextTick(() => {
-        if (this.mindMap) {
-          this.mindMap.resize()
-        }
-      })
-    },
-
-    onSplitEditorChange(show) {
-      this.showSplitEditor = show
-      this.$nextTick(() => {
-        if (this.mindMap) {
-          this.mindMap.resize()
-        }
-      })
     }
   }
 }
@@ -761,6 +937,67 @@ export default {
     top: 0px;
     width: 100%;
     height: 100%;
+  }
+
+  .emptyMindMapOverlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 99;
+    pointer-events: auto;
+
+    .emptyCard {
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
+      border-radius: 16px;
+      padding: 36px 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      text-align: center;
+      user-select: none;
+      animation: fadeInScale 0.25s ease-out;
+
+      .emptyIcon {
+        font-size: 36px;
+        line-height: 1;
+        margin-bottom: 2px;
+      }
+
+      .emptyTitle {
+        font-size: 18px;
+        font-weight: 600;
+        color: #303133;
+      }
+
+      .emptyDesc {
+        font-size: 13px;
+        color: #909399;
+        margin-bottom: 8px;
+
+        b {
+          color: #409eff;
+          background: rgba(64, 158, 255, 0.12);
+          padding: 2px 6px;
+          border-radius: 4px;
+        }
+      }
+    }
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 </style>

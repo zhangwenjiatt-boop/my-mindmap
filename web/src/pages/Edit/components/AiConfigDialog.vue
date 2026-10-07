@@ -3,8 +3,8 @@
     class="aiConfigDialog"
     :title="$t('ai.AIConfiguration') || 'AI功能与模型配置'"
     :visible.sync="aiConfigDialogVisible"
-    width="660px"
-    top="8vh"
+    :width="isMobile ? '94%' : '660px'"
+    :top="isMobile ? '12px' : '8vh'"
     append-to-body
   >
     <el-tabs v-model="activeTab" class="aiConfigTabs">
@@ -275,6 +275,7 @@ import {
   AI_CONTINUATION_PRESETS,
   AI_EXPLANATION_PRESETS
 } from '@/utils/aiPrompts'
+import { isMobile } from 'simple-mind-map/src/utils/index'
 
 // 主流模型服务商预设
 const AI_PROVIDERS = [
@@ -380,6 +381,7 @@ export default {
   },
   data() {
     return {
+      isMobile: isMobile(),
       activeTab: 'model',
       aiConfigDialogVisible: false,
       continuationPresets: AI_CONTINUATION_PRESETS,
@@ -1030,6 +1032,50 @@ export default {
   to {
     opacity: 1;
     transform: scale(1.15);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .aiConfigDialog {
+    /deep/ .el-dialog {
+      margin-bottom: 20px !important;
+    }
+
+    /deep/ .el-dialog__header {
+      padding: 14px 16px 10px !important;
+    }
+
+    /deep/ .el-dialog__body {
+      padding: 10px 14px !important;
+    }
+
+    .aiStatusBanner {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 10px !important;
+
+      .statusRight {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: flex-end !important;
+      }
+    }
+
+    .tabContent {
+      max-height: calc(80vh - 120px) !important;
+      overflow-y: auto !important;
+    }
+
+    .el-form-item__label {
+      float: none !important;
+      text-align: left !important;
+      display: block !important;
+      padding-bottom: 4px !important;
+    }
+
+    .el-form-item__content {
+      margin-left: 0 !important;
+    }
   }
 }
 </style>

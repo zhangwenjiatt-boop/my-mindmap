@@ -5,7 +5,7 @@
       class="clientTipDialog"
       :title="$t('ai.connectFailedTitle')"
       :visible.sync="clientTipDialogVisible"
-      width="400px"
+      :width="isMobile ? '90%' : '400px'"
       append-to-body
     >
       <div class="tipBox">
@@ -37,7 +37,7 @@
       class="createDialog"
       :title="$t('ai.createMindMapTitle')"
       :visible.sync="createDialogVisible"
-      width="450px"
+      :width="isMobile ? '92%' : '450px'"
       append-to-body
     >
       <div class="inputBox">
@@ -83,7 +83,7 @@
       class="createDialog"
       :title="$t('ai.aiCreatePart')"
       :visible.sync="createPartDialogVisible"
-      width="560px"
+      :width="isMobile ? '92%' : '560px'"
       append-to-body
     >
       <div class="inputBox">
@@ -132,7 +132,8 @@ import {
   createUid,
   isUndef,
   checkNodeOuter,
-  getStrWithBrFromHtml
+  getStrWithBrFromHtml,
+  isMobile
 } from 'simple-mind-map/src/utils'
 import { mapState } from 'vuex'
 import AiConfigDialog from './AiConfigDialog.vue'
@@ -149,6 +150,7 @@ export default {
   },
   data() {
     return {
+      isMobile: isMobile(),
       aiInstance: null,
       isAiCreating: false,
       aiCreatingContent: '',
@@ -602,14 +604,22 @@ export default {
         this.isAiCreating = true
         this.aiInstance = new Ai()
         this.aiInstance.init('huoshan', this.aiConfig)
+
+        let messages = []
+        if (Array.isArray(messageList) && messageList.length > 0) {
+          if (typeof messageList[0] === 'object' && messageList[0].role) {
+            messages = messageList
+          } else {
+            messages = messageList.map(msg => ({
+              role: 'user',
+              content: msg
+            }))
+          }
+        }
+
         this.aiInstance.request(
           {
-            messages: messageList.map(msg => {
-              return {
-                role: 'user',
-                content: msg
-              }
-            })
+            messages
           },
           content => {
             progress(content)
@@ -680,6 +690,28 @@ export default {
     left: 50%;
     top: 100px;
     transform: translateX(-50%);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .createDialog {
+    /deep/ .el-dialog {
+      margin-bottom: 20px !important;
+    }
+
+    /deep/ .el-dialog__header {
+      padding: 14px 16px 10px !important;
+    }
+
+    /deep/ .el-dialog__body {
+      padding: 12px 14px !important;
+    }
+
+    .inputBox {
+      .el-select {
+        width: 100% !important;
+      }
+    }
   }
 }
 </style>

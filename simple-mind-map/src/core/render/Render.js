@@ -289,6 +289,9 @@ class Render {
     // 仅删除当前节点
     this.removeCurrentNode = this.removeCurrentNode.bind(this)
     this.mindMap.command.add('REMOVE_CURRENT_NODE', this.removeCurrentNode)
+    // 创建根节点
+    this.createRootNode = this.createRootNode.bind(this)
+    this.mindMap.command.add('CREATE_ROOT_NODE', this.createRootNode)
     // 粘贴节点
     this.pasteNode = this.pasteNode.bind(this)
     this.mindMap.command.add('PASTE_NODE', this.pasteNode)
@@ -580,6 +583,17 @@ class Render {
     }
     // 如果没有节点数据
     if (!this.renderTree) {
+      Object.keys(this.lastNodeCache).forEach(uid => {
+        this.removeNodeFromActiveList(this.lastNodeCache[uid])
+        if (this.lastNodeCache[uid] && this.lastNodeCache[uid].destroy) {
+          this.lastNodeCache[uid].destroy()
+        }
+      })
+      this.lastNodeCache = {}
+      this.nodeCache = {}
+      this.root = null
+      this.clearActiveNodeList()
+      this.emitNodeActiveEvent()
       this.onRenderEnd()
       return
     }
@@ -791,6 +805,10 @@ class Render {
   ) {
     appointNodes = formatDataToArray(appointNodes)
     if (this.activeNodeList.length <= 0 && appointNodes.length <= 0) {
+      if (!this.renderTree || !this.root) {
+        this.createRootNode()
+        return
+      }
       return
     }
     this.textEdit.hideEditTextBox()
@@ -898,6 +916,10 @@ class Render {
   ) {
     appointNodes = formatDataToArray(appointNodes)
     if (this.activeNodeList.length <= 0 && appointNodes.length <= 0) {
+      if (!this.renderTree || !this.root) {
+        this.createRootNode()
+        return
+      }
       return
     }
     this.textEdit.hideEditTextBox()
@@ -1423,9 +1445,18 @@ class Render {
       return node.isRoot
     })
     if (root) {
+      // 允许删除根节点：彻底清空导图
+      if (this.textEdit) {
+        this.textEdit.hideEditTextBox()
+      }
       this.clearActiveNodeList()
-      root.children = []
-      root.nodeData.children = []
+      this.renderTree = null
+      this.mindMap.opt.data = null
+      this.activeNodeList = []
+      this.emitNodeActiveEvent()
+      this.mindMap.render()
+      this.mindMap.emit('data_change', null)
+      return
     } else {
       // 如果只选中了一个节点，删除后激活其兄弟节点或者父节点
       needActiveNode = this.getNextActiveNode(list)
@@ -1485,6 +1516,13 @@ class Render {
     }
     let isAppointNodes = appointNodes.length > 0
     let list = isAppointNodes ? appointNodes : this.activeNodeList
+    let root = list.find(node => {
+      return node.isRoot
+    })
+    if (root && list.length === 1) {
+      this.removeNode(list)
+      return
+    }
     list = list.filter(node => {
       return !node.isRoot
     })
@@ -1512,6 +1550,26 @@ class Render {
     }
     this.emitNodeActiveEvent()
     this.mindMap.render()
+  }
+
+  // 创建根节点
+  createRootNode(text = '中心主题') {
+    if (this.textEdit) {
+      this.textEdit.hideEditTextBox()
+    }
+    const rootData = {
+      data: {
+        text: text || '中心主题',
+        expand: true,
+        isActive: true,
+        uid: createUid()
+      },
+      children: []
+    }
+    this.setData(rootData)
+    this.mindMap.opt.data = rootData
+    this.mindMap.render()
+    this.mindMap.emit('data_change', rootData)
   }
 
   // 计算下一个可激活的节点

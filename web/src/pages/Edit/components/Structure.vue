@@ -68,11 +68,17 @@ export default {
   watch: {
     activeSidebar(val) {
       if (val === 'structure') {
-        this.layout = this.mindMap.getLayout()
-        this.$refs.sidebar.show = true
+        this.layout = this.mindMap ? this.mindMap.getLayout() : ''
+        if (this.$refs.sidebar) this.$refs.sidebar.show = true
       } else {
-        this.$refs.sidebar.show = false
+        if (this.$refs.sidebar) this.$refs.sidebar.show = false
       }
+    }
+  },
+  mounted() {
+    if (this.activeSidebar === 'structure' && this.$refs.sidebar) {
+      this.layout = this.mindMap ? this.mindMap.getLayout() : ''
+      this.$refs.sidebar.show = true
     }
   },
   methods: {

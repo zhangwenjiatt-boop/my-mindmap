@@ -2,10 +2,14 @@ version: '3.8'
 
 services:
   mind-map:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     container_name: mind-map-app
     restart: always
     ports:
-      - "8080:80"
+      - "8080:8080"
+    volumes:
+      # 将宿主机的 data 目录挂载到容器中，保证用户与项目数据不丢失
+      - ./data:/app/data
+    environment:
+      - PORT=8080
+      - NODE_ENV=production

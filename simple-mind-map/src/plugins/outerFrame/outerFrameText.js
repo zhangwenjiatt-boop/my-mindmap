@@ -44,7 +44,8 @@ function showEditTextBox(g) {
       background-color: #fff;
       box-shadow: 0 0 20px rgba(0,0,0,.5);
       outline: none; 
-      word-break: break-all;
+      word-break: normal;
+      overflow-wrap: break-word;
     `
     this.textEditNode.setAttribute('contenteditable', true)
     this.textEditNode.addEventListener('keyup', e => {
