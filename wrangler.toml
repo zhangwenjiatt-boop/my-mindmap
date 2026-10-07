@@ -2,3 +2,7 @@ name = "mind-map"
 compatibility_date = "2024-04-01"
 pages_build_output_dir = "."
 
+[[d1_databases]]
+binding = "DB"
+database_name = "mind_map_db"
+database_id = "a83bbf36-7acb-4822-b529-06510991eafc"
