@@ -2,9 +2,3 @@ name = "mind-map"
 compatibility_date = "2024-04-01"
 pages_build_output_dir = "."
 
-# 绑定 Cloudflare D1 数据库
-# 部署后在 Cloudflare Pages 后台将 D1 数据库命名为 DB 并绑定即可
-[[d1_databases]]
-binding = "DB"
-database_name = "mind_map_db"
-database_id = "mind_map_db"
