@@ -118,26 +118,25 @@ function jsonResponse(data, status = 200) {
   });
 }
 
-// 辅助：自动初始化 D1 数据库表（免手动建表）
 let isDbInitialized = false;
 async function ensureTables(db) {
   if (isDbInitialized || !db) return;
   try {
-    await db.exec(`
-      CREATE TABLE IF NOT EXISTS users (
+    await db.batch([
+      db.prepare(`CREATE TABLE IF NOT EXISTS users (
         id TEXT PRIMARY KEY,
         username TEXT UNIQUE NOT NULL,
         nickname TEXT NOT NULL,
         salt TEXT NOT NULL,
         password_hash TEXT NOT NULL,
         created_at INTEGER NOT NULL
-      );
-      CREATE TABLE IF NOT EXISTS sessions (
+      )`),
+      db.prepare(`CREATE TABLE IF NOT EXISTS sessions (
         token TEXT PRIMARY KEY,
         user_id TEXT NOT NULL,
         created_at INTEGER NOT NULL
-      );
-      CREATE TABLE IF NOT EXISTS projects (
+      )`),
+      db.prepare(`CREATE TABLE IF NOT EXISTS projects (
         id TEXT PRIMARY KEY,
         user_id TEXT NOT NULL,
         title TEXT NOT NULL,
@@ -146,12 +145,22 @@ async function ensureTables(db) {
         data TEXT NOT NULL,
         created_at INTEGER NOT NULL,
         updated_at INTEGER NOT NULL
-      );
-      CREATE INDEX IF NOT EXISTS idx_projects_user_id ON projects(user_id);
-    `);
+      )`),
+      db.prepare(`CREATE INDEX IF NOT EXISTS idx_projects_user_id ON projects(user_id)`)
+    ]);
     isDbInitialized = true;
   } catch (err) {
-    console.error('Error ensuring D1 tables:', err);
+    console.error('Error ensuring D1 tables via batch:', err);
+    // 降级尝试逐条执行
+    try {
+      await db.prepare(`CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, username TEXT UNIQUE NOT NULL, nickname TEXT NOT NULL, salt TEXT NOT NULL, password_hash TEXT NOT NULL, created_at INTEGER NOT NULL)`).run();
+      await db.prepare(`CREATE TABLE IF NOT EXISTS sessions (token TEXT PRIMARY KEY, user_id TEXT NOT NULL, created_at INTEGER NOT NULL)`).run();
+      await db.prepare(`CREATE TABLE IF NOT EXISTS projects (id TEXT PRIMARY KEY, user_id TEXT NOT NULL, title TEXT NOT NULL, desc TEXT DEFAULT '', node_count INTEGER DEFAULT 1, data TEXT NOT NULL, created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL)`).run();
+      await db.prepare(`CREATE INDEX IF NOT EXISTS idx_projects_user_id ON projects(user_id)`).run();
+      isDbInitialized = true;
+    } catch (fallbackErr) {
+      console.error('Error ensuring D1 tables via fallback:', fallbackErr);
+    }
   }
 }
 
