@@ -88,7 +88,7 @@
                 @blur="onApiBlur"
               ></el-input>
               <div class="formItemTip">
-                标准 OpenAI 兼容的聊天补全接口（Chat Completions API）。无需填写代理端口。
+                标准 OpenAI 兼容的聊天补全接口（Chat Completions API）。若输入 Base URL（例如 https://token.sensenova.cn/v1），失焦后系统会自动补全为 /chat/completions 终结点以确保网络请求正确发起。
               </div>
             </el-form-item>
 
@@ -339,6 +339,19 @@ const AI_PROVIDERS = [
     placeholder: '请输入智谱 API Key'
   },
   {
+    id: 'sensenova',
+    name: '商汤日日新 (SenseNova / 商汤科技)',
+    api: 'https://token.sensenova.cn/v1/chat/completions',
+    defaultModel: 'SenseChat-5',
+    models: [
+      { id: 'SenseChat-5', name: 'SenseChat-5 (日日新 5.0 旗舰推荐)' },
+      { id: 'SenseChat-5-Vision', name: 'SenseChat-5-Vision (多模态视觉)' },
+      { id: 'SenseChat-Turbo', name: 'SenseChat-Turbo (极速响应)' },
+      { id: 'SenseChat', name: 'SenseChat (标准版)' }
+    ],
+    placeholder: '请输入商汤 SenseNova API Key'
+  },
+  {
     id: 'volcengine',
     name: '火山方舟 (字节跳动)',
     api: 'https://ark.cn-beijing.volces.com/api/v3/chat/completions',
@@ -517,6 +530,7 @@ export default {
       // 智能识别当前 provider
       if (this.ruleForm.api) {
         if (this.ruleForm.api.includes('deepseek.com')) this.ruleForm.provider = 'deepseek'
+        else if (this.ruleForm.api.includes('sensenova.cn')) this.ruleForm.provider = 'sensenova'
         else if (this.ruleForm.api.includes('volces.com')) this.ruleForm.provider = 'volcengine'
         else if (this.ruleForm.api.includes('aliyuncs.com')) this.ruleForm.provider = 'qwen'
         else if (this.ruleForm.api.includes('moonshot.cn')) this.ruleForm.provider = 'kimi'
@@ -578,24 +592,36 @@ export default {
         url = 'https://' + url
       }
       url = url.replace(/\/+$/, '')
-      if (!url.endsWith('/chat/completions')) {
-        if (url.includes('volces.com')) {
-          if (!url.includes('/api/v3')) {
-            url += '/api/v3/chat/completions'
-          } else {
-            url += '/chat/completions'
-          }
-        } else if (url.includes('/v1') || url.includes('/v3') || url.includes('/v4')) {
-          url += '/chat/completions'
-        } else if (url.includes('deepseek.com')) {
-          url += '/chat/completions'
-        } else if (url.includes('moonshot.cn')) {
-          url += '/v1/chat/completions'
-        } else if (url.includes('aliyuncs.com')) {
-          url += '/compatible-mode/v1/chat/completions'
+      if (url.endsWith('/chat/completions')) {
+        return url
+      }
+      if (url.endsWith('/models')) {
+        return url.replace(/\/models$/, '/chat/completions')
+      }
+      if (url.includes('volces.com')) {
+        if (!url.includes('/api/v3')) {
+          url += '/api/v3/chat/completions'
         } else {
           url += '/chat/completions'
         }
+      } else if (url.includes('sensenova.cn')) {
+        if (url.endsWith('/v1')) {
+          url += '/chat/completions'
+        } else if (!url.includes('/v1')) {
+          url += '/v1/chat/completions'
+        } else {
+          url += '/chat/completions'
+        }
+      } else if (url.includes('/v1') || url.includes('/v2') || url.includes('/v3') || url.includes('/v4')) {
+        url += '/chat/completions'
+      } else if (url.includes('deepseek.com')) {
+        url += '/chat/completions'
+      } else if (url.includes('moonshot.cn')) {
+        url += '/v1/chat/completions'
+      } else if (url.includes('aliyuncs.com')) {
+        url += '/compatible-mode/v1/chat/completions'
+      } else {
+        url += '/chat/completions'
       }
       return url
     },

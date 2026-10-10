@@ -59,7 +59,15 @@ function normalizeChatUrl(rawUrl) {
       } else {
         url += '/chat/completions';
       }
-    } else if (url.includes('/v1') || url.includes('/v3') || url.includes('/v4')) {
+    } else if (url.includes('sensenova.cn')) {
+      if (url.endsWith('/v1')) {
+        url += '/chat/completions';
+      } else if (!url.includes('/v1')) {
+        url += '/v1/chat/completions';
+      } else {
+        url += '/chat/completions';
+      }
+    } else if (url.includes('/v1') || url.includes('/v2') || url.includes('/v3') || url.includes('/v4')) {
       url += '/chat/completions';
     } else if (url.includes('deepseek.com')) {
       url += '/chat/completions';
@@ -147,6 +155,14 @@ const server = http.createServer(async (req, res) => {
         { id: 'glm-4-flash', name: 'glm-4-flash (智谱清言 Flash 极速)' }
       ];
 
+      const sensenovaModels = [
+        { id: 'SenseChat-5', name: 'SenseChat-5 (日日新 5.0 旗舰大模型 - 推荐)' },
+        { id: 'SenseChat-5-Vision', name: 'SenseChat-5-Vision (日日新 5.0 视觉多模态)' },
+        { id: 'SenseChat-Turbo', name: 'SenseChat-Turbo (日日新 Turbo 极速响应)' },
+        { id: 'SenseChat', name: 'SenseChat (日日新 4.0 标准版)' },
+        { id: 'SenseChat-Character', name: 'SenseChat-Character (角色拟真)' }
+      ];
+
       const isLocal = urlStr.includes('localhost') || urlStr.includes('127.0.0.1');
 
       if (urlStr.includes('volces.com')) {
@@ -162,9 +178,11 @@ const server = http.createServer(async (req, res) => {
         return;
       }
 
+      const activeFallback = urlStr.includes('sensenova.cn') ? sensenovaModels : fallbackModels;
+
       if (!urlStr || (!apiKey && !isLocal)) {
         res.setHeader('Content-Type', 'application/json; charset=utf-8');
-        res.end(JSON.stringify({ code: 0, data: fallbackModels, isFallback: true }));
+        res.end(JSON.stringify({ code: 0, data: activeFallback, isFallback: true }));
         return;
       }
 
