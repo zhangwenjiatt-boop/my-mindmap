@@ -15,7 +15,7 @@
           }}<a
             href="https://pan.baidu.com/s/1huasEbKsGNH2Af68dvWiOg?pwd=3bp3"
             >{{ $t('ai.baiduNetdisk') }}</a
-          >、<a href="https://github.com/wanglin2/mind-map/releases">Github</a>
+          >
         </p>
         <p>{{ $t('ai.connectFailedCheckTip2') }}</p>
         <P>{{ $t('ai.connectFailedCheckTip3') }}</P>

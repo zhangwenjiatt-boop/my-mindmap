@@ -104,10 +104,6 @@
             <span class="iconfont iconAIshengcheng"></span>
             {{ $t('navigatorToolbar.ai') }}
           </el-dropdown-item>
-          <el-dropdown-item command="github">
-            <span class="iconfont icongithub"></span>
-            Github
-          </el-dropdown-item>
           <el-dropdown-item disabled
             >{{ $t('navigatorToolbar.current') }}v{{
               version
@@ -204,9 +200,6 @@ export default {
       }
       let url = ''
       switch (command) {
-        case 'github':
-          url = 'https://github.com/wanglin2/mind-map'
-          break
         case 'helpDoc':
           url = 'https://wanglin2.github.io/mind-map-docs/help/help1.html'
           break
@@ -216,9 +209,6 @@ export default {
           break
         case 'site':
           url = 'https://sxmind.cn/'
-          break
-        case 'issue':
-          url = 'https://github.com/wanglin2/mind-map/issues/new'
           break
         case 'client':
           url = 'https://sxmind.cn/'

@@ -550,6 +550,9 @@ export default {
         if (res) {
           const modeLabel = res.mode === 'zh' ? '中文版' : (res.mode === 'en' ? '英文版' : '双语版')
           this.$message.success(`当前节点已切换为【${modeLabel}】`)
+          this.$nextTick(() => {
+            this.updatePosition()
+          })
         }
       } catch (err) {
         console.error('切换单节点语言失败:', err)
@@ -574,6 +577,9 @@ export default {
             retranslate: '最新 AI 译文'
           }
           this.$message.success(`当前节点已切换为【${modeLabels[targetMode] || targetMode}】`)
+          this.$nextTick(() => {
+            this.updatePosition()
+          })
         }
       } catch (err) {
         console.error('更新单节点语言失败:', err)

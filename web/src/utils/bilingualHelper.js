@@ -18,7 +18,15 @@ export function detectLanguage(text) {
  */
 export function cleanNodeText(text) {
   if (!text) return ''
-  return String(text).replace(/<[^>]+>/g, '').trim()
+  let clean = String(text).replace(/<[^>]+>/g, '').trim()
+  if (
+    (clean.startsWith('"') && clean.endsWith('"')) ||
+    (clean.startsWith('\'') && clean.endsWith('\'')) ||
+    (clean.startsWith('“') && clean.endsWith('”'))
+  ) {
+    clean = clean.slice(1, -1).trim()
+  }
+  return clean
 }
 
 /**
@@ -319,15 +327,11 @@ export async function setSingleNodeLanguageMode(node, targetMode = 'toggle', aiC
     singleLanguageMode: finalMode
   })
 
-  // 通过 setText 重新计算尺寸与布局重绘
+  // 通过 setText 原子性更新节点文本与计算尺寸，由 simple-mind-map 内部安全调度重绘
   if (isRich) {
-    node.setText(textToNodeRichTextWithWrap(newText), true)
+    node.setText(newText, true)
   } else {
-    node.setText(newText)
-  }
-
-  if (node.mindMap) {
-    node.mindMap.render()
+    node.setText(newText, false)
   }
 
   return {
